@@ -1,17 +1,17 @@
 
-# Instalación
+# Instalación
 
 
 ## Crear un proyecto nuevo.
 
-### Instalar la aplicación Symfony Installer
+### Instalar la aplicación Symfony Installer
 
 Symfony dispone de una aplicación llamada Symfony Installer a través de la cuál se pueden
 instalar/crear un proyecto symfony desde 0.
 
 http://symfony.com/doc/current/setup.html
 
-### Crear un proyecto
+### Crear un proyecto
 
 ```
 symfony new curso_symfony3
@@ -31,7 +31,7 @@ Se puede crear un proyecto con una versión de Symfony específica
 symfony new curso_symfony3 3.1
 ```
 
-### Ejecutar la aplicación symfony
+### Ejecutar la aplicación symfony
 
 Symfony viene con un servidor built-in para el desarrollo. Este servidor se puede lanzar 
 ejecutando el siguiente comando desde la raíz del proyecto:
@@ -47,7 +47,7 @@ http://localhost:8000/
 
 ## Instalar un proyecto ya existente
 
-### Descargar el proyecto a través de GIT
+### Descargar el proyecto a través de GIT
 
 
 ```
@@ -56,7 +56,7 @@ git clone url_proyecto
 
 
 
-### Instalar las dependencias a través de composer
+### Instalar las dependencias a través de composer
 
 Desde la raíz del proyecto, ejecutar el siguiente comando de composer:
 
@@ -100,7 +100,7 @@ Symfony provides a command to check whether your project's dependencies contain 
 
 
 
-## Cómo añadir GIT al proyecto Symfony
+## Cómo añadir GIT al proyecto Symfony
 
 ```
 git init
