@@ -43,5 +43,5 @@ If a particular version of a file is in the Git directory, it’s considered com
 ## Archivo .gitignore
 
 
-## Flujo de trabajo habitual
+## Flujo de trabajo habitual
 
