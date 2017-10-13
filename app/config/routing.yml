@@ -1,3 +1,22 @@
 app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
+  resource: '@AppBundle/Controller/'
+  type: annotation
+
+home_page:
+  path:     /homepage
+  defaults: { _controller: AppBundle:Public:home }
+
+login_page:
+  path:     /loginpage
+  defaults: { _controller: AppBundle:Public:login }
+    
+    
+user_edit:
+  path:  /user/edit/{id}
+  defaults: { _controller: AppBundle:Routing:edit }
+  
+user_edit:
+  path:  /user/edit/{id}
+  defaults: { _controller: AppBundle:Routing:edit }
+  requirements:
+    page: '\d+'
