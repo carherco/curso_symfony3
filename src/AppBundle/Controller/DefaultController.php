@@ -22,26 +22,59 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/lucky/number1")
+     * @Route("/holamundo")
      */
-    public function number1Action()
+    public function helloAction()
     {
-        $number = mt_rand(0, 100);
-
         return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
+            '<html><body>Hello world</body></html>'
         );
     }
     
     /**
-     * @Route("/lucky/number2")
+     * @Route("/holamundo2")
      */
-    public function number2Action()
+    public function hello2Action()
     {
-        $number = mt_rand(0, 100);
-
-        return $this->render('lucky/number.html.twig', array(
-            'number' => $number,
-        ));
+      $nombre = "Carlos";  
+      
+      return $this->render('default/holamundo.html.twig');
     }
+    
+    /**
+     * @Route("/holamundo3")
+     */
+    public function hello3Action()
+    {
+      $nombre = "Carlos";  
+      
+      return $this->render('hola/mundo.html.twig', array(
+          'name' => $nombre,
+      ));
+    }
+    
+    /**
+     * @Route("/holamundo4")
+     */
+    public function hello4Action()
+    {
+      $nombre = "Carlos";  
+      
+      return $this->render('default/mundo-upm.html.twig', array(
+          'name' => $nombre,
+      ));
+    }
+    
+    /**
+     * @Route("/holamundo5")
+     */
+    public function helloI18nAction()
+    {
+      $nombre = "Carlos";  
+      
+      return $this->render('default/mundoi18n.html.twig', array(
+          'name' => $nombre,
+      ));
+    }
+    
 }

@@ -31,6 +31,185 @@ https://twig.symfony.com/doc/2.x/tags/index.html
 https://twig.symfony.com/doc/2.x/filters/index.html
 https://twig.symfony.com/doc/2.x/functions/index.html
 
+## Operador de concatenación de strings ~
+
+```
+{{ 'Hola ' ~ name }}
+```
+
+## El punto (.)
+
+```
+{{ user.edad }}
+```
+
+Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
+
+1. Comprueba si user es un array y *edad* un elemento de dicho array
+2. Si no, si user es un objeto, comprueba que *edad* es una propiedad de de dicho objeto
+3. Si no, si user es un objeto, comprueba que *edad()* es un método público de dicho objeto
+4. Si no, si user es un objeto, comprueba que *getEdad()* es un método público de dicho objeto
+5. Si no, si user es un objeto, comprueba que *isEdad()* es un método público de dicho objeto
+6. Si no, si user es un objeto, comprueba que *hasEdad()* es un método público de dicho objeto
+7. Si no, devuelve el valor *null*.
+
+
+## Los corchetes []
+
+```
+{{ user['edad'] }}
+```
+
+1. Comprueba si user es un array y edad un elemento de dicho array
+2. Si no, devuelve el valor *null*.
+
+
+## El método attribute()
+
+```
+{{ attribute(user, 'fecha-nacimiento') }}
+```
+
+Esta función es útil para acceder atributos con caracteres especiales que pueden dar lugar a confusión.
+
+También para acceder a atributos dinámicamente.
+
+
+https://twig.symfony.com/doc/2.x/templates.html
+
+
+## Variables globales
+
+The following variables are always available in templates:
+
+_self: Hace referencia al nombre de la plantilla actual
+_context: Hace referencia al contexto actual
+_charset: Hace referencia al charset actual
+
+
+## La etiqueta set
+
+Se utilizar para declarar y establecer valor de variables
+
+```
+{% set foo = 'foo' %}
+{% set foo = [1, 2] %}
+{% set foo = {'foo': 'bar'} %}
+```
+
+
+
+## La etiqueta if
+
+```
+{% if kenny.sick %}
+    //---
+{% elseif kenny.dead %}
+    //---
+{% else %}
+    //---
+{% endif %}
+```
+
+### Operadores and, or y not
+
+```
+{% if user.edad > 18 and user.active %}
+
+{% if not user.active %}
+
+```
+
+
+## La etiqueta for
+
+```
+<h1>Members</h1>
+<ul>
+    {% for user in users %}
+        <li>{{ user.username|e }}</li>
+    {% endfor %}
+</ul>
+```
+
+Se utiliza para recorrer arrays o objetos que implementen la interfaz *Traversable*.
+http://php.net/manual/es/class.traversable.php
+
+### El operador ..
+
+```
+{% for i in 0..10 %}
+    * {{ i }}
+{% endfor %}
+```
+
+```
+{% for letter in 'a'..'z' %}
+    * {{ letter }}
+{% endfor %}
+```
+
+### La variable loop
+
+```
+{% for user in users %}
+    {{ loop.index }} - {{ user.username }}
+{% endfor %}
+```
+
+Dentro de un bucle for, se puede acceder a una variable especial *loop* con los siguientes atributos:
+
+- loop.index	The current iteration of the loop. (1 indexed)
+- loop.index0	The current iteration of the loop. (0 indexed)
+- loop.revindex	The number of iterations from the end of the loop (1 indexed)
+- loop.revindex0	The number of iterations from the end of the loop (0 indexed)
+- loop.first	True if first iteration
+- loop.last	True if last iteration
+- loop.length	The number of items in the sequence
+- loop.parent	The parent context
+
+Nota: Las variables loop.length, loop.revindex, loop.revindex0, y loop.last solamente 
+están disponibles para arrays PHP u objetos que implementan la interfaz *Countable*.
+Tampoco están disponibles si se recorre el bucle con una condición.
+
+### Añadiendo una condición en el bucle
+
+```
+<ul>
+    {% for user in users if user.active %}
+        <li>{{ user.username|e }}</li>
+    {% endfor %}
+</ul>
+```
+
+### La cláusula else
+
+Si no se produce ninguna iteración porque la secuencia estaba vacía, se puede renderizar
+un bloque utilizando la cláusula *else*.
+
+```
+<ul>
+    {% for user in users %}
+        <li>{{ user.username|e }}</li>
+    {% else %}
+        <li><em>no user found</em></li>
+    {% endfor %}
+</ul>
+```
+
+
+### Iterar con acceso a las claves
+
+
+```
+<h1>Members</h1>
+<ul>
+    {% for key, user in users %}
+        <li>{{ key }}: {{ user.username|e }}</li>
+    {% endfor %}
+</ul>
+```
+
 
 
 ## Función path()
@@ -89,14 +268,14 @@ class ArticleController extends Controller
 
 ## Función url()
 
-Extensión de symfony.
+Es una extensión de symfony.
 
 <a href="{{ url('welcome') }}">Home</a>
 
 
 ## Función asset()
 
-Extensión de symfony.
+Es una extensión de symfony.
 
 <img src="{{ asset('images/logo.png') }}" alt="Symfony!" />
 
@@ -115,27 +294,26 @@ Extensión de symfony.
 <img src="{{ absolute_url(asset('images/logo.png')) }}" alt="Symfony!" />
 
 
-## Template Inheritance and Layouts
+## Template Inheritance and Layouts - Las etiquetas extends y block
 
-The key to template inheritance is the {% extends %} tag. This tells the templating engine to first evaluate the base template, which sets up the layout and defines several blocks. The child template is then rendered, at which point the title and body blocks of the parent are replaced by those from the child. Depending on the value of blog_entries, the output might look like this:
+La clave para la herencia de plantillas es la etiqueta *{% extends %}*. 
 
-Notice that since the child template didn't define a sidebar block, the value from the parent template is used instead. Content within a {% block %} tag in a parent template is always used by default.
+Esta etiqueta le dice a Twig que primero evalúe la plantilla base, en la que se 
+definirá el layout y uno o más bloques mediante la etiqueta *{% block %}*.
 
-TIP
-You can use as many levels of inheritance as you want! See How to Organize Your Twig Templates Using Inheritance for more info.
-When working with template inheritance, here are some tips to keep in mind:
+Después se renderiza la plantilla *hija*. En la plantilla hija, se redefinen los 
+bloques que se deseen. Los bloques que no redefinan en la plantilla hija, se 
+renderizarán tal como los haya definido la plantilla base.
 
-If you use {% extends %} in a template, it must be the first tag in that template;
+Se pueden utilizar tantos niveles de herencia como se quieran. Al trabajar con 
+herencia de plantillas, hay que tener en cuenta unas cuantas cosas:
 
-The more {% block %} tags you have in your base templates, the better. Remember, child templates don't have to define all parent blocks, so create as many blocks in your base templates as you want and give each a sensible default. The more blocks your base templates have, the more flexible your layout will be;
-
-If you find yourself duplicating content in a number of templates, it probably means you should move that content to a {% block %} in a parent template. In some cases, a better solution may be to move the content to a new template and include it (see Including other Templates);
-
-If you need to get the content of a block from the parent template, you can use the {{ parent() }} function. This is useful if you want to add to the contents of a parent block instead of completely overriding it:
+La etiqueta *{% extends %}* debe ser la primera etiqueta de dicha plantilla.
 
 
 ## Función parent()
 
+```
 {# app/Resources/views/contact/contact.html.twig #}
 {% extends 'base.html.twig' %}
 
@@ -144,42 +322,9 @@ If you need to get the content of a block from the parent template, you can use 
 
     <link href="{{ asset('css/contact.css') }}" rel="stylesheet" />
 {% endblock %}
+```
 
-{# ... #}
-
-
-
-
-
-
-
-## Template Naming and Locations
-
-By default, templates can live in two different locations:
-
-app/Resources/views/
-The application's views directory can contain application-wide base templates (i.e. your application's layouts and templates of the application bundle) as well as templates that override third party bundle templates (see How to Override Templates from Third-Party Bundles).
-vendor/path/to/CoolBundle/Resources/views/
-Each third party bundle houses its templates in its Resources/views/ directory (and subdirectories). When you plan to share your bundle, you should put the templates in the bundle instead of the app/ directory.
-Most of the templates you'll use live in the app/Resources/views/ directory. The path you'll use will be relative to this directory. For example, to render/extend app/Resources/views/base.html.twig, you'll use the base.html.twig path and to render/extend app/Resources/views/blog/index.html.twig, you'll use the blog/index.html.twig path.
-
-## Referencing Templates in a Bundle
-If you need to refer to a template that lives in a bundle, Symfony uses the Twig namespaced syntax (@BundleName/directory/filename.html.twig). This allows for several types of templates, each which lives in a specific location:
-
-@AcmeBlog/Blog/index.html.twig: This syntax is used to specify a template for a specific page. The three parts of the string, each separated by a slash (/), mean the following:
-
-@AcmeBlog: is the bundle name without the Bundle suffix. This template lives in the AcmeBlogBundle (e.g. src/Acme/BlogBundle);
-Blog: (directory) indicates that the template lives inside the Blog subdirectory of Resources/views/;
-index.html.twig: (filename) the actual name of the file is index.html.twig.
-Assuming that the AcmeBlogBundle lives at src/Acme/BlogBundle, the final path to the layout would be src/Acme/BlogBundle/Resources/views/Blog/index.html.twig.
-
-@AcmeBlog/layout.html.twig: This syntax refers to a base template that's specific to the AcmeBlogBundle. Since the middle, "directory", portion is missing (e.g. Blog), the template lives at Resources/views/layout.html.twig inside AcmeBlogBundle.
-
-## Override Templates from Third-Party Bundles
-
-In the How to Override Templates from Third-Party Bundles section, you'll find out how each template living inside the AcmeBlogBundle, for example, can be overridden by placing a template of the same name in the app/Resources/AcmeBlogBundle/views/ directory. This gives the power to override templates from any vendor bundle.
-
-## Including other Templates
+## Función include()
 
 {# app/Resources/views/article/article_details.html.twig #}
 <h2>{{ article.title }}</h2>
@@ -200,7 +345,11 @@ In the How to Override Templates from Third-Party Bundles section, you'll find o
     {% endfor %}
 {% endblock %}
 
-The template is included using the {{ include() }} function. Notice that the template name follows the same typical convention. The article_details.html.twig template uses an article variable, which we pass to it. In this case, you could avoid doing this entirely, as all of the variables available in list.html.twig are also available in article_details.html.twig (unless you set with_context to false).
+The template is included using the {{ include() }} function. Notice that the template 
+name follows the same typical convention. The article_details.html.twig template 
+uses an article variable, which we pass to it. In this case, you could avoid 
+doing this entirely, as all of the variables available in list.html.twig are 
+also available in article_details.html.twig (unless you set with_context to false).
 
 
 
@@ -305,3 +454,120 @@ Suppose description equals I <3 this product:
 ## Cómo escribir una extensión de Twig
 
 https://symfony.com/doc/current/templating/twig_extension.html
+
+
+## Template Naming and Locations
+
+By default, templates can live in two different locations:
+
+app/Resources/views/
+The application's views directory can contain application-wide base templates (i.e. your application's layouts and templates of the application bundle) as well as templates that override third party bundle templates (see How to Override Templates from Third-Party Bundles).
+vendor/path/to/CoolBundle/Resources/views/
+Each third party bundle houses its templates in its Resources/views/ directory (and subdirectories). When you plan to share your bundle, you should put the templates in the bundle instead of the app/ directory.
+Most of the templates you'll use live in the app/Resources/views/ directory. The path you'll use will be relative to this directory. For example, to render/extend app/Resources/views/base.html.twig, you'll use the base.html.twig path and to render/extend app/Resources/views/blog/index.html.twig, you'll use the blog/index.html.twig path.
+
+## Referencing Templates in a Bundle
+If you need to refer to a template that lives in a bundle, Symfony uses the Twig namespaced syntax (@BundleName/directory/filename.html.twig). This allows for several types of templates, each which lives in a specific location:
+
+@AcmeBlog/Blog/index.html.twig: This syntax is used to specify a template for a specific page. The three parts of the string, each separated by a slash (/), mean the following:
+
+@AcmeBlog: is the bundle name without the Bundle suffix. This template lives in the AcmeBlogBundle (e.g. src/Acme/BlogBundle);
+Blog: (directory) indicates that the template lives inside the Blog subdirectory of Resources/views/;
+index.html.twig: (filename) the actual name of the file is index.html.twig.
+Assuming that the AcmeBlogBundle lives at src/Acme/BlogBundle, the final path to the layout would be src/Acme/BlogBundle/Resources/views/Blog/index.html.twig.
+
+@AcmeBlog/layout.html.twig: This syntax refers to a base template that's specific to the AcmeBlogBundle. Since the middle, "directory", portion is missing (e.g. Blog), the template lives at Resources/views/layout.html.twig inside AcmeBlogBundle.
+
+## Override Templates from Third-Party Bundles
+
+In the How to Override Templates from Third-Party Bundles section, you'll find out how each template living inside the AcmeBlogBundle, for example, can be overridden by placing a template of the same name in the app/Resources/AcmeBlogBundle/views/ directory. This gives the power to override templates from any vendor bundle.
+
+
+
+
+
+
+## Filtros
+
+Se aplican con el operador |
+
+```
+{{ name|upper }}
+```
+
+Son concatenables
+
+```
+{{ name|striptags|title }}
+```
+
+Admiten parámetros
+
+```
+{{ list|join(', ') }}
+```
+
+Se pueden aplicar a bloques completos
+
+```
+{% filter upper %}
+    Este texto se transformará en mayúsculas
+{% endfilter %}
+```
+
+
+
+## Filtro slice
+
+```
+<h1>Top Ten Members</h1>
+<ul>
+    {% for user in users|slice(0, 10) %}
+        <li>{{ user.username|e }}</li>
+    {% endfor %}
+</ul>
+```
+
+## Funciones
+
+Se utilizan de forma similar a la mayoría de lenguajes de programación
+
+```
+{% for i in range(0, 3) %}
+    {{ i }},
+{% endfor %}
+```
+
+### Named arguments
+
+```
+{% for i in range(low=1, high=10, step=2) %}
+    {{ i }},
+{% endfor %}
+```
+
+Using named arguments makes your templates more explicit about the meaning of the values you pass as arguments:
+
+```
+{{ data|convert_encoding('UTF-8', 'iso-2022-jp') }}
+
+{# versus #}
+
+{{ data|convert_encoding(from='iso-2022-jp', to='UTF-8') }}
+```
+
+Named arguments also allow you to skip some arguments for which you don't want to change the default value:
+
+```
+{# the first argument is the date format, which defaults to the global date format if null is passed #}
+{{ "now"|date(null, "Europe/Paris") }}
+
+{# or skip the format value by using a named argument for the time zone #}
+{{ "now"|date(timezone="Europe/Paris") }}
+```
+
+You can also use both positional and named arguments in one call, in which case positional arguments must always come before named arguments:
+
+```
+{{ "now"|date('d/m/Y H:i', timezone="Europe/Paris") }}
+```

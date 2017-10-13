@@ -1,6 +1,7 @@
 # Índice del curso
 
  - [Instalación](instalacion.md)
+ - [Introducción a Composer](composer.md)
  - [Trabajando con Git](git.md)
  - [Estructura de un proyecto symfony](estructura-proyecto.md)
  - Patrón MVC
@@ -20,20 +21,20 @@ Mis datos de contacto:
 
 
 
-	•	Introducción
+•	Introducción
 	◦	Instalación de symfony, creación nuevo proyecto, composer, integración con git, permisos de ficheros, servidor integrado de php
 	◦	Estructura de un proyecto symfony. 
-	•	Creación de la página de Home
+•	Creación de la página de Home
 	◦	Introducción a Controllers 
 	◦	Introducción a Twig
 	◦	Introducción al Routing
 	◦	Internacionalización (i18n)
-	•	Creación de otras páginas de la zona pública
+•	Creación de otras páginas de la zona pública
 	◦	Routing avanzado
 	◦	Archivos de configuración de symfony. 
 	◦	Caché
 	◦	La consola de symfony. Comandos predefinidos.
-	•	Acceso a base de datos. Doctrine.
+•	Acceso a base de datos. Doctrine.
 	•	Formularios y validaciones. Mensajes Flash.
 	•	Zona privada. Página de dashboard del usuario.
 	◦	Organización del código en bundles. Buenas prácticas.
