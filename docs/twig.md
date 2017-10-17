@@ -8,7 +8,7 @@ sino que recompila las plantillas después de cada cambio. Esto hace que Twig se
 rápido en producción pero cómodo durante el desarrollo.
 
 
-## Twig syntax
+## Sintaxis de Twig
 
 Twig define tres tipos de sintaxis:
 
@@ -197,19 +197,6 @@ Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
 1. Comprueba si user es un array y edad un elemento de dicho array
 2. Si no, devuelve el valor *null*.
 
-#### El operador ? y ?:
-
-{{ foo ? 'yes' : 'no' }}
-{{ foo ?: 'no' }} equivale a {{ foo ? foo : 'no' }}
-{{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
-
-#### El operador ??
-
-{# Devuelve el valor de *foo* si está definido y no es nulo. En cualquier otro caso, devuelve el valor 'no' #}
-{{ foo ?? 'no' }}
-
-
-
 #### El método attribute()
 
 No es un operador, pero es una función auxiliar para el operador .
@@ -223,7 +210,25 @@ Esta función es útil para acceder atributos con caracteres especiales que pued
 También para acceder a atributos dinámicamente.
 
 
-https://twig.symfony.com/doc/2.x/templates.html
+
+#### El operador ? y ?:
+
+{{ foo ? 'yes' : 'no' }}
+{{ foo ?: 'no' }} equivale a {{ foo ? foo : 'no' }}
+{{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
+
+#### El operador ??
+
+{# Devuelve el valor de *foo* si está definido y no es nulo. En cualquier otro caso, devuelve el valor 'no' #}
+{{ foo ?? 'no' }}
+
+
+### String interpolation: (#{expression})
+
+Permite evaluar extresiones dentro de strings. Solamente funciona en strings con comillas dobles.
+
+{{ "foo #{bar} baz" }}
+{{ "foo #{1 + 2} baz" }}
 
 
 ### Variables globales
@@ -355,281 +360,6 @@ un bloque utilizando la cláusula *else*.
 
 
 
-## Función path()
-
-Extensión de symfony.
-
-// src/AppBundle/Controller/WelcomeController.php
-
-// ...
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-class WelcomeController extends Controller
-{
-    /**
-     * @Route("/", name="welcome")
-     */
-    public function indexAction()
-    {
-        // ...
-    }
-}
-
-
-
-<a href="{{ path('welcome') }}">Home</a>
-
-
-
-### Función path() con parámetros
-
-// src/AppBundle/Controller/ArticleController.php
-
-// ...
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-class ArticleController extends Controller
-{
-    /**
-     * @Route("/article/{slug}", name="article_show")
-     */
-    public function showAction($slug)
-    {
-        // ...
-    }
-}
-
-
-
-{# app/Resources/views/article/recent_list.html.twig #}
-{% for article in articles %}
-    <a href="{{ path('article_show', {'slug': article.slug}) }}">
-        {{ article.title }}
-    </a>
-{% endfor %}
-
-
-## Función url()
-
-Es una extensión de symfony.
-
-<a href="{{ url('welcome') }}">Home</a>
-
-
-## Función asset()
-
-Es una extensión de symfony.
-
-<img src="{{ asset('images/logo.png') }}" alt="Symfony!" />
-
-<link href="{{ asset('css/blog.css') }}" rel="stylesheet" />
-
-Genera rutas relativas al directorio webroot del proyecto.
-
-http://example.com => /images/logo.png
-http://example.com/my_app => /my_app/images/logo.png
-
-
-## Función absolute_url()
-
-Extensión de symfony.
-
-<img src="{{ absolute_url(asset('images/logo.png')) }}" alt="Symfony!" />
-
-
-## Template Inheritance and Layouts - Las etiquetas extends y block
-
-La clave para la herencia de plantillas es la etiqueta *{% extends %}*. 
-
-Esta etiqueta le dice a Twig que primero evalúe la plantilla base, en la que se 
-definirá el layout y uno o más bloques mediante la etiqueta *{% block %}*.
-
-Después se renderiza la plantilla *hija*. En la plantilla hija, se redefinen los 
-bloques que se deseen. Los bloques que no redefinan en la plantilla hija, se 
-renderizarán tal como los haya definido la plantilla base.
-
-Se pueden utilizar tantos niveles de herencia como se quieran. Al trabajar con 
-herencia de plantillas, hay que tener en cuenta unas cuantas cosas:
-
-La etiqueta *{% extends %}* debe ser la primera etiqueta de dicha plantilla.
-
-
-## Función parent()
-
-```
-{# app/Resources/views/contact/contact.html.twig #}
-{% extends 'base.html.twig' %}
-
-{% block stylesheets %}
-    {{ parent() }}
-
-    <link href="{{ asset('css/contact.css') }}" rel="stylesheet" />
-{% endblock %}
-```
-
-## Función include()
-
-{# app/Resources/views/article/article_details.html.twig #}
-<h2>{{ article.title }}</h2>
-<h3 class="byline">by {{ article.authorName }}</h3>
-
-<p>
-    {{ article.body }}
-</p>
-
-{# app/Resources/views/article/list.html.twig #}
-{% extends 'layout.html.twig' %}
-
-{% block body %}
-    <h1>Recent Articles<h1>
-
-    {% for article in articles %}
-        {{ include('article/article_details.html.twig', { 'article': article }) }}
-    {% endfor %}
-{% endblock %}
-
-The template is included using the {{ include() }} function. Notice that the template 
-name follows the same typical convention. The article_details.html.twig template 
-uses an article variable, which we pass to it. In this case, you could avoid 
-doing this entirely, as all of the variables available in list.html.twig are 
-also available in article_details.html.twig (unless you set with_context to false).
-
-
-
-
-
-
-## Acceso a variables globales del framework
-
-- app.user
-The representation of the current user or null if there is none. The value stored in this variable can be a UserInterface object, any other object which implements a __toString() method or even a regular string.
-
-- app.request
-The Request object that represents the current request (depending on your application, this can be a sub-request or a regular request, as explained later).
-
-- app.session
-The Session object that represents the current user's session or null if there is none.
-
-- app.environment
-The name of the current environment (dev, prod, etc).
-
-- app.debug
-True if in debug mode. False otherwise.
-
-```html
-<p>Username: {{ app.user.username }}</p>
-{% if app.debug %}
-    <p>Request method: {{ app.request.method }}</p>
-    <p>Application Environment: {{ app.environment }}</p>
-{% endif %}
-```
-
-## Cómo inyectar variables globales en las plantillas
-
-https://symfony.com/doc/current/templating/global_variables.html
-
-Sometimes you want a variable to be accessible to all the templates you use. This is possible inside your app/config/config.yml file:
-
-
-// app/config/config.yml
-twig:
-    # ...
-    globals:
-        ga_tracking: UA-xxxxx-x
- 
-XML
- 
-PHP
-Now, the variable ga_tracking is available in all Twig templates:
-
-
-<p>The google tracking code is: {{ ga_tracking }}</p>
-It's that easy!
-
-Using Service Container Parameters¶
-
-You can also take advantage of the built-in Service Parameters system, which lets you isolate or reuse the value:
-
-
-// app/config/parameters.yml
-parameters:
-    ga_tracking: UA-xxxxx-x
-
-// app/config/config.yml
-twig:
-    globals:
-        ga_tracking: '%ga_tracking%'
- 
-
-The same variable is available exactly as before.
-
-
-
-
-Instead of using static values, you can also set the value to a service. Whenever the global variable is accessed in the template, the service will be requested from the service container and you get access to that object.
-
-NOTE
-The service is not loaded lazily. In other words, as soon as Twig is loaded, your service is instantiated, even if you never use that global variable.
-To define a service as a global Twig variable, prefix the string with @. This should feel familiar, as it's the same syntax you use in service configuration.
-
-
-// app/config/config.yml
-twig:
-    # ...
-    globals:
-        # the value is the service's id
-        user_management: '@AppBundle\Service\UserManagement'
-
-
-## Output Escaping
-
-Twig performs automatic "output escaping" when rendering any content in order to protect you from Cross Site Scripting (XSS) attacks.
-
-Suppose description equals I <3 this product:
-
-<!-- output escaping is on automatically -->
-{{ description }} <!-- I &lt;3 this product -->
-
-<!-- disable output escaping with the raw filter -->
-{{ description|raw }} <!-- I <3 this product -->
-
-
-## Cómo escribir una extensión de Twig
-
-https://symfony.com/doc/current/templating/twig_extension.html
-
-
-## Template Naming and Locations
-
-By default, templates can live in two different locations:
-
-app/Resources/views/
-The application's views directory can contain application-wide base templates (i.e. your application's layouts and templates of the application bundle) as well as templates that override third party bundle templates (see How to Override Templates from Third-Party Bundles).
-vendor/path/to/CoolBundle/Resources/views/
-Each third party bundle houses its templates in its Resources/views/ directory (and subdirectories). When you plan to share your bundle, you should put the templates in the bundle instead of the app/ directory.
-Most of the templates you'll use live in the app/Resources/views/ directory. The path you'll use will be relative to this directory. For example, to render/extend app/Resources/views/base.html.twig, you'll use the base.html.twig path and to render/extend app/Resources/views/blog/index.html.twig, you'll use the blog/index.html.twig path.
-
-## Referencing Templates in a Bundle
-If you need to refer to a template that lives in a bundle, Symfony uses the Twig namespaced syntax (@BundleName/directory/filename.html.twig). This allows for several types of templates, each which lives in a specific location:
-
-@AcmeBlog/Blog/index.html.twig: This syntax is used to specify a template for a specific page. The three parts of the string, each separated by a slash (/), mean the following:
-
-@AcmeBlog: is the bundle name without the Bundle suffix. This template lives in the AcmeBlogBundle (e.g. src/Acme/BlogBundle);
-Blog: (directory) indicates that the template lives inside the Blog subdirectory of Resources/views/;
-index.html.twig: (filename) the actual name of the file is index.html.twig.
-Assuming that the AcmeBlogBundle lives at src/Acme/BlogBundle, the final path to the layout would be src/Acme/BlogBundle/Resources/views/Blog/index.html.twig.
-
-@AcmeBlog/layout.html.twig: This syntax refers to a base template that's specific to the AcmeBlogBundle. Since the middle, "directory", portion is missing (e.g. Blog), the template lives at Resources/views/layout.html.twig inside AcmeBlogBundle.
-
-## Override Templates from Third-Party Bundles
-
-In the How to Override Templates from Third-Party Bundles section, you'll find out how each template living inside the AcmeBlogBundle, for example, can be overridden by placing a template of the same name in the app/Resources/AcmeBlogBundle/views/ directory. This gives the power to override templates from any vendor bundle.
-
-
-
-
-
-
 ## Filtros
 
 Se aplican con el operador |
@@ -681,6 +411,89 @@ Se utilizan de forma similar a la mayoría de lenguajes de programación
 {% endfor %}
 ```
 
+
+### Función path()
+
+Extensión de symfony.
+
+// src/AppBundle/Controller/WelcomeController.php
+
+// ...
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+class WelcomeController extends Controller
+{
+    /**
+     * @Route("/", name="welcome")
+     */
+    public function indexAction()
+    {
+        // ...
+    }
+}
+
+
+
+<a href="{{ path('welcome') }}">Home</a>
+
+
+
+#### Función path() con parámetros
+
+// src/AppBundle/Controller/ArticleController.php
+
+// ...
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+class ArticleController extends Controller
+{
+    /**
+     * @Route("/article/{slug}", name="article_show")
+     */
+    public function showAction($slug)
+    {
+        // ...
+    }
+}
+
+
+
+{# app/Resources/views/article/recent_list.html.twig #}
+{% for article in articles %}
+    <a href="{{ path('article_show', {'slug': article.slug}) }}">
+        {{ article.title }}
+    </a>
+{% endfor %}
+
+
+### Función url()
+
+Es una extensión de symfony.
+
+<a href="{{ url('welcome') }}">Home</a>
+
+
+### Función asset()
+
+Es una extensión de symfony.
+
+<img src="{{ asset('images/logo.png') }}" alt="Symfony!" />
+
+<link href="{{ asset('css/blog.css') }}" rel="stylesheet" />
+
+Genera rutas relativas al directorio webroot del proyecto.
+
+http://example.com => /images/logo.png
+http://example.com/my_app => /my_app/images/logo.png
+
+
+### Función absolute_url()
+
+Extensión de symfony.
+
+<img src="{{ absolute_url(asset('images/logo.png')) }}" alt="Symfony!" />
+
+
 ### Named arguments
 
 ```
@@ -714,3 +527,236 @@ You can also use both positional and named arguments in one call, in which case 
 ```
 {{ "now"|date('d/m/Y H:i', timezone="Europe/Paris") }}
 ```
+
+
+## Template Inheritance and Layouts - Las etiquetas extends y block
+
+La clave para la herencia de plantillas es la etiqueta *{% extends %}*. 
+
+Esta etiqueta le dice a Twig que primero evalúe la plantilla base, en la que se 
+definirá el layout y uno o más bloques mediante la etiqueta *{% block %}*.
+
+Después se renderiza la plantilla *hija*. En la plantilla hija, se redefinen los 
+bloques que se deseen. Los bloques que no redefinan en la plantilla hija, se 
+renderizarán tal como los haya definido la plantilla base.
+
+Se pueden utilizar tantos niveles de herencia como se quieran. Al trabajar con 
+herencia de plantillas, hay que tener en cuenta unas cuantas cosas:
+
+La etiqueta *{% extends %}* debe ser la primera etiqueta de dicha plantilla.
+
+
+## Función parent()
+
+```
+{# app/Resources/views/contact/contact.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('css/contact.css') }}" rel="stylesheet" />
+{% endblock %}
+```
+
+## Función include()
+
+Se utiliza para incluir el contenido de una plantilla en otra plantilla. Se pueden pasar
+variables a la plantilla incluida. Además, la plantilla incluida tiene acceso a las variables
+de la plantilla inclusora, pero no es una buena práctica.
+
+```twig
+{# app/Resources/views/article/article_details.html.twig #}
+<h2>{{ article.title }}</h2>
+<h3 class="byline">by {{ article.authorName }}</h3>
+
+<p>
+    {{ article.body }}
+</p>
+```
+
+```twig
+{# app/Resources/views/article/list.html.twig #}
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <h1>Recent Articles<h1>
+
+    {% for article in articles %}
+        {{ include('article/article_details.html.twig', { 'article': article }) }}
+    {% endfor %}
+{% endblock %}
+```
+
+
+## Acceso a variables globales del framework
+
+- app.user: Objeto *user* de symfony o *null* si no existe.
+
+- app.request: El objeto Request
+
+- app.session: El objeto Session o null si no existe.
+
+- app.environment: El nombre del entorno actual (dev, prod, etc).
+
+- app.debug: True si estamos en modo debug. False si no.
+
+```html
+<p>Username: {{ app.user.username }}</p>
+{% if app.debug %}
+    <p>Request method: {{ app.request.method }}</p>
+    <p>Application Environment: {{ app.environment }}</p>
+{% endif %}
+```
+
+## Cómo inyectar variables globales en las plantillas
+
+https://symfony.com/doc/current/templating/global_variables.html
+
+A veces queremos que una variables sea accesible a todas las plantillas. Se pueden
+definir variables globales para twig en el fichero config.yml
+
+// app/config/config.yml
+twig:
+    # ...
+    globals:
+        ga_tracking: UA-xxxxx-x
+ 
+Este ejemplo hace que la variable ga_tracking esté disponible en todas las plantillas twig
+
+<p>The google tracking code is: {{ ga_tracking }}</p>
+
+
+O de forma equivalente:
+
+// app/config/parameters.yml
+parameters:
+    ga_tracking: UA-xxxxx-x
+
+// app/config/config.yml
+twig:
+    globals:
+        ga_tracking: '%ga_tracking%'
+ 
+El valor de la variable puede ser un valor en sí, o un servicio.
+
+// app/config/config.yml
+twig:
+    # ...
+    globals:
+        # the value is the service's id
+        user_management: '@AppBundle\Service\UserManagement'
+
+NOTA
+El servicio no se carga de forma *lazy*. Es decir, tan pronto como se carga twig, 
+se instancia el servico, incluso aunque esa variable global no se utilice nunca.
+
+Para definir un servicio como variable globa de twig, se utiliza el prefijo @.
+
+
+## El filtro |raw
+
+Twig realiza "output escaping" automáticamente cuando renderiza cualquier contenido
+con el propósito de protegernos contra ataques Cross Site Scripting (XSS)
+
+Supongamos que el contenido de la vairable *description* es "I <3 this product":
+
+<!-- output escaping is on automatically -->
+{{ description }} <!-- I &lt;3 this product -->
+
+<!-- disable output escaping with the raw filter -->
+{{ description|raw }} <!-- I <3 this product -->
+
+
+## Whitespace Control
+
+Se pueden eliminar los espacios en blanco con la etiqueta {% spaceless %}
+
+```twig
+{% spaceless %}
+    <div>
+        <strong>foo bar</strong>
+    </div>
+{% endspaceless %}
+
+{# output will be <div><strong>foo bar</strong></div> #}
+```
+
+o bien con el modificador -
+
+```twig
+{% set value = 'no spaces' %}
+{#- No leading/trailing whitespace -#}
+{%- if true -%}
+    {{- value -}}
+{%- endif -%}
+
+{# output 'no spaces' #}
+```
+
+
+```twig
+{% set value = 'no spaces' %}
+<li>    {{- value }}    </li>
+
+{# outputs '<li>no spaces    </li>' #}
+```
+
+
+
+## Cómo escribir una extensión de Twig
+
+Se puede extender twig con etiquetas filtros o funciones personalizados.
+
+https://symfony.com/doc/current/templating/twig_extension.html
+
+
+## Template Naming and Locations
+
+Las plantillas twig pueden localizarse en tres lugares diferentes:
+
+- app/Resources/views/
+Aquí están las plantillas de nuestra aplicación.
+
+- vendor/path/to/CoolBundle/Resources/views/
+Dentro de cada bundle de terceros se alojan sus propias plantillas en su directorio Resources/views/.
+
+src/MyBundle/Resources/views/
+Puedes alojar las plantillas de tu proyecto en tu propio bundle dentro de src. Esta localización se suele utilizar 
+si se está desarrollando un bundle que será distribuido a terceros.
+
+
+### Referencing Templates in a Bundle
+
+Para hacer referencia a una plantilla de un bundle, symfony utiliza la siguiente sintaxis:
+
+@BundleName/directory/filename.html.twig
+
+Por ejemplo:
+
+@AcmeBlog/Blog/index.html.twig
+
+@AcmeBlog: Es el nombre del Bundle sin el sufijo "Bundle". Esta plantilla estál localizada en AcmeBlogBundle (e.g. src/Acme/BlogBundle);
+Blog: (directorio) indica que la plantilla está en el subdirectorio *Blog* dentro de Resources/views/;
+index.html.twig: (archivo) el nombre del archivo es index.html.twig.
+
+Suponiendo que el bundle AcmeBlogBundle esté en src/Acme/BlogBundle, entonces la localización de la plantilla sería src/Acme/BlogBundle/Resources/views/Blog/index.html.twig.
+
+Si la plantilla está directamente en el directorio Resources/views/ entonces se omite la parte del directorio
+@AcmeBlog/layout.html.twig: 
+
+### Sobreescribir plantillas
+
+Se puede sobreescribir una plantilla localizada en un bundle creando otra plantilla en app/Resources/nombreBundle/views
+
+Por ejemplo, la siguiente plantilla 
+app/Resources/AcmeBlogBundle/views/Blog/index.html.twig
+
+sobreescribe a la plantilla 
+src/AcmeBlogBundle/Resources/views/Blog/index.html.twig
+
+
+
+
+
+https://twig.symfony.com/doc/2.x/templates.html
