@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
+use \AppBundle\Service\Mock\AsignaturasManager;
+
 class DefaultController extends Controller
 {
     /**
@@ -75,6 +77,19 @@ class DefaultController extends Controller
       return $this->render('default/mundoi18n.html.twig', array(
           'name' => $nombre,
       ));
+    }
+    
+    /**
+     * @Route("/ejercicio/asignaturas")
+     */
+    public function usuariosAction(AsignaturasManager $asignaturasManager)
+    {
+      $asignaturas = $asignaturasManager->getAll();
+      //$asignaturas = array();
+      
+      return $this->render('default/asignaturas.html.twig', array(
+          'asignaturas' => $asignaturas,
+      )); 
     }
     
 }

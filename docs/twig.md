@@ -31,13 +31,148 @@ https://twig.symfony.com/doc/2.x/tags/index.html
 https://twig.symfony.com/doc/2.x/filters/index.html
 https://twig.symfony.com/doc/2.x/functions/index.html
 
-## Operador de concatenación de strings ~
+### Tipos de datos
 
-```
-{{ 'Hola ' ~ name }}
+#### Cadenas de texto
+
+Van entre comillas. 
+
+- Con comillas simples o dobles: "Hello World"
+- El caracter de escape es la barra invertida (\): 'It\'s good'.
+- La barra invertida se escapa con otra barra invertida: 'c:\\Program Files'
+
+#### Números
+
+Simplemente se escriben tal cual.
+
+- Si hay un punto, el número será un *float*. Si no lo hay, será un *integer*.
+
+#### Arrays
+
+Se definen entre corchetes cuadrados, separando los elementos con comas: ["foo", "bar"]
+
+#### Hashes
+
+Son listas de parejas clave/valor, separadas por comas y encerradas entre llaves: {"foo": "bar"}
+
+```twig
+{# keys as string #}
+{ 'foo': 'foo', 'bar': 'bar' }
 ```
 
-## El punto (.)
+```twig
+{# keys as names (equivalent to the previous hash) #}
+{ foo: 'foo', bar: 'bar' }
+```
+
+```twig
+{# keys as integer #}
+{ 2: 'foo', 4: 'bar' }
+```
+
+```twig
+{# keys as expressions (the expression must be enclosed into parentheses) #}
+{% set foo = 'foo' %}
+{ (foo): 'foo', (1 + 1): 'bar', (foo ~ 'b'): 'baz' }
+```
+
+#### Booleanos
+
+Se escriben tal cual:
+- true
+- false
+
+#### Null
+
+Se escribe tal cual
+- null
+- none (es un alias de null)
+
+
+Los arrays y los  hashes se pueden anidar:
+
+
+{% set foo = [1, {"foo": "bar"}] %}
+
+### Operadores matemáticos
+
++: Suma: {{ 1 + 1 }}
+-: Resta: {{ 3 - 2 }}
+/: División. El resultado es un float: {{ 1 / 2 }} es {{ 0.5 }}.
+%: Resto de una división: {{ 11 % 7 }} is 4.
+//: División más redondeo a la baja: {{ 20 // 7 }} is 2, {{ -20 // 7 }} is -3
+*: Multiplicación: {{ 2 * 2 }}
+**: Potencia: {{ 2 ** 3 }} es 8.
+
+Twig intenta hacer cast de los operandos antes de realizar la operación
+
+### Operadores lógicos
+
+- and
+- or
+- not
+
+### Comparadores
+
+La lista de comparadores es la siguiente: ==, !=, <, >, >=, and <=.
+
+Además existen los comparadores start, end y matches
+
+{% if 'Fabien' starts with 'F' %}
+{% endif %}
+
+{% if 'Fabien' ends with 'n' %}
+{% endif %}
+
+{% if phone matches '/^[\\d\\.]+$/' %}
+{% endif %}
+
+### Operador in
+
+{{ 1 in [1, 2, 3] }}
+{{ 'cd' in 'abcde' }}
+
+{% if 1 not in [1, 2, 3] %}
+{# is equivalent to #}
+{% if not (1 in [1, 2, 3]) %}
+
+### Operador de testeo: is
+
+{# find out if a variable is odd #}
+{{ name is odd }}
+
+{% if post.status is constant('Post::PUBLISHED') %}
+
+{% if post.status is not constant('Post::PUBLISHED') %}
+{# is equivalent to #}
+{% if not (post.status is constant('Post::PUBLISHED')) %}
+
+https://twig.symfony.com/doc/2.x/tests/index.html
+
+### Otros operadores
+
+#### Operador |
+
+Aplica un filtro
+
+#### Operador ..
+
+Crea una secuencia (equivalente a la función range()
+
+```twig
+{{ 1..5 }}
+
+{# equivalent to #}
+{{ range(1, 5) }}
+```
+
+#### Operador ~
+
+Convierte los operadores en strings y los concatena
+
+{{ "Hello " ~ name ~ "!" }} => Hello John!.
+
+#### Operador .
 
 ```
 {{ user.edad }}
@@ -53,8 +188,7 @@ Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
 6. Si no, si user es un objeto, comprueba que *hasEdad()* es un método público de dicho objeto
 7. Si no, devuelve el valor *null*.
 
-
-## Los corchetes []
+#### Operador []
 
 ```
 {{ user['edad'] }}
@@ -63,8 +197,22 @@ Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
 1. Comprueba si user es un array y edad un elemento de dicho array
 2. Si no, devuelve el valor *null*.
 
+#### El operador ? y ?:
 
-## El método attribute()
+{{ foo ? 'yes' : 'no' }}
+{{ foo ?: 'no' }} equivale a {{ foo ? foo : 'no' }}
+{{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
+
+#### El operador ??
+
+{# Devuelve el valor de *foo* si está definido y no es nulo. En cualquier otro caso, devuelve el valor 'no' #}
+{{ foo ?? 'no' }}
+
+
+
+#### El método attribute()
+
+No es un operador, pero es una función auxiliar para el operador .
 
 ```
 {{ attribute(user, 'fecha-nacimiento') }}
@@ -78,9 +226,9 @@ También para acceder a atributos dinámicamente.
 https://twig.symfony.com/doc/2.x/templates.html
 
 
-## Variables globales
+### Variables globales
 
-The following variables are always available in templates:
+Estas variables están siempre disponibles en las plantillas:
 
 _self: Hace referencia al nombre de la plantilla actual
 _context: Hace referencia al contexto actual
@@ -97,8 +245,6 @@ Se utilizar para declarar y establecer valor de variables
 {% set foo = {'foo': 'bar'} %}
 ```
 
-
-
 ## La etiqueta if
 
 ```
@@ -109,14 +255,12 @@ Se utilizar para declarar y establecer valor de variables
 {% else %}
     //---
 {% endif %}
-```
 
-### Operadores and, or y not
 
-```
 {% if user.edad > 18 and user.active %}
-
+...
 {% if not user.active %}
+...
 
 ```
 
@@ -135,7 +279,6 @@ Se utilizar para declarar y establecer valor de variables
 Se utiliza para recorrer arrays o objetos que implementen la interfaz *Traversable*.
 http://php.net/manual/es/class.traversable.php
 
-### El operador ..
 
 ```
 {% for i in 0..10 %}

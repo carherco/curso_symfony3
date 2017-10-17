@@ -1,0 +1,28 @@
+<h1>{{'Listado de asignaturas'|trans}}</h1>
+<h2>{{"now"|date('d-m-Y')}}</h2>
+
+{% if asignaturas %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{'Código'|trans}}</th>
+      <th>{{'Nombre'|trans}}</th>
+      <th>{{'ECTS'|trans}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for asig in asignaturas %}
+    <tr {% if loop.index0 is odd %}class="fila_impar"{% else %}class="fila_par"{% endif %}>
+      <td>{{asig.codigo}}</td>
+      <td>
+        {% if app.request.locale == 'es' %}{{asig.nombre|title}}{% endif %}
+        {% if app.request.locale == 'en' %}{{asig.nombreIngles|title}}{% endif %}
+      </td>
+      <td>{{asig.credects}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div>{{'No se han encontrado asignaturas.'|trans}}</div>
+{% endif %}
