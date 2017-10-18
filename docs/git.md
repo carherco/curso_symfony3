@@ -1,4 +1,4 @@
-# Introducción a Git básico
+# Introducción a Git básico
 
 Documentación: https://git-scm.com/doc
 
@@ -6,42 +6,95 @@ Documentación: https://git-scm.com/doc
 
 ## Características de git
 
-### Snapshots, Not Differences
-Every time you commit, or save the state of your project in Git, it basically takes a picture of what all your files look like at that moment and stores a reference to that snapshot. To be efficient, if files have not changed, Git doesn’t store the file again, just a link to the previous identical file it has already stored. Git thinks about its data more like a stream of snapshots.
+### Snapshots
 
-### Nearly Every Operation Is Local
-Most operations in Git only need local files and resources to operate – generally no information is needed from another computer on your network. 
+Git no almacena "diferencias", almacena snapshots.
 
-### Git Has Integrity
-Everything in Git is check-summed before it is stored and is then referred to by that checksum. This means it’s impossible to change the contents of any file or directory without Git knowing about it. This functionality is built into Git at the lowest levels and is integral to its philosophy. You can’t lose information in transit or get file corruption without Git being able to detect it.
+Cada vez que haces commit, git básicamente toma una foto (snapshot) de todos los 
+archivos en ese momento y guarda una referencia a ese snapshot.
+
+Por eficiencia, git no vuelve a almacenar los archivos que no han cambiado, 
+simplemente genera un link a la última versión de dicho archivo que tenga almacenada.
+
+Git considera los datos como un flujo de snapshots.
+
+### Casi todas las operaciones son locales
+
+La mayoría de operaciones en git solamente utilizan ficheros y recursos locales.
 
 
-### The Three States
-Now, pay attention. This is the main thing to remember about Git if you want the rest of your learning process to go smoothly. Git has three main states that your files can reside in: committed, modified, and staged. Committed means that the data is safely stored in your local database. Modified means that you have changed the file but have not committed it to your database yet. Staged means that you have marked a modified file in its current version to go into your next commit snapshot.
+### Integridad
 
-This leads us to the three main sections of a Git project: the Git directory, the working tree, and the staging area.
+Todo en git tiene checksum antes de ser almacenado. Y la referencia a los datos 
+está referenciada por su checksum.
+
+Esto significa que es imposible cambiar el contenido de cualquier archivo o directorio sin que git se dé cuenta.
+
+
+### Los 3 estados
+
+Lo más importante que hay que recordar y tener siempre presente en git, es lo siguiente:
+
+
+Git tiene 3 estados principales en los que pueden estar los ficheros: 
+- commited
+- modified
+- staged
+
+Committed: Significa que los datos están almacenados en la base de datos local de git.
+Modified: Significa que has cambiado archivos, pero no los has guardado todavía en la base de datos. 
+Staged: Significa que has marcado un archivo modificado para que forme parte del siguiente commit.
+
+Esto nos lleva a dividir un proyecto de git en tres secciones principales:
+- El directorio .git (o la base de datos local .git)
+- El directorio de trabajo (the working tree)
+- El área de staging (staging area)
 
 (Imagen de las secciones)
 
-The Git directory is where Git stores the metadata and object database for your project. This is the most important part of Git, and it is what is copied when you clone a repository from another computer.
+El directorio .git es donde Git almacena los metadatos y objetos del proyecto. Es
+la parte más importante de git y es lo que se copia cuando se clona un repositorio
+de otra máquina.
 
-The working tree is a single checkout of one version of the project. These files are pulled out of the compressed database in the Git directory and placed on disk for you to use or modify.
+El directorio de trabajo es un simple "checkout" de una de las versiones del proyecto.
+Estos archivos son extraídos de la base de datos local .git y puestos en el disco 
+duro para trabajar con ellos.
 
-The staging area is a file, generally contained in your Git directory, that stores information about what will go into your next commit. It’s sometimes referred to as the “index”, but it’s also common to refer to it as the staging area.
+El área de staging es un archivo, normalmente ubicado en el directorio .git, que 
+que almacena información sobre lo que formará parte del siguiente commit. A veces 
+se denomina "staging area" y otras veces "index".
 
-The basic Git workflow goes something like this:
+El flujo de trabajo básico en git es más o menos el siguiente:
+- Modificas archivos del directorio de trabajo.
+- Añades snapshots de los archivos modificados al área de staging.
+- Haces un commit
 
-You modify files in your working tree.
+Volviendo a los 3 estados:
+- Si una versión particular de un fichero está en el directorio .git, se considera *committed*.
+- Si ha sido modificado y añadido al *staging area*, se considera *staged*.
+- Si ha sido modificado pero no ha sido *staged*, entonces se considera *modified*. 
 
-You stage the files, adding snapshots of them to your staging area.
-
-You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.
-
-If a particular version of a file is in the Git directory, it’s considered committed. If it has been modified and was added to the staging area, it is staged. And if it was changed since it was checked out but has not been staged, it is modified. In Git Basics, you’ll learn more about these states and how you can either take advantage of them or skip the staged part entirely.
 
 
 ## Archivo .gitignore
 
 
-## Flujo de trabajo habitual
+## Comandos habituales
+
+De trabajo básico:
+- git init: inicializa git a partir de un proyecto
+- git clone: clona un proyecto de otra máquina
+- git status: muestra el estado de los ficheros
+- git checkout —: deshace los cambios de un fichero
+- git add: añade un fichero al staging area
+- git reset HEAD: quita un fichero del staging area (NO deshace cambios)
+- git commit: almacena un snapshot del estado actual del staging area
+- git push: envia los commits al repositorio remoto
+- git pull: se actualiza con los nuevos commits que haya en el repositorio remoto
+
+
+De trabajo con ramas:
+- git branch: crea una rama
+- git checkout: cambia el directorio de trabajo por el de otra rama
+
 
