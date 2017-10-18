@@ -52,6 +52,8 @@ Esto nos lleva a dividir un proyecto de git en tres secciones principales:
 
 ![Imagen de las 3 secciones de git](img/git_areas.png "Imagen de las 3 secciones de git")
 
+Fuente: https://git-scm.com
+
 El directorio .git es donde Git almacena los metadatos y objetos del proyecto. Es
 la parte más importante de git y es lo que se copia cuando se clona un repositorio
 de otra máquina.
