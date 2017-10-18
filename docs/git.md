@@ -47,10 +47,10 @@ Staged: Significa que has marcado un archivo modificado para que forme parte del
 
 Esto nos lleva a dividir un proyecto de git en tres secciones principales:
 - El directorio .git (o la base de datos local .git)
-- El directorio de trabajo (the working tree)
+- El directorio de trabajo (the working directory)
 - El área de staging (staging area)
 
-(Imagen de las secciones)
+![Imagen de las 3 secciones de git](img/git_areas.png "Imagen de las 3 secciones de git")
 
 El directorio .git es donde Git almacena los metadatos y objetos del proyecto. Es
 la parte más importante de git y es lo que se copia cuando se clona un repositorio
