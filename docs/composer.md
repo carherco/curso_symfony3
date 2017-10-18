@@ -59,7 +59,7 @@ creador es importante para evitar colisiones entre proyectos con el mismo nombre
 Así es posible por ejemplo que dos personas diferentes creen un proyecto llamado 
 json, de forma que sus paquetes podrían llamarse igorw/json y seldaek/json.
 
-### Versiones de paquetes
+### Versiones de paquetes
 
 En el ejemplo anterior, la versión requerida de la librería es 1.0.*, lo que 
 significa que se puede utilizar cualquier versión de la rama 1.0 (como por 
@@ -103,7 +103,10 @@ utilizar la opción minimum-stability.
 Después de declarar las dependencias, ejecuta el comando install de Composer 
 para descargarlas e instalarlas en tu proyecto:
 
+```
 $ php composer.phar install
+```
+
 Este comando busca la versión más reciente del paquete monolog/monolog que 
 satisface la versión que necesitas, la descarga y la instala en el directorio 
 vendor/ del proyecto (este directorio se crea automáticamente si no existe). 
@@ -174,35 +177,46 @@ Composer genera un archivo vendor/autoload.php.
 Simplemente incluye la siguiente línea en la parte de tu proyecto encargada de 
 inicializar la aplicación:
 
+```
 require 'vendor/autoload.php';
+```
 
 Si incluyes este archivo en tu proyecto, ya puedes utilizar cualquier clase 
 instalada a través de Composer sin tener que incluirla explícitamente en tu 
 código:
 
+```
 require 'vendor/autoload.php';
+```
 
 Este cargador de clases simplifica mucho el uso del código de terceros. Si por 
 ejemplo tu proyecto utiliza la librería Monolog, puedes utilizar sus clases 
 directamente y Composer se encargará de cargarlas automáticamente:
 
+```php
 $log = new Monolog\Logger('name');
 $log->pushHandler(
     new Monolog\Handler\StreamHandler('app.log', Monolog\Logger::WARNING)
 );
  
 $log->addWarning('Foo');
+```
+
 Composer permite incluso que añadas tu propio código fuente al cargador automático de clases mediante la clave autoload del archivo composer.json:
 
+```
 {
     "autoload": {
         "psr-4": {"Acme\\": "src/"}
     }
 }
+```
 
 La configuración anterior hace que Composer cree un cargador automático de 
 clases para el namespace Acme. Este cargador sigue las normas del estándar 
 PSR-4 de PHP.
+
+http://www.php-fig.org/psr/
 
 La configuración se basa en mapear namespaces a directorios. En este caso, el 
 directorio src/ que contiene el código de tu proyecto estaría en la raíz del 
