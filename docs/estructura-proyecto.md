@@ -22,7 +22,9 @@ Y los siguientes archivos en el directorio raíz:
 
 ## El directorio app/
 
-Contains things like configuration and templates. Basically, anything that is not PHP code goes here.
+Contiene elementos como la configuración y las plantillas. Básicamente alberga todo 
+lo que no es PHP ni *assets*.
+
 
 ## El directorio src/
 
@@ -33,7 +35,15 @@ El 99% del tiempo de desarrollo trabajaremos en el directorio src/ (archivos PHP
 
 ## El directorio bin/
 
-The famous bin/console file lives here (and other, less important executable files).
+Contiene la consola de comandos y un script que comprueba los requisitos de symfony.
+
+```
+bin/console
+```
+
+```
+php bin/symfony_requirements  
+```
 
 ## El directorio tests/
 
@@ -41,7 +51,8 @@ Los tests automatizados de nustra aplicación residen aquí.
 
 ## El directorio var/
 
-Aquí es donde los se almacenan los ficherso creados automáticamente por symfony: cache files (var/cache/), logs (var/logs/) and sessions (var/sessions/).
+Aquí es donde los se almacenan los ficherso creados automáticamente por symfony: 
+ficheros de la caché (var/cache/), logs (var/logs/) y sesiones (var/sessions/).
 
 ## El directorio vendor/
 
@@ -53,3 +64,5 @@ Este directorio es el *document root* del proyecto. Todos los archivos que deben
 ser accesibles públicamente residen aquí: normalmente archivos css, archivos 
 js e imágenes, además del php de entrada (app.php).
 
+Se pueden proteger el resto de directorios (app, src, etc) con ficheros .htaccess, pero lo mejor
+es que simplemente no haya ninguna url para acceder a ellos.
