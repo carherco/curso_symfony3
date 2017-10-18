@@ -98,7 +98,7 @@ inestable de un paquete necesitas las de todos los paquetes del proyecto, puedes
 utilizar la opción minimum-stability.
 
 
-## Insatalar las dependencias declaradas
+## Instalar las dependencias declaradas
 
 Después de declarar las dependencias, ejecuta el comando install de Composer 
 para descargarlas e instalarlas en tu proyecto:
@@ -173,7 +173,9 @@ Composer genera un archivo vendor/autoload.php.
 
 Simplemente incluye la siguiente línea en la parte de tu proyecto encargada de 
 inicializar la aplicación:
+
 require 'vendor/autoload.php';
+
 Si incluyes este archivo en tu proyecto, ya puedes utilizar cualquier clase 
 instalada a través de Composer sin tener que incluirla explícitamente en tu 
 código:
