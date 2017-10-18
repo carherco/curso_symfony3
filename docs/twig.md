@@ -220,12 +220,15 @@ También para acceder a atributos dinámicamente.
 #### El operador ? y ?\:
 
 {{ foo ? 'yes' : 'no' }}
+
 {{ foo ?\: 'no' }} equivale a {{ foo ? foo : 'no' }}
+
 {{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
 
 #### El operador ??
 
 {# Devuelve el valor de *foo* si está definido y no es nulo. En cualquier otro caso, devuelve el valor 'no' #}
+
 {{ foo ?? 'no' }}
 
 
@@ -234,10 +237,11 @@ También para acceder a atributos dinámicamente.
 Permite evaluar extresiones dentro de strings. Solamente funciona en strings con comillas dobles.
 
 {{ "foo #{bar} baz" }}
+
 {{ "foo #{1 + 2} baz" }}
 
 
-### Variables globales
+### Variables globales
 
 Estas variables están siempre disponibles en las plantillas:
 
@@ -246,7 +250,7 @@ _context: Hace referencia al contexto actual
 _charset: Hace referencia al charset actual
 
 
-## La etiqueta set
+## La etiqueta set
 
 Se utilizar para declarar y establecer valor de variables
 
@@ -256,7 +260,7 @@ Se utilizar para declarar y establecer valor de variables
 {% set foo = {'foo': 'bar'} %}
 ```
 
-## La etiqueta if
+## La etiqueta if
 
 ```
 {% if kenny.sick %}
@@ -276,7 +280,7 @@ Se utilizar para declarar y establecer valor de variables
 ```
 
 
-## La etiqueta for
+## La etiqueta for
 
 ```
 <h1>Members</h1>
@@ -303,7 +307,7 @@ http://php.net/manual/es/class.traversable.php
 {% endfor %}
 ```
 
-### La variable loop
+### La variable loop
 
 ```
 {% for user in users %}
@@ -326,7 +330,7 @@ Nota: Las variables loop.length, loop.revindex, loop.revindex0, y loop.last sola
 están disponibles para arrays PHP u objetos que implementan la interfaz *Countable*.
 Tampoco están disponibles si se recorre el bucle con una condición.
 
-### Añadiendo una condición en el bucle
+### Añadiendo una condición en el bucle
 
 ```
 <ul>
@@ -336,7 +340,7 @@ Tampoco están disponibles si se recorre el bucle con una condición.
 </ul>
 ```
 
-### La cláusula else
+### La cláusula else
 
 Si no se produce ninguna iteración porque la secuencia estaba vacía, se puede renderizar
 un bloque utilizando la cláusula *else*.
@@ -352,7 +356,7 @@ un bloque utilizando la cláusula *else*.
 ```
 
 
-### Iterar con acceso a las claves
+### Iterar con acceso a las claves
 
 
 ```
@@ -366,7 +370,7 @@ un bloque utilizando la cláusula *else*.
 
 
 
-## Filtros
+## Filtros
 
 Se aplican con el operador |
 
@@ -396,7 +400,7 @@ Se pueden aplicar a bloques completos
 
 
 
-## Filtro slice
+### Filtro slice
 
 ```
 <h1>Top Ten Members</h1>
@@ -407,7 +411,7 @@ Se pueden aplicar a bloques completos
 </ul>
 ```
 
-## Funciones
+## Funciones
 
 Se utilizan de forma similar a la mayoría de lenguajes de programación
 
@@ -418,10 +422,11 @@ Se utilizan de forma similar a la mayoría de lenguajes de programación
 ```
 
 
-### Función path()
+### Función path()
 
 Extensión de symfony.
 
+```php
 // src/AppBundle/Controller/WelcomeController.php
 
 // ...
@@ -437,15 +442,18 @@ class WelcomeController extends Controller
         // ...
     }
 }
+```
 
 
-
+```twig
 <a href="{{ path('welcome') }}">Home</a>
+```
 
 
 
 #### Función path() con parámetros
 
+```php
 // src/AppBundle/Controller/ArticleController.php
 
 // ...
@@ -461,35 +469,39 @@ class ArticleController extends Controller
         // ...
     }
 }
+```
 
-
-
+```twig
 {# app/Resources/views/article/recent_list.html.twig #}
 {% for article in articles %}
     <a href="{{ path('article_show', {'slug': article.slug}) }}">
         {{ article.title }}
     </a>
 {% endfor %}
+```
 
 
-### Función url()
+### Función url()
 
 Es una extensión de symfony.
 
 <a href="{{ url('welcome') }}">Home</a>
 
 
-### Función asset()
+### Función asset()
 
 Es una extensión de symfony.
 
+```twig
 <img src="{{ asset('images/logo.png') }}" alt="Symfony!" />
 
 <link href="{{ asset('css/blog.css') }}" rel="stylesheet" />
+```
 
 Genera rutas relativas al directorio webroot del proyecto.
 
 http://example.com => /images/logo.png
+
 http://example.com/my_app => /my_app/images/logo.png
 
 
@@ -497,10 +509,12 @@ http://example.com/my_app => /my_app/images/logo.png
 
 Extensión de symfony.
 
+```twig
 <img src="{{ absolute_url(asset('images/logo.png')) }}" alt="Symfony!" />
+```
 
 
-### Named arguments
+### Argumentos nombrados
 
 ```
 {% for i in range(low=1, high=10, step=2) %}
@@ -508,7 +522,8 @@ Extensión de symfony.
 {% endfor %}
 ```
 
-Using named arguments makes your templates more explicit about the meaning of the values you pass as arguments:
+Usar argumentos nobrados hace que las plantillas sean más explícitas sobre el 
+significado de los valores que se pasan como argumentos.
 
 ```
 {{ data|convert_encoding('UTF-8', 'iso-2022-jp') }}
@@ -518,7 +533,7 @@ Using named arguments makes your templates more explicit about the meaning of th
 {{ data|convert_encoding(from='iso-2022-jp', to='UTF-8') }}
 ```
 
-Named arguments also allow you to skip some arguments for which you don't want to change the default value:
+Los argumentos nombrados permiten además omitir argumentos opcionales
 
 ```
 {# the first argument is the date format, which defaults to the global date format if null is passed #}
@@ -528,7 +543,8 @@ Named arguments also allow you to skip some arguments for which you don't want t
 {{ "now"|date(timezone="Europe/Paris") }}
 ```
 
-You can also use both positional and named arguments in one call, in which case positional arguments must always come before named arguments:
+Se pueden mezclar argumentos posicionales con argumentos nombrados, en ese caso
+los argumentos posicionales deben ser siempre los primeros
 
 ```
 {{ "now"|date('d/m/Y H:i', timezone="Europe/Paris") }}
@@ -552,7 +568,7 @@ herencia de plantillas, hay que tener en cuenta unas cuantas cosas:
 La etiqueta *{% extends %}* debe ser la primera etiqueta de dicha plantilla.
 
 
-## Función parent()
+## Función parent()
 
 ```
 {# app/Resources/views/contact/contact.html.twig #}
@@ -565,7 +581,7 @@ La etiqueta *{% extends %}* debe ser la primera etiqueta de dicha plantilla.
 {% endblock %}
 ```
 
-## Función include()
+## Función include()
 
 Se utiliza para incluir el contenido de una plantilla en otra plantilla. Se pueden pasar
 variables a la plantilla incluida. Además, la plantilla incluida tiene acceso a las variables
@@ -595,7 +611,7 @@ de la plantilla inclusora, pero no es una buena práctica.
 ```
 
 
-## Acceso a variables globales del framework
+## Acceso a variables globales del framework
 
 - app.user: Objeto *user* de symfony o *null* si no existe.
 
@@ -615,18 +631,21 @@ de la plantilla inclusora, pero no es una buena práctica.
 {% endif %}
 ```
 
-## Cómo inyectar variables globales en las plantillas
+## Cómo inyectar variables globales en las plantillas
 
 https://symfony.com/doc/current/templating/global_variables.html
 
 A veces queremos que una variables sea accesible a todas las plantillas. Se pueden
 definir variables globales para twig en el fichero config.yml
 
+```yml
 // app/config/config.yml
 twig:
     # ...
     globals:
         ga_tracking: UA-xxxxx-x
+```
+
  
 Este ejemplo hace que la variable ga_tracking esté disponible en todas las plantillas twig
 
@@ -635,6 +654,7 @@ Este ejemplo hace que la variable ga_tracking esté disponible en todas las plan
 
 O de forma equivalente:
 
+```yml
 // app/config/parameters.yml
 parameters:
     ga_tracking: UA-xxxxx-x
@@ -643,15 +663,18 @@ parameters:
 twig:
     globals:
         ga_tracking: '%ga_tracking%'
- 
+```
+
 El valor de la variable puede ser un valor en sí, o un servicio.
 
+```yml
 // app/config/config.yml
 twig:
     # ...
     globals:
         # the value is the service's id
         user_management: '@AppBundle\Service\UserManagement'
+```
 
 NOTA
 El servicio no se carga de forma *lazy*. Es decir, tan pronto como se carga twig, 
@@ -660,18 +683,20 @@ se instancia el servico, incluso aunque esa variable global no se utilice nunca.
 Para definir un servicio como variable globa de twig, se utiliza el prefijo @.
 
 
-## El filtro |raw
+## El filtro |raw
 
 Twig realiza "output escaping" automáticamente cuando renderiza cualquier contenido
 con el propósito de protegernos contra ataques Cross Site Scripting (XSS)
 
 Supongamos que el contenido de la vairable *description* es "I <3 this product":
 
+```twig
 <!-- output escaping is on automatically -->
 {{ description }} <!-- I &lt;3 this product -->
 
 <!-- disable output escaping with the raw filter -->
 {{ description|raw }} <!-- I <3 this product -->
+```
 
 
 ## Whitespace Control
@@ -710,14 +735,14 @@ o bien con el modificador -
 
 
 
-## Cómo escribir una extensión de Twig
+## Cómo escribir una extensión de Twig
 
 Se puede extender twig con etiquetas filtros o funciones personalizados.
 
 https://symfony.com/doc/current/templating/twig_extension.html
 
 
-## Template Naming and Locations
+## Nomenclatura de las plantillas y localizaciones
 
 Las plantillas twig pueden localizarse en tres lugares diferentes:
 
@@ -732,7 +757,7 @@ Puedes alojar las plantillas de tu proyecto en tu propio bundle dentro de src. E
 si se está desarrollando un bundle que será distribuido a terceros.
 
 
-### Referencing Templates in a Bundle
+### Referenciar plantillas de un bundle
 
 Para hacer referencia a una plantilla de un bundle, symfony utiliza la siguiente sintaxis:
 
@@ -743,7 +768,9 @@ Por ejemplo:
 @AcmeBlog/Blog/index.html.twig
 
 @AcmeBlog: Es el nombre del Bundle sin el sufijo "Bundle". Esta plantilla estál localizada en AcmeBlogBundle (e.g. src/Acme/BlogBundle);
+
 Blog: (directorio) indica que la plantilla está en el subdirectorio *Blog* dentro de Resources/views/;
+
 index.html.twig: (archivo) el nombre del archivo es index.html.twig.
 
 Suponiendo que el bundle AcmeBlogBundle esté en src/Acme/BlogBundle, entonces la localización de la plantilla sería src/Acme/BlogBundle/Resources/views/Blog/index.html.twig.
@@ -751,14 +778,16 @@ Suponiendo que el bundle AcmeBlogBundle esté en src/Acme/BlogBundle, entonces l
 Si la plantilla está directamente en el directorio Resources/views/ entonces se omite la parte del directorio
 @AcmeBlog/layout.html.twig: 
 
-### Sobreescribir plantillas
+### Sobreescribir plantillas
 
 Se puede sobreescribir una plantilla localizada en un bundle creando otra plantilla en app/Resources/nombreBundle/views
 
 Por ejemplo, la siguiente plantilla 
+
 app/Resources/AcmeBlogBundle/views/Blog/index.html.twig
 
 sobreescribe a la plantilla 
+
 src/AcmeBlogBundle/Resources/views/Blog/index.html.twig
 
 
