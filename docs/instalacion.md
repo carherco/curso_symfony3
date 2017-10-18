@@ -44,7 +44,7 @@ php bin/console server:run
 http://localhost:8000/
 
 
-### La consola de Symfony
+### La consola de Symfony
 
 Symfony proporciona un montón de comandos a través del script *bin/console* que 
 nos facilitan la tarea de desarrollo.
