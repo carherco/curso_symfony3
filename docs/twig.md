@@ -97,11 +97,17 @@ Los arrays y los  hashes se pueden anidar:
 ### Operadores matemáticos
 
 +: Suma: {{ 1 + 1 }}
+
 -: Resta: {{ 3 - 2 }}
+
 /: División. El resultado es un float: {{ 1 / 2 }} es {{ 0.5 }}.
+
 %: Resto de una división: {{ 11 % 7 }} is 4.
+
 //: División más redondeo a la baja: {{ 20 // 7 }} is 2, {{ -20 // 7 }} is -3
+
 *: Multiplicación: {{ 2 * 2 }}
+
 **: Potencia: {{ 2 ** 3 }} es 8.
 
 Twig intenta hacer cast de los operandos antes de realizar la operación
@@ -112,7 +118,7 @@ Twig intenta hacer cast de los operandos antes de realizar la operación
 - or
 - not
 
-### Comparadores
+### Comparadores
 
 La lista de comparadores es la siguiente: ==, !=, <, >, >=, and <=.
 
@@ -127,7 +133,7 @@ Además existen los comparadores start, end y matches
 {% if phone matches '/^[\\d\\.]+$/' %}
 {% endif %}
 
-### Operador in
+### Operador in
 
 {{ 1 in [1, 2, 3] }}
 {{ 'cd' in 'abcde' }}
@@ -136,7 +142,7 @@ Además existen los comparadores start, end y matches
 {# is equivalent to #}
 {% if not (1 in [1, 2, 3]) %}
 
-### Operador de testeo: is
+### Operador de testeo: is
 
 {# find out if a variable is odd #}
 {{ name is odd }}
@@ -172,7 +178,7 @@ Convierte los operadores en strings y los concatena
 
 {{ "Hello " ~ name ~ "!" }} => Hello John!.
 
-#### Operador .
+#### Operador .
 
 ```
 {{ user.edad }}
@@ -188,7 +194,7 @@ Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
 6. Si no, si user es un objeto, comprueba que *hasEdad()* es un método público de dicho objeto
 7. Si no, devuelve el valor *null*.
 
-#### Operador []
+#### Operador []
 
 ```
 {{ user['edad'] }}
@@ -211,10 +217,10 @@ También para acceder a atributos dinámicamente.
 
 
 
-#### El operador ? y ?:
+#### El operador ? y ?\:
 
 {{ foo ? 'yes' : 'no' }}
-{{ foo ?: 'no' }} equivale a {{ foo ? foo : 'no' }}
+{{ foo ?\: 'no' }} equivale a {{ foo ? foo : 'no' }}
 {{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
 
 #### El operador ??
