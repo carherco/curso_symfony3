@@ -1,4 +1,5 @@
-# Doctrine ORM
+Doctrine ORM
+============
 
 El framework symfony no incluye ningún componente para trabajar con bases de datos. 
 Sin embargo proporciona integración con una librería llamada Doctrine. 
@@ -21,7 +22,8 @@ You can also persist data to MongoDB using Doctrine ODM library. For more
 information, read the "DoctrineMongoDBBundle" documentation.
 
 
-## Configurar el acceso a la base de datos
+Configurar el acceso a la base de datos
+---------------------------------------
 
 En app/config/parameters.yml
 
@@ -49,7 +51,8 @@ doctrine:
         charset:  UTF8
 ```
 
-## Crear la base de datos
+Crear la base de datos
+----------------------
 
 Podemos crear la base de datos a mano, o utilizar la consola de symfony:
 
@@ -57,7 +60,8 @@ Podemos crear la base de datos a mano, o utilizar la consola de symfony:
 
 
 
-## Crear las entidades
+Crear las entidades
+-------------------
 
 Aquí igual, podemos crear a mano las entidades, o utilizar la consola de symfony. 
 Una entidad no es más que una clase decorada con decoradores de Doctrine.
@@ -152,7 +156,8 @@ Además de la clase/entidad Grado, se crea una clase adicional GradoRepository
 cuya utilidad veremos más adelante.
 
 
-## El comando doctrine:schema:update
+El comando doctrine:schema:update
+---------------------------------
 
 El comando doctrine:schema:update permite actualizar la estructura de la base de 
 datos.
@@ -174,14 +179,16 @@ Se puede intuir ya que en un proyecto symfony, NO se construye la base de datos 
 en la base de datos, sino que se construye a través de doctrine.
 
 
-## Ingeniería inversa con doctrine
+Ingeniería inversa con doctrine
+-------------------------------
 
 https://symfony.com/doc/current/doctrine/reverse_engineering.html
 
 
-## Validar las entidades
+Validar las entidades
+---------------------
 
-bin/console doctrine:schema:validate
+> bin/console doctrine:schema:validate
 
 
 https://symfony.com/doc/current/doctrine.html
