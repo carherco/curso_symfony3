@@ -84,7 +84,7 @@ class DefaultController extends Controller
      */
     public function usuariosAction(AsignaturasManager $asignaturasManager)
     {
-      $asignaturas = $asignaturasManager->getAll();
+      $asignaturas = $asignaturasManager->get('01AE');
       //$asignaturas = array();
       
       return $this->render('default/asignaturas.html.twig', array(

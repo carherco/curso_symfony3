@@ -56,7 +56,7 @@ class AsignaturasManager {
       $this->asignaturas[]=$asig;
     }
     
-    public function getAll() {
+    public function get($plan) {
       return $this->asignaturas;  
     }
 }
