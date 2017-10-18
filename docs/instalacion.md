@@ -69,8 +69,6 @@ Desde la raíz del proyecto, ejecutar el siguiente comando de composer:
 composer install
 ```
 
-
-
 ### Ejecutar la aplicación symfony
 
 
