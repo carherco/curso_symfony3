@@ -45,7 +45,7 @@ Van entre comillas.
 
 Simplemente se escriben tal cual.
 
-- Si hay un punto, el número será un *float*. Si no lo hay, será un *integer*.
+- Si hay un punto, el número será un *float*. Si no lo hay, será un *integer*: 43 / 19.99
 
 #### Arrays
 
