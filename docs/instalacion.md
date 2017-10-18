@@ -83,27 +83,42 @@ http://localhost:8000/
 
 ## Chequeo de la configuración del sistema
 
+Con la instalación, viene un archivo config.php que chequea la configuración de 
+nuestro sistema.
+
 http://localhost:8000/config.php
 
-## Problemas con los permisos
+
+## Permisos de ficheros necesarios
 
 Se necesitan permisos de escritura en la carpeta *var* para la caché y los logs.
 
 http://symfony.com/doc/current/setup/file_permissions.html
 
+
+
 ## Actualizar versiones de librerías de symfony o de terceros
 
+```
 composer update
+```
 
-Symfony provides a command to check whether your project's dependencies contain any known security vulnerability:
+Comprobar vulnerabilidades de seguridad
+---------------------------------------
 
- php bin/console security:check
+La consola de symfony tiene también un comando para comprobar si alguna de nuestras 
+dependencias tiene alguna vulnerabilidad se seguridad conocida.
+
+```
+php bin/console security:check
+```
 
 
+Integración de git con Symfony
+------------------------------
 
-
-
-## Cómo añadir GIT al proyecto Symfony
+Para añadir git a un proyecto cualquiera (symfony o de cualquier otro tipo), basta con 
+lanzar los siguientes comandos:
 
 ```
 git init
@@ -111,14 +126,23 @@ git add . (el instalador de symfony ya ha creado y configurado el archivo .gitig
 git commit -m "Initial commit"
 ```
 
-Ya tenemos control de versiones.
+Con esto ya tenemos control de versiones.
 
-Para subirlo a un repositorio como github, bitbucket o gitlab: 
+Y Para subirlo a un repositorio como github, bitbucket o gitlab: 
 
 ```
 git remote add origin https://github.com/carherco/curso_symfony3.git
 git push -u origin master
 ```
+
+No obstante, el instalador de symony ya nos da la integración con git hecha.
+
+
+Integración de git con Symfony
+------------------------------
+
+Al instalar symfony con el instalador, ya viene integrado también con composer.
+
 
 
 https://en.wikipedia.org/wiki/Comparison_of_source_code_hosting_facilities

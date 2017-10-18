@@ -42,7 +42,9 @@ Git tiene 3 estados principales en los que pueden estar los ficheros:
 - staged
 
 Committed: Significa que los datos están almacenados en la base de datos local de git.
+
 Modified: Significa que has cambiado archivos, pero no los has guardado todavía en la base de datos. 
+
 Staged: Significa que has marcado un archivo modificado para que forme parte del siguiente commit.
 
 Esto nos lleva a dividir un proyecto de git en tres secciones principales:

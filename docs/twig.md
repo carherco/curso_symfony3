@@ -31,15 +31,15 @@ https://twig.symfony.com/doc/2.x/tags/index.html
 https://twig.symfony.com/doc/2.x/filters/index.html
 https://twig.symfony.com/doc/2.x/functions/index.html
 
-### Tipos de datos
+### Tipos de datos
 
 #### Cadenas de texto
 
 Van entre comillas. 
 
 - Con comillas simples o dobles: "Hello World"
-- El caracter de escape es la barra invertida (\): 'It\'s good'.
-- La barra invertida se escapa con otra barra invertida: 'c:\\Program Files'
+- El caracter de escape es la barra invertida (\): 'It\\'s good'.
+- La barra invertida se escapa con otra barra invertida: 'c:\\\\Program Files'
 
 #### Números
 
