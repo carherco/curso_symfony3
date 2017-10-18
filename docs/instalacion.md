@@ -23,7 +23,7 @@ de symfony estable más reciente disponible.
 Además chequea si tu sistema está bien configurado para ejecutar aplicaciones Symfony. Si no lo está, aparecerá
 una lista con los cambios necesarios para cumplir todos los requisitos.
 
-(Imagen de la instalación)
+![Imagen de la instalación de symfony](img/instalacion.png "Imagen de la instalación de symfony")
 
 Se puede crear un proyecto con una versión de Symfony específica
 
