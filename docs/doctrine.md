@@ -4,11 +4,18 @@ El framework symfony no incluye ningún componente para trabajar con bases de da
 Sin embargo proporciona integración con una librería llamada Doctrine. 
 
 NOTA: 
-Doctrine is totally decoupled from Symfony and using it is optional. This chapter 
-is all about the Doctrine ORM, which aims to let you map objects to a relational 
-database (such as MySQL, PostgreSQL or Microsoft SQL). If you prefer to use raw 
-database queries, this is easy, and explained in the "How to Use Doctrine DBAL" 
-article.
+Doctrine ORM está totalmente desacoplado de Symfony y no es obligatorio utilizarlo. 
+Permite mapear objetos a una base de datos relacional (como MySQL, PostgreSQL o 
+Microsoft SQL).
+
+Si lo que se quiere es ejecutar consultas en bruto a la base de datos, se puede 
+utilizar Doctrine DBAL
+
+https://symfony.com/doc/current/doctrine/dbal.html
+
+También se pueden utilizar bases de datos no relacionales como MongoDB.
+
+http://symfony.com/doc/master/bundles/DoctrineMongoDBBundle/index.html
 
 You can also persist data to MongoDB using Doctrine ODM library. For more 
 information, read the "DoctrineMongoDBBundle" documentation.
@@ -46,7 +53,7 @@ doctrine:
 
 Podemos crear la base de datos a mano, o utilizar la consola de symfony:
 
-bin/console doctrine:database:create
+> bin/console doctrine:database:create
 
 
 
@@ -55,7 +62,7 @@ bin/console doctrine:database:create
 Aquí igual, podemos crear a mano las entidades, o utilizar la consola de symfony. 
 Una entidad no es más que una clase decorada con decoradores de Doctrine.
 
-bin/console doctrine:generate:entity
+> bin/console doctrine:generate:entity
 
 Las entidades se guardan generalmente en el directorio Entity del Bundle.
 
