@@ -42,6 +42,19 @@ class AsignaturasManager {
       curl_setopt($ch, CURLOPT_URL, $this->url);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+# Para hacer un POST    
+//      curl_setopt($ch, CURLOPT_POST, 1);
+//      $fields = array(
+//        'username' => urlencode($username),
+//	'token' => urlencode($token)
+//      );
+//      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields);
+      
+//      curl_setopt($ch,CURLOPT_POSTFIELDS, "username=value1&token=value2");
+
+      
+      
       $content = curl_exec($ch);
       $data = json_decode($content);
       
