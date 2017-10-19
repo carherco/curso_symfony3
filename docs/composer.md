@@ -73,8 +73,8 @@ como por ejemplo 1.0.2.
 - Rango de versiones: que se indican mediante los siguientes operadores de 
 comparación: >, >=, <, <=, !=. Así podrías indicar la versión requerida como >=1.0 
 o combinar varios rangos separándolos por comas: >=1.0,<2.0.
-- Comodines: indican la versión requerida con un comodín (*) mediante un patrón 
-similar al de las expresiones regulares. La versión 1.0.* por ejemplo es 
+- Comodines: indican la versión requerida con un comodín (\*) mediante un patrón 
+similar al de las expresiones regulares. La versión 1.0.\* por ejemplo es 
 equivalente a >=1.0,<1.1.
 - La siguiente versión significativa: que se indica mediante el operador ~ y se 
 interprea de la siguiente manera: ~1.2 es equivalente a >=1.2,<2.0, mientras 

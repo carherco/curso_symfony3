@@ -91,8 +91,9 @@ Se escribe tal cual
 
 Los arrays y los  hashes se pueden anidar:
 
-
+```twig
 {% set foo = [1, {"foo": "bar"}] %}
+```
 
 ### Operadores matemáticos
 
@@ -124,6 +125,7 @@ La lista de comparadores es la siguiente: ==, !=, <, >, >=, and <=.
 
 Además existen los comparadores start, end y matches
 
+```twig
 {% if 'Fabien' starts with 'F' %}
 {% endif %}
 
@@ -132,26 +134,32 @@ Además existen los comparadores start, end y matches
 
 {% if phone matches '/^[\\d\\.]+$/' %}
 {% endif %}
+```
 
 ### Operador in
 
+```twig
 {{ 1 in [1, 2, 3] }}
 {{ 'cd' in 'abcde' }}
 
 {% if 1 not in [1, 2, 3] %}
 {# is equivalent to #}
 {% if not (1 in [1, 2, 3]) %}
+```
 
 ### Operador de testeo: is
 
-{# find out if a variable is odd #}
-{{ name is odd }}
+```twig
+{# comprueba si el valor de una variable es un número impar #}
+{{ fila is odd }}
 
+{# comprueba si el valor de una variable es igual a una constante #}
 {% if post.status is constant('Post::PUBLISHED') %}
 
 {% if post.status is not constant('Post::PUBLISHED') %}
-{# is equivalent to #}
+{# es equivalente a #}
 {% if not (post.status is constant('Post::PUBLISHED')) %}
+```
 
 https://twig.symfony.com/doc/2.x/tests/index.html
 
@@ -168,7 +176,7 @@ Crea una secuencia (equivalente a la función range()
 ```twig
 {{ 1..5 }}
 
-{# equivalent to #}
+{# equivalente a #}
 {{ range(1, 5) }}
 ```
 
@@ -176,11 +184,13 @@ Crea una secuencia (equivalente a la función range()
 
 Convierte los operadores en strings y los concatena
 
-{{ "Hello " ~ name ~ "!" }} => Hello John!.
+```twig
+{{ "¡Hola " ~ name ~ "!" }} => ¡Hola Carlos!.
+```
 
 #### Operador .
 
-```
+```twig
 {{ user.edad }}
 ```
 
@@ -208,6 +218,7 @@ Cuando twig se encuentra un . realiza las siguientes operaciones en la capa PHP:
 No es un operador, pero es una función auxiliar para el operador .
 
 ```
+{# si ponemos user.fecha-nacimiento, Twig interpretaría que es una resta: user.fecha - nacimiento #}
 {{ attribute(user, 'fecha-nacimiento') }}
 ```
 
@@ -219,27 +230,32 @@ También para acceder a atributos dinámicamente.
 
 #### El operador ? y ?\:
 
+```twig
 {{ foo ? 'yes' : 'no' }}
 
 {{ foo ?\: 'no' }} equivale a {{ foo ? foo : 'no' }}
 
 {{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
+```
 
 #### El operador ??
 
+```twig
 {# Devuelve el valor de *foo* si está definido y no es nulo. En cualquier otro caso, devuelve el valor 'no' #}
 
 {{ foo ?? 'no' }}
+```
 
 
 ### String interpolation: (#{expression})
 
 Permite evaluar extresiones dentro de strings. Solamente funciona en strings con comillas dobles.
 
+```twig
 {{ "foo #{bar} baz" }}
 
 {{ "foo #{1 + 2} baz" }}
-
+```
 
 ### Variables globales
 
@@ -250,7 +266,10 @@ _context: Hace referencia al contexto actual
 _charset: Hace referencia al charset actual
 
 
-## La etiqueta set
+## Etiquetas
+
+
+### La etiqueta set
 
 Se utilizar para declarar y establecer valor de variables
 
@@ -260,7 +279,7 @@ Se utilizar para declarar y establecer valor de variables
 {% set foo = {'foo': 'bar'} %}
 ```
 
-## La etiqueta if
+### La etiqueta if
 
 ```
 {% if kenny.sick %}
@@ -280,13 +299,13 @@ Se utilizar para declarar y establecer valor de variables
 ```
 
 
-## La etiqueta for
+### La etiqueta for
 
 ```
 <h1>Members</h1>
 <ul>
     {% for user in users %}
-        <li>{{ user.username|e }}</li>
+        <li>{{ user.username }}</li>
     {% endfor %}
 </ul>
 ```
@@ -307,7 +326,7 @@ http://php.net/manual/es/class.traversable.php
 {% endfor %}
 ```
 
-### La variable loop
+#### La variable loop
 
 ```
 {% for user in users %}
@@ -330,17 +349,17 @@ Nota: Las variables loop.length, loop.revindex, loop.revindex0, y loop.last sola
 están disponibles para arrays PHP u objetos que implementan la interfaz *Countable*.
 Tampoco están disponibles si se recorre el bucle con una condición.
 
-### Añadiendo una condición en el bucle
+#### Añadiendo una condición en el bucle
 
 ```
 <ul>
     {% for user in users if user.active %}
-        <li>{{ user.username|e }}</li>
+        <li>{{ user.username }}</li>
     {% endfor %}
 </ul>
 ```
 
-### La cláusula else
+#### La cláusula else
 
 Si no se produce ninguna iteración porque la secuencia estaba vacía, se puede renderizar
 un bloque utilizando la cláusula *else*.
@@ -348,7 +367,7 @@ un bloque utilizando la cláusula *else*.
 ```
 <ul>
     {% for user in users %}
-        <li>{{ user.username|e }}</li>
+        <li>{{ user.username }}</li>
     {% else %}
         <li><em>no user found</em></li>
     {% endfor %}
@@ -356,14 +375,14 @@ un bloque utilizando la cláusula *else*.
 ```
 
 
-### Iterar con acceso a las claves
+#### Iterar con acceso a las claves
 
 
 ```
 <h1>Members</h1>
 <ul>
     {% for key, user in users %}
-        <li>{{ key }}: {{ user.username|e }}</li>
+        <li>{{ key }}: {{ user.username }}</li>
     {% endfor %}
 </ul>
 ```
@@ -406,10 +425,14 @@ Se pueden aplicar a bloques completos
 <h1>Top Ten Members</h1>
 <ul>
     {% for user in users|slice(0, 10) %}
-        <li>{{ user.username|e }}</li>
+        <li>{{ user.username }}</li>
     {% endfor %}
 </ul>
 ```
+
+
+------------- Hacer ejercicio y continuar después --------------
+
 
 ## Funciones
 

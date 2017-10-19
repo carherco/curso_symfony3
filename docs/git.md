@@ -82,6 +82,8 @@ Volviendo a los 3 estados:
 
 ## Archivo .gitignore
 
+El archivo .gitignore contiene un listado de todos los arvhivos/directorios que 
+git debe ignorar.
 
 ## Comandos habituales
 
