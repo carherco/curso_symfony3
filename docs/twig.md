@@ -263,9 +263,14 @@ Permite evaluar extresiones dentro de strings. Solamente funciona en strings con
 
 Estas variables están siempre disponibles en las plantillas:
 
-_self: Hace referencia al nombre de la plantilla actual
+
 _context: Hace referencia al contexto actual
 _charset: Hace referencia al charset actual
+
+```twig
+{{ dump(_context) }}
+{{ _charset }}
+```
 
 
 ## Etiquetas
@@ -450,6 +455,14 @@ Se utilizan de forma similar a la mayoría de lenguajes de programación
 
 https://twig.symfony.com/doc/2.x/functions/index.html
 
+
+### Función dump()
+
+La función dump vuelca la información completa de una variable
+
+```twig
+dump(variable1,variable2,variable3,...)
+```
 
 ### Función path()
 
