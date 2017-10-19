@@ -28,7 +28,9 @@ Twig viene con una larga lista de etiquetas, filtros y funciones disponibles por
 También se pueden añadir filtros y funciones personalizados con extensiones de Twig.
 
 https://twig.symfony.com/doc/2.x/tags/index.html
+
 https://twig.symfony.com/doc/2.x/filters/index.html
+
 https://twig.symfony.com/doc/2.x/functions/index.html
 
 ### Tipos de datos
@@ -163,7 +165,7 @@ Además existen los comparadores start, end y matches
 
 https://twig.symfony.com/doc/2.x/tests/index.html
 
-### Otros operadores
+### Otros operadores
 
 #### Operador |
 
@@ -233,7 +235,7 @@ También para acceder a atributos dinámicamente.
 ```twig
 {{ foo ? 'yes' : 'no' }}
 
-{{ foo ?\: 'no' }} equivale a {{ foo ? foo : 'no' }}
+{{ foo ?: 'no' }} equivale a {{ foo ? foo : 'no' }}
 
 {{ foo ? 'yes' }} equivale a {{ foo ? 'yes' : '' }}
 ```
@@ -268,6 +270,7 @@ _charset: Hace referencia al charset actual
 
 ## Etiquetas
 
+https://twig.symfony.com/doc/2.x/tags/index.html
 
 ### La etiqueta set
 
@@ -417,6 +420,7 @@ Se pueden aplicar a bloques completos
 {% endfilter %}
 ```
 
+https://twig.symfony.com/doc/2.x/filters/index.html
 
 
 ### Filtro slice
@@ -443,6 +447,8 @@ Se utilizan de forma similar a la mayoría de lenguajes de programación
     {{ i }},
 {% endfor %}
 ```
+
+https://twig.symfony.com/doc/2.x/functions/index.html
 
 
 ### Función path()
