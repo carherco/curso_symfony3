@@ -63,7 +63,7 @@ Podemos crear la base de datos a mano, o utilizar la consola de symfony:
 Crear las entidades
 -------------------
 
-Aquí igual, podemos crear a mano las entidades, o utilizar la consola de symfony. 
+Aquí igual: podemos crear a mano las entidades, o utilizar la consola de symfony. 
 Una entidad no es más que una clase decorada con decoradores de Doctrine.
 
 > bin/console doctrine:generate:entity
@@ -151,8 +151,8 @@ mapear la entidad con la base de datos.
     no se pone, la tabla se llamará igual que la clase.
 - @ORM\Column: 
     Mapea una propiedad de la clase con una colunma de la tabla.
-- @ORM\Id
-    Se utilizar para marcar el campo que será el primary key de la tabla. En 
+- @ORM\Id:
+    Se utiliza para marcar el campo que será el primary key de la tabla. En 
     doctrine es obligatorio que una entidad tenga un campo primary key.
 
     Si la primary key es conjunta, hay que poner @ORM\Id en cada uno de los campos
@@ -175,14 +175,14 @@ cuya utilidad veremos más adelante.
 El comando doctrine:schema:update
 ---------------------------------
 
-El comando doctrine:schema:update permite actualizar la estructura de la base de 
+El comando *doctrine:schema:update* permite actualizar la estructura de la base de 
 datos.
 
-bin/console doctrine:schema:update --dump-sql
+> bin/console doctrine:schema:update --dump-sql
 
 Muestra las operaciones SQL que se realizarán sobre la base de datos.
 
-bin/console doctrine:schema:update --force
+> bin/console doctrine:schema:update --force
 
 Realiza en la base de datos las operaciones SQL necesarias para que la base de datos
 se corresponda con las entidades de doctrine.
@@ -198,40 +198,36 @@ en la base de datos, sino que se construye a través de doctrine.
 Ingeniería inversa con doctrine
 -------------------------------
 
-The first step towards building entity classes from an existing database is to 
-ask Doctrine to introspect the database and generate the corresponding metadata 
-files. Metadata files describe the entity class to generate based on table fields.
+El primer paso para construir las clases de entidad a partir de una base de datos
+existente, es pedir a doctrine que inspeccione la base de datos y genere los 
+correspondiente archivos de metadatos. Los archivos de metadatos describen las 
+entidades que se deben generar a partir de los campos de las tablas:
 
 > php bin/console doctrine:mapping:import --force AppBundle xml
 
-This command line tool asks Doctrine to introspect the database and generate the 
-XML metadata files under the src/AppBundle/Resources/config/doctrine folder of 
-your bundle. This generates two files: BlogPost.orm.xml and BlogComment.orm.xml.
+Los archivos de metadatos se generan en la carpeta src/AppBundle/Resources/config/doctrine. 
 
-Once the metadata files are generated, you can ask Doctrine to build related 
-entity classes by executing the following command.
+Una vez que se han generado estos archivos de metadatos, se le puede pedir a doctrine
+que genere las clases de entidad ejecutando el siguiente comando.
 
-// generates entity classes with annotation mappings
 > php bin/console doctrine:mapping:convert annotation ./src
 
-
-Eliminar el xml o yml generado con el primer comando. 
-If you want to use annotations, you must remove the XML (or YAML) files after 
-running this command. This is necessary as it is not possible to mix mapping 
-configuration formats
+Ya solamente queda eliminar los ficheros de metadatos generados por el primer comando.
 
 https://symfony.com/doc/current/doctrine/reverse_engineering.html
+
 
 
 Validar las entidades
 ---------------------
 
+Otro comando interesante es *doctrine:schema:validate* que valida las entidades.
+
 > bin/console doctrine:schema:validate
 
 
-https://symfony.com/doc/current/doctrine.html
-
-
+Operaciones de INSERT, SELECT, UPDATE y DELETE
+==============================================
 
 
 Persistir objetos en la base de datos (INSERT)
@@ -250,7 +246,7 @@ public function createAction()
     $grado = new Grado();
     $grado->setNombre('Ingeniería de montes');
 
-    // Informamos a Doctrine de que queremos guardar the Product (todavía no se ejecuta ninguna query)
+    // Informamos a Doctrine de que queremos guardar el Grado (todavía no se ejecuta ninguna query)
     $em->persist($grado);
 
     // Para ejecutar las queries pendientes, se utiliza flush().
@@ -261,7 +257,7 @@ public function createAction()
 }
 ```
 
-Si tenemos definidas varias conexciones, podemos instanciar un objeto 
+Si tenemos definidas varias conexiones, podemos instanciar un objeto 
 EntityManager para cada una de las conexiones.
 
 ```php
@@ -269,6 +265,37 @@ $doctrine = $this->getDoctrine();
 $em = $doctrine->getManager();
 $em2 = $doctrine->getManager('other_connection');
 ```
+
+Configurar varias conexiones es muy sencillo:
+
+```yml
+# app/config/config.yml
+doctrine:
+    dbal:
+        default_connection:   default
+        connections:
+            # A collection of different named connections (e.g. default, conn2, etc)
+            default:
+                dbname:               bd1
+                host:                 10.0.1.6
+                port:                 ~
+                user:                 root
+                password:             ~
+                charset:              ~
+                path:                 ~
+                memory:               ~
+            other_connection:
+                dbname:               bd2
+                host:                 10.0.1.7
+                port:                 ~
+                user:                 root
+                password:             ~
+                charset:              ~
+                path:                 ~
+                memory:               ~
+```
+
+
 
 Recuperar objetos de la base de datos (SELECT)
 ----------------------------------------------
@@ -292,7 +319,7 @@ public function showAction($productId)
 Las clases Repository
 ---------------------
 
-La clase Repository nos ofrece varios métodos muy útiles para obtener registros de la base de datos:
+La clase Repository nos ofrece automáticamente varios métodos muy útiles para obtener registros de la base de datos:
 
 - find
 - findOneByXXX
@@ -309,7 +336,7 @@ $repository = $this->getDoctrine()->getRepository(Grado::class);
 $grado = $repository->find($gradoId);
 
 // Métodos dinámicos para obtener un grado buscando por el valor de una columna
-$grado = $repository->findOneById($productId);
+$grado = $repository->findOneById($gradoId);
 $grado = $repository->findOneByNombre('Ingeniería de montes');
 
 // Métodos dinámicos para obtener un array de objetos grado buscando por el valor de una columna
@@ -321,17 +348,17 @@ $grados = $repository->findAll();
 
 
 ```php
-$repository = $this->getDoctrine()->getRepository(Product::class);
+$repository = $this->getDoctrine()->getRepository(Asignatura::class);
 
 // query for a single product matching the given name and price
 $product = $repository->findOneBy(
-    array('name' => 'Keyboard', 'price' => 19.99)
+    array('nombre' => 'montes', 'credects' => 6)
 );
 
 // query for multiple products matching the given name, ordered by price
 $products = $repository->findBy(
-    array('name' => 'Keyboard'),
-    array('price' => 'ASC')
+    array('nombre' => 'matematicas'),
+    array('credects' => 'ASC')
 );
 ```
 
@@ -353,10 +380,153 @@ Eliminar un objeto (DELETE)
 
 
 
+Relaciones entre entidades
+==========================
+
+https://symfony.com/doc/current/doctrine/associations.html
+
+Las entidades Asignatura y Grado están relacionadas. Un asignatura pertenece a 
+un grado y un grado tiene muchas asignaturas.
+
+Desde la perspectiva de la entidad Asignatura, es una relación *many-to-one*. 
+Desde la perspectiva de la entidad Grado, es una relación *one-to-many*.
+
+La naturaleza de la relación determina qué metadatos de mapeo se van a utilizar. 
+También determina qué entidad contendrá una referencia a la otra entidad
+
+Para relacionar las entidades Asignatura y Grado, simplemente creamos una propiedad
+*grado* en la entidad Asignatura con las anotaciones que vemos a continuación:
+
+```php
+class Product
+{
+    // ...
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Grado", inversedBy="asignaturas")
+     * @ORM\JoinColumn(name="grado_id", referencedColumnName="id")
+     */
+    private $grado;
+}
+```
+
+This many-to-one mapping is critical. It tells Doctrine to use the category_id 
+column on the product table to relate each record in that table with a record in the category table.
+
+Next, since a single Category object will relate to many Product objects, a 
+products property can be added to the Category class to hold those associated objects.
+
+```php
+use Doctrine\Common\Collections\ArrayCollection;
+
+class Category
+{
+    // ...
+
+    /**
+     * @ORM\OneToMany(targetEntity="Asignatura", mappedBy="grado")
+     */
+    private $asignaturas;
+
+    public function __construct()
+    {
+        $this->asignaturas = new ArrayCollection();
+    }
+}
+```
+
+La asociación many-to-one es obligatoria, pero la one-to-may es opcional.
+
+El código en el constructor es importante. En lugar de ser instanciado como un 
+array tradicional, la propiedad $asignaturas debe ser de un tipo que implemente
+la interface *DoctrineCollection*. El objeto ArrayCollection es de este tipo.
+
+El objeto *ArrayCollection* parece y se comporta casi exactamente como un array por
+lo que todas las operaciones válidas sobre arrays, serán válidas sobre ArrayCollection.
+
+
+Ya solamente queda crear los getters y setters correspondientes.
+
+
+Si ahora actualizamos el schema, se generarán las relaciones en la base de datos
+
+> bin/console doctrine:schema:update --force
+
+
+Guardando entidades relacionadas
+--------------------------------
+
+```php
+use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Response;
+
+class DefaultController extends Controller
+{
+    public function createProductAction()
+    {
+        $category = new Category();
+        $category->setName('Computer Peripherals');
+
+        $product = new Product();
+        $product->setName('Keyboard');
+        $product->setPrice(19.99);
+        $product->setDescription('Ergonomic and stylish!');
+
+        // relate this product to the category
+        $product->setCategory($category);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($category);
+        $em->persist($product);
+        $em->flush();
+
+        return new Response(
+            'Saved new product with id: '.$product->getId()
+            .' and new category with id: '.$category->getId()
+        );
+    }
+}
+```
+
+
+Navegar entre entidades relacionadas
+------------------------------------
+
+```php
+$product = $this->getDoctrine()
+        ->getRepository(Product::class)
+        ->find($productId);
+
+    $categoryName = $product->getCategory()->getName();
+```
+
+También tenemos un método get en la otra entidad.
+
+```php
+$category = $this->getDoctrine()
+        ->getRepository(Category::class)
+        ->find($categoryId);
+
+    $products = $category->getProducts();
+```
+
+
+Para más tipos de asociaciones entre entidades hay que acudir a la documentación oficial de doctrine.
+http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html
+
+
+- @ManyToOne (unidireccional)
+- @OneToOne (unidireccional / bidireccional / autorreferenciado)
+- One-To-Many (bidirectional / unidireccional con join table / autorreferenciado)
+- Many-To-Many (unidireccional / bidireccional / autorreferenciado)
+
+
+
 El lenguaje DQL (Doctrine Query Language)
------------------------------------------
+=========================================
 
-
+Si queremos ahorrar consultas, podemos utilizar el leguaje DQL
 
 El objeto QueryBuilder
 ----------------------
@@ -382,5 +552,5 @@ https://symfony.com/doc/current/reference/configuration/doctrine.html
 
 
 
-
+https://symfony.com/doc/current/doctrine.html
 https://symfony.com/doc/current/doctrine#creating-an-entity-class

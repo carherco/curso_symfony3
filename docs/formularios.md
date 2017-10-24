@@ -86,7 +86,6 @@ class FormulariosController extends Controller
      */
     public function newAction()
     {
-        // create a task and give it some dummy data for this example
         $asignatura = new Asignatura();
 
         $form = $this->createForm(AsignaturaType::class, $asignatura);
@@ -109,7 +108,9 @@ class FormulariosController extends Controller
 }
 ```
 
-Y renderizada en la vista
+Renderizar el formulario
+------------------------
+
 
 ```twig
   <h1>Nueva asignatura</h1>
@@ -128,55 +129,162 @@ Podemos observar varias cosas automatizadas:
 - El método de envío del formulario será por POST.
 - La url de envío del formulario será la misma url del formulario.
 
+```
 form_start(form)
-Renders the start tag of the form, including the correct enctype attribute when using file uploads.
+Renderiza la apertura de la etiqueta <form>, incluyendo el enctype correcto si se usan subidas de archivos.
+
 form_widget(form)
-Renders all the fields, which includes the field element itself, a label and any validation error messages for the field.
+Renderiza todos los campos incluyendo lo siguiente:
+- Etiqueta del campo.
+- El propio campo en sí.
+- Cualquier mensaje de validación del campo.
+
 form_end(form)
-Renders the end tag of the form and any fields that have not yet been rendered, in case you rendered each field yourself. This is useful for rendering hidden fields and taking advantage of the automatic CSRF Protection.
+Renderiza el cierre de la etiqueta form y todos los campos que no han sido 
+renderizados (en el caso de que se hayan renderizado uno a uno). Es útil para 
+renderizar los campos ocultos.
+```
+
+La función form_start admite parámetros para indicar el *action* y el *method*:
+```
+{{ form_start(form, {'action': path('target_route'), 'method': 'GET'}) }}
+```
+
+NOTA: Si el método del formuraio es PUT, PATCH o DELETE, symfony insertaría un 
+campo oculto llamado _method con dicho método. El formularío se enviaría por 
+POST pero el router de symfony es capaz de detectar ese parámetro _method e 
+interpretarlo como un PUT, PATCH o DELETE.
 
 
+Para controlar mejor el renderizado de los campos, lo usual es sustituir form_widget() por:
 
-How to Control the Rendering of a Form
-https://symfony.com/doc/current/form/rendering.html
+````twig
+  <h1>Nueva asignatura</h1>
+  
+  <div class="formulario">    
+  {{ form_start(form) }}
+      {{ form_errors(form) }}
+
+      {{ form_row(form.task) }}
+      {{ form_row(form.dueDate) }}
+  {{ form_end(form) }}
+  </div>
+```
+
+```
+form_errors(form)
+Renderiza los errores globales.
+
+form_row(form.dueDate)
+Renderiza una capa <div> con la etiqueta, los errores y el HTML del widget 
+```
+
+Y form_row todavía se puede dividir más:
+
+``
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.task) }}
+        {{ form_errors(form.task) }}
+        {{ form_widget(form.task) }}
+    </div>
+
+    <div>
+        {{ form_label(form.dueDate) }}
+        {{ form_errors(form.dueDate) }}
+        {{ form_widget(form.dueDate) }}
+    </div>
+
+    <div>
+        {{ form_widget(form.save) }}
+    </div>
+
+{{ form_end(form) }}
+```
+
+Se puede cambiar el texto de la etiqueta y añadir atributos de la etiqueta
+
+```
+{{ form_label(form.name, 'Your Name') }}
+{{ form_label(form.name, 'Your Name', {'label_attr': {'class': 'foo'}}) }}
+```
 
 
-Handling Form Submissions
+Y se puede modificar el valor de cualquier atributo de un campo:
+```
+{{ form_widget(form.task, {'attr': {'class': 'task_field'}}) }}
+```
 
+
+Si se necesita todavía un renderizado más "manual", se puede acceder a los valores
+de id, name, label y full_name
+
+```
+{{ form.task.vars.id }}
+{{ form.task.vars.name }}
+{{ form.task.vars.label }}
+{{ form.task.vars.full_name }}
+```
+
+El valor del cada campo estaría en la variable forms.vars.value:
+
+```
+{{ form.vars.value.task }}
+```
+
+
+Podemos encontrar más información sobre el renderizado de formularios en:
+https://symfony.com/doc/current/reference/forms/twig_reference.html
+
+
+Procesamiento del formulario
+----------------------------
 
 ```php
 public function newAction()
-    {
-        // create a task and give it some dummy data for this example
-        $asignatura = new Asignatura();
+{
+    // create a task and give it some dummy data for this example
+    $asignatura = new Asignatura();
 
-        $form = $this->createForm(AsignaturaType::class, $asignatura);
+    $form = $this->createForm(AsignaturaType::class, $asignatura);
 
-        $form->handleRequest($request);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $task = $form->getData();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // $form->getData() devuelve la entidad con los valores actualizados
+        $asignatura = $form->getData();
 
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $em = $this->getDoctrine()->getManager();
-            // $em->persist($task);
-            // $em->flush();
+        // De esta forma podemos hacer operaciones sobre el modelo, por ejemplo,
+        // guardarlo
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($asignatura);
+        $em->flush();
 
-            return $this->redirectToRoute('task_success');
-        }
-        
-        return $this->render('formularios/new.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->redirectToRoute('save_asginatura_success');
     }
+
+    return $this->render('formularios/new.html.twig', array(
+        'form' => $form->createView(),
+    ));
+}
 ```
 
 
 
+Indicar la acción y el método
+-----------------------------
+
+Se pueden indicar los atributos *action* y *method* desde la propia clase *form*.
+
+```php
+$form = $this->createForm(AsignaturaType::class, $asignatura, array(
+    'action' => $this->generateUrl('target_route'),
+    'method' => 'GET',
+));
+```
 
 
 
-
+https://symfony.com/doc/current/form/multiple_buttons.html

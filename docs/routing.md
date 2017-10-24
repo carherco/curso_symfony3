@@ -135,6 +135,8 @@ homepage:
         _locale:  en|fr
 ```
 
+Aquí podemos ver unos ejemplos:
+
 ```
 /     =>  {_locale} = "en"
 /en   =>  {_locale} = "en"
@@ -157,7 +159,7 @@ class MainController extends Controller
     }
 ```
 
-
+Sin hacer nada más, symfony aplicará automáticamente el idioma correspondiente.
 
 
 
@@ -243,15 +245,19 @@ URLs válidas:
 
 ## Parámetros especiales
 
+```
 _controller
-Este parámetro determina qué controlador se ejecutará.
+Este parámetro determina qué controlador se ejecutará. La sintaxis es bundle:controller:action
+
 _format
-Establece el formato de la request (read more).
+Establece el formato de la request (Ej: Content-Type:application/json).
+
 _fragment (a partir de symfony 3.2)
 Establece el *fragment* de la url
+
 _locale
 Establece el idioma de la petición
-
+```
 
 ## El orden de las rutas importa
 
@@ -300,9 +306,15 @@ Si se pasan parámetros extra, se inlcuirán en la url como parámetros de la qu
     }
 ```
 
-/user/edit/35?otro=valor
+El ejemplo anterior, generaría la siguiente url:
+
+``
+/user/edit/35?otro=valor`
+```
+
 
 Para generar urls absolutas, se debe pasar un tercer parámetro a la función generateUrl():
+
 
 ```php
     use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -322,7 +334,11 @@ Para generar urls absolutas, se debe pasar un tercer parámetro a la función ge
     }
 ```
 
+## Generando urls en twig
 
+```
+<a href="{{ path('article_show', {'slug': article.slug}) }}">
+```
 
 
 https://symfony.com/doc/current/routing.html

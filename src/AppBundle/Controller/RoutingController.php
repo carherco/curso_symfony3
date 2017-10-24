@@ -12,4 +12,25 @@ class RoutingController extends Controller
           'user_id' => $id
       ));
   }
+  
+  public function localeAction(){
+    
+    return $this->render('default/mundoi18n.html.twig', array(
+          'name' => 'Carlos'
+    ));
+  }
+  
+  public function formatAction(){
+    
+    return $this->render('default/mundoi18n.html.twig', array(
+          'name' => 'Carlos'
+    ));
+  }
+  
+
+  
+  
+  
+  
+  
 }

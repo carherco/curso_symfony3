@@ -20,3 +20,14 @@ user_edit:
   defaults: { _controller: AppBundle:Routing:edit }
   requirements:
     page: '\d+'
+    
+homepage_locale:
+  path:      /ejemplo/locale/{_locale}
+  defaults:  { _controller: AppBundle:Routing:locale, _locale: es }
+  requirements:
+      _locale:  es|en|fr
+      
+      
+homepage_format:
+  path:      /ejemplo/format/{_format}
+  defaults:  { _controller: AppBundle:Routing:locale, _format: html }
