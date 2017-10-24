@@ -1,0 +1,13 @@
+{% block menu %}
+  <nav>
+    {{ user_name }}
+    <ul class="nav nav-pills float-right">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('public_home') }}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('public_login') }}">Login</a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}

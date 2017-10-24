@@ -110,14 +110,18 @@ El \d+ es una expresión regular.
 
 Otro ejemplo con expresiones regulares podría ser:
 
+```yml
 homepage:
     path:      /{_locale}
     defaults:  { _controller: AppBundle:Main:homepage, _locale: en }
     requirements:
         _locale:  en|fr
+```
+
 
 ## Valor por defecto de un parámetro
 
+```yml
 user_edit:
   path:  /user/edit/{id}
   defaults: { _controller: AppBundle:Routing:edit, id: 1 }
@@ -129,12 +133,14 @@ homepage:
     defaults:  { _controller: AppBundle:Main:homepage, _locale: en }
     requirements:
         _locale:  en|fr
+```
 
+```
 /     =>  {_locale} = "en"
 /en   =>  {_locale} = "en"
 /fr   =>  {_locale} = "fr"
 /es   =>  No hace match
-
+```
 
 Con anotaciones:
 
@@ -157,6 +163,7 @@ class MainController extends Controller
 
 ## Restringir por método (GET, POST...)
 
+```yml
 api_user_show:
     path:     /api/users/{id}
     defaults: { _controller: AppBundle:UsersApi:show }
@@ -166,7 +173,7 @@ api_user_edit:
     path:     /api/users/{id}
     defaults: { _controller: AppBundle:UsersApi:edit }
     methods:  [PUT]
-
+```
 
 ```php
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -228,10 +235,11 @@ class ArticleController extends Controller
 
 URLs válidas:
 
+```
 /articles/en/2010/my-post
 /articles/fr/2010/my-post.rss
 /articles/en/2013/my-latest-post.html
-
+```
 
 ## Parámetros especiales
 
@@ -249,7 +257,15 @@ Establece el idioma de la petición
 
 
 
+## Prefijando todas las rutas de un controlador
 
+```php
+/**
+ * @Route("/formularios", name="formularios_")
+ */
+
+```
+class FormulariosController extends Controller
 
 
 ## Generando urls en el controlador

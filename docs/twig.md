@@ -527,7 +527,9 @@ class ArticleController extends Controller
 
 Es una extensión de symfony.
 
+```twig
 <a href="{{ url('welcome') }}">Home</a>
+```
 
 
 ### Función asset()
