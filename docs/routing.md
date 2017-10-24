@@ -16,7 +16,7 @@ mayoría de la comunidad symfony.
 En la documentación de symfony (https://symfony.com/doc/current/routing.html) 
 vienen las 4 formas perfectamente explicadas.
 
-## Anotaciones
+## Anotaciones
 
 ```php
     /**
@@ -41,7 +41,7 @@ a crear vaya a ser distribuido para otras aplicaciones, una buena práctica es p
 prefijo para evitar colisiones con otros bundles o con las propias aplicaciones 
 en las que se instale nuestro bundle.
 
-## YML
+## YML
 
 Si se definen las rutas en formato .yml, el fichero está en app/config/routing.yml
 
@@ -58,7 +58,7 @@ login:
 En formato .yml, es imposible definir una ruta sin ponerle un nombre.
 
 
-## Rutas con parámetros
+## Rutas con parámetros
 
 Consideremos la siguiente ruta:
 
@@ -96,7 +96,7 @@ public function editAction($action, $id)
 ```
 
 
-## Restricciones de los parámetros
+## Restricciones de los parámetros
 
 ```yml
 user_edit:
@@ -161,7 +161,7 @@ class MainController extends Controller
 
 
 
-## Restringir por método (GET, POST...)
+## Restringir por método (GET, POST...)
 
 ```yml
 api_user_show:
@@ -201,7 +201,7 @@ class UsersApiController extends Controller
 }
 ```
 
-## Ejemplo complejo
+## Ejemplo complejo
 
 ```yml
 article_show:
@@ -241,7 +241,7 @@ URLs válidas:
 /articles/en/2013/my-latest-post.html
 ```
 
-## Parámetros especiales
+## Parámetros especiales
 
 _controller
 Este parámetro determina qué controlador se ejecutará.
@@ -253,7 +253,7 @@ _locale
 Establece el idioma de la petición
 
 
-## El orden de las rutas importa
+## El orden de las rutas importa
 
 
 
@@ -268,7 +268,7 @@ Establece el idioma de la petición
 class FormulariosController extends Controller
 
 
-## Generando urls en el controlador
+## Generando urls en el controlador
 
 ```php
     public function showAction($id)
