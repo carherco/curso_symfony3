@@ -553,16 +553,93 @@ http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/assoc
 El lenguaje DQL (Doctrine Query Language)
 =========================================
 
-Si queremos ahorrar consultas, podemos utilizar el leguaje DQL
+Si queremos ahorrar consultas, o realizar consultas completajas, podemos 
+utilizar el leguaje DQL.
+
+```php
+class AlumnoRepository extends \Doctrine\ORM\EntityRepository
+{
+  public function findWithNotas($id)
+  {
+      $query = $this->getEntityManager()
+          ->createQuery(
+          'SELECT a, n, g, asig FROM AppBundle:Alumno a
+          JOIN a.notas n
+          JOIN a.grado g
+          JOIN n.asignatura asig
+          WHERE a.id = :id'
+      )->setParameter('id', $id);
+
+      try {
+          return $query->getSingleResult();
+      } catch (\Doctrine\ORM\NoResultException $e) {
+          return null;
+      }
+  }
+}
+```
+
+En el ejemplo anterior, en una única consulta SQL obetenmos el alumno, su grado
+sus notas y las asignaturas de sus notas.
+
+http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/dql-doctrine-query-language.html
+
 
 El objeto QueryBuilder
 ----------------------
 
+Doctrine tiene también un constructor de queries llamado QueryBuilder, que facilita
+la construcción de sentencias DQL.
 
-Buenas Prácticas: Las consultas sql se deben realizar en la clase Repository
-----------------------------------------------------------------------------
 
-https://symfony.com/doc/current/doctrine/repository.html
+```php
+// src/AppBundle/Repository/ProductRepository.php
+namespace AppBundle\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
+class ProductRepository extends EntityRepository
+{
+    public function findAllOrderedByName()
+    {
+        $qb = $this->createQueryBuilder('p')
+                        ->where('p.price > :price')
+                        ->setParameter('price', '19.99')
+                        ->orderBy('p.price', 'ASC')
+                        ->getQuery();
+        
+        return $qb->getResult();
+        // Si queremos únicamente un resultado
+        // return $qb->setMaxResults(1)->getOneOrNullResult();
+    }
+}
+```
+
+http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/query-builder.html
+
+
+
+Buenas Prácticas: Las consultas sql (dql) se deben realizar en la clase Repository
+----------------------------------------------------------------------------------
+
+
+Ejecutar sentencias SQL directamente
+====================================
+
+En caso de encontrarnos alguna SQL que no sepamos realizar con DQL, podemos 
+recurrir a realizarla con SQL.
+
+```php
+$em = $this->getDoctrine()->getManager();
+$connection = $em->getConnection();
+$statement = $connection->prepare("SELECT something FROM somethingelse WHERE id = :id");
+$statement->bindValue('id', 123);
+$statement->execute();
+$results = $statement->fetchAll();
+```
+
+Evidentemente, si ejecutamos consultas de esta forma, no tendremos los datos en 
+entidades, los tendremos en arrays de php.
 
 
 
@@ -576,8 +653,7 @@ https://symfony.com/doc/current/reference/configuration/doctrine.html
 
 
 
-
-
+Documentación general
+---------------------
 
 https://symfony.com/doc/current/doctrine.html
-https://symfony.com/doc/current/doctrine#creating-an-entity-class

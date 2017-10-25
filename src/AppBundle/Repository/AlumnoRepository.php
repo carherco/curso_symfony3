@@ -10,4 +10,21 @@ namespace AppBundle\Repository;
  */
 class AlumnoRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function findWithNotas($id)
+  {
+      $query = $this->getEntityManager()
+          ->createQuery(
+          'SELECT a, n, g, asig FROM AppBundle:Alumno a
+          JOIN a.notas n
+          JOIN a.grado g
+          JOIN n.asignatura asig
+          WHERE a.id = :id'
+      )->setParameter('id', $id);
+
+      try {
+          return $query->getSingleResult();
+      } catch (\Doctrine\ORM\NoResultException $e) {
+          return null;
+      }
+  }
 }
