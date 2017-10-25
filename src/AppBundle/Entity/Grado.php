@@ -96,6 +96,11 @@ class Grado
       $this->alumnos = $alumnos;
       return $this;
     }
+    
+    public function __toString() {
+      return $this->nombre;
+    }
+
 
 }
 
