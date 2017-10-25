@@ -398,7 +398,7 @@ Para relacionar las entidades Asignatura y Grado, simplemente creamos una propie
 *grado* en la entidad Asignatura con las anotaciones que vemos a continuación:
 
 ```php
-class Product
+class Asignatura
 {
     // ...
 
@@ -419,7 +419,7 @@ products property can be added to the Category class to hold those associated ob
 ```php
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Category
+class Grado
 {
     // ...
 
@@ -518,8 +518,9 @@ http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/assoc
 
 - @ManyToOne (unidireccional)
 - @OneToOne (unidireccional / bidireccional / autorreferenciado)
-- One-To-Many (bidirectional / unidireccional con join table / autorreferenciado)
-- Many-To-Many (unidireccional / bidireccional / autorreferenciado)
+- @OneToMany (bidirectional / unidireccional con join table / autorreferenciado)
+- @ManyToMany (unidireccional / bidireccional / autorreferenciado)
+
 
 
 

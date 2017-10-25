@@ -27,6 +27,12 @@ class Asignatura
      * @ORM\Column(name="codigo", type="integer", unique=true)
      */
     private $codigo;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Grado", inversedBy="asignaturas")
+     * @ORM\JoinColumn(name="grado_id", referencedColumnName="id")
+     */
+    private $grado;
 
     /**
      * @var string
@@ -48,8 +54,19 @@ class Asignatura
      * @ORM\Column(name="credects", type="integer", nullable=true)
      */
     private $credects;
-
-
+    
+    /**
+     * 
+     * @ORM\ManyToMany(targetEntity="Alumno", inversedBy="asignaturas")
+     * @ORM\JoinTable(name="alumnos_asignaturas")
+     */
+    private $alumnos;
+            
+    public function __construct()
+    {
+        $this->alumnos = new ArrayCollection();
+    }        
+    
     /**
      * Get id
      *
@@ -155,5 +172,15 @@ class Asignatura
     {
         return $this->credects;
     }
+    
+    function getGrado() {
+      return $this->grado;
+    }
+
+    function setGrado($grado) {
+      $this->grado = $grado;
+      return $this;
+    }
+
 }
 
