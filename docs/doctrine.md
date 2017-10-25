@@ -649,13 +649,22 @@ entidades, los tendremos en arrays de php.
 
 
 Configuración de doctrine
--------------------------
+=========================
 
 Doctrine es altamente configurable. Es esta página se pueden consultar todas las 
 opciones de configuración
 
 https://symfony.com/doc/current/reference/configuration/doctrine.html
 
+
+Extensiones de doctrine
+=======================
+
+Para ciertas estructuras y comportamientos habituales de tablas, hay desarrolladores
+que programan extensiones de doctrine. 
+
+https://symfony.com/doc/current/doctrine/common_extensions.html
+https://github.com/Atlantic18/DoctrineExtensions
 
 
 Documentación general
