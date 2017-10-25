@@ -362,6 +362,11 @@ $products = $repository->findBy(
 );
 ```
 
+Estos métodos realizan búsquedas exactas (con el operador '='). Si queremos 
+realizar búsquedas con el operador LIKE, tenemos que recurrir al lenguaje DQL o 
+al objeto QueryBuilder que veremos más adelante.
+ 
+
 La barra de depuración
 ----------------------
 
