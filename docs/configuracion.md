@@ -5,13 +5,13 @@ Una aplicación Symfony consiste en una colección de bundles que añaden herram
 de configuración que por defecto están en app/config.
 
 
-## El archivo config.yml
+## El archivo config.yml
 
 El archivo principal de la configuración es app/config/config.yml. Aunque para 
 entender en su totalidad el funcionamiento y la potencia de la configuración es 
 necesario hablar de los entornos de ejecución.
 
-### Los entornos de ejecución (prod, dev y test).
+### Los entornos de ejecución (prod, dev y test).
 
 En symfony existen 3 entornos de ejecución:
 - Entorno de producción
@@ -68,22 +68,22 @@ todos los archivos .yml de app/config. El único archivo NO utilizado es el que 
 ya que este último archivo no está bajo control de versiones. Es por esto que cada vez que añadamos 
 algún parámetro al fichero parameters.yml, deberíamos añadirlo también al fichero parameters.yml.dist.
 
-### El modo de debug
+### El modo de debug
 
 El modo de debug indica si la aplicación debe ejectarse en "debug mode". Al margen
 del entorno, una aplicación symfony puede ejecutarse en modo debug. Esto afecta
 algunos comportamientos como mostrar las trazas completas en los errores 500 o si 
 los archivos de caché se regeneran en cada petición.
 
-El modo debug generalmente está activado en los entornos de test y de producción.
+El modo debug generalmente está activado en los entornos de test y de desarrollo.
 
 
-## Formatos de archivos de configuración
+## Formatos de archivos de configuración
 
 Los ficheros de configuración se pueden escribir en formato .yml, en formato 
 .xml y en formato .php. 
 
-## El comando de consola config:dump-reference
+## El comando de consola config:dump-reference
 
 Además de acudir a la documentación oficial de cada componente, existe en la 
 consola el comando *config:dump-reference* que te muestra todas las opciones de 
@@ -92,7 +92,7 @@ de configuración de la clave *twig* podemos ejecutar
 
 bin/console config:dump-reference twig
 
-## La clave imports
+## La clave imports
 
 Ya hemos visto que la clave *imports* se utiliza para cargar otros ficheros de 
 configuración.
@@ -106,7 +106,7 @@ imports:
 # ...
 ```
 
-## La clave parameters
+## La clave parameters
 
 La clave *parameters* se utiliza para definir variables que podrán ser luego 
 referenciadas en el mismo o en otros ficheros de configuración.
@@ -133,22 +133,28 @@ en la que se aloja el proyecto (configuración del servidor de base de datos,
 configuración del servidor correo...).
 
 
-## Los parámetros kernel.environment y kernel.debug
+## Los parámetros kernel.environment y kernel.debug
 
 Internamente, los valores del entorno y del valor del modo de debug son accesibles 
 a través de los parámetros *kernel.environment* y *kernel.debug* respectivamente.
 
 
-## Seleccionando el entorno al ejecutar comando de consolas
+## Seleccionando el entorno al ejecutar comando de consolas
 
+Por defecto, los comandos de consola se ejectuan en el entorno de desarrollo y 
+con el modo debug activado. Si se desea, se puede seleccionar otro entorno y/o
+desactivar el modo debug.
+
+```
  php bin/console command
 
  php bin/console command --env=prod
 
  php bin/console command --env=test --no-debug
+```
 
 
-## Crear un nuevo entorno
+## Crear un nuevo entorno
 
 Crear un nuevo entorno es tan fácil como crear el fichero de configuración con 
 el prefijo adecuado.
