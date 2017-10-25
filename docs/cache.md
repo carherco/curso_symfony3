@@ -44,27 +44,27 @@ Usando este objeto, se pueden crear, recuperar, actualizar y borrar elementos de
 la caché.
 
 ```php
-// save a new item in the cache
+// guardar un ítem en la caché
 $cache->set('stats.num_products', 4711);
 
-// or set it with a custom ttl
+// o guardarlo con un ttl personalizado
 // $cache->set('stats.num_products', 4711, 3600);
 
-// retrieve the cache item
+// preguntar si existe un ítem determinado
 if (!$cache->has('stats.num_products')) {
-    // ... item does not exists in the cache
+    // ... 
 }
 
-// retrieve the value stored by the item
+// recuperar el varlor almacenado en un ítem
 $numProducts = $cache->get('stats.num_products');
 
-// or specify a default value, if the key doesn't exist
+// o especificar un varlor por defecto, si no existe
 // $numProducts = $cache->get('stats.num_products', 100);
 
-// remove the cache key
+// elimiar un ítem de la caché
 $cache->delete('stats.num_products');
 
-// clear *all* cache keys
+// borrar todos los ítems de la caché
 $cache->clear();
 ```
 
