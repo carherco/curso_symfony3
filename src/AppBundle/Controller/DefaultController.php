@@ -82,6 +82,8 @@ class DefaultController extends Controller
     }
     
     /**
+     * Ejercicio 1: Listado de asignaturas
+     * 
      * @Route("/ejercicio/asignaturas")
      */
     public function usuariosAction(AsignaturasManager $asignaturasManager)
@@ -91,6 +93,21 @@ class DefaultController extends Controller
       
       return $this->render('default/asignaturas.html.twig', array(
           'asignaturas' => $asignaturas,
+      )); 
+    }
+    
+    /**
+     * Ejercico 2: Listado de notas de un alumno
+     * 
+     * @Route("/ejercicios/alumnos/{id}/notas")
+     */
+    public function notasAlumnoAction($id)
+    {
+      $alumnosRepository = $this->getDoctrine()->getRepository(\AppBundle\Entity\Alumno::class);
+      $alumno = $alumnosRepository->find($id);
+      
+      return $this->render('ejercicios/ejercicio2-notas.html.twig', array(
+          'alumno' => $alumno,
       )); 
     }
     

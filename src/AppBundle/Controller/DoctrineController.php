@@ -49,5 +49,26 @@ class DoctrineController extends Controller
         
         return new Response('El grado buscado es '.$grado->getNombre());
     }
+    
+    /**
+     * @Route("doctrine/delete/{gradoId}")
+     */
+    public function deleteAction($gradoId, EntityManagerInterface $em)
+    {
+        $grado = $this->getDoctrine()
+            ->getRepository(Grado::class)
+            ->find($gradoId);
+
+        if (!$grado) {
+            throw $this->createNotFoundException(
+                'No se ha encontrado ningún grado con el id '.$gradoId
+            );
+        }
+        
+        $em->remove($grado);
+        $em->flush();
+        
+        return new Response('Se ha borrado el grado '.$grado->getNombre());
+    }
 
 }

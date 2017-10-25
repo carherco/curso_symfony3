@@ -301,15 +301,15 @@ Recuperar objetos de la base de datos (SELECT)
 ----------------------------------------------
 
 ```php
-public function showAction($productId)
+public function showAction($id)
 {
     $grado = $this->getDoctrine()
         ->getRepository(Grado::class)
-        ->find($gradoId);
+        ->find($id);
 
     if (!$grado) {
         throw $this->createNotFoundException(
-            'No se ha encontrado ningún grado con el id '.$gradoId
+            'No se ha encontrado ningún grado con el id '.$id
         );
     }
 
@@ -374,11 +374,37 @@ Haciendo click en el icono de la base de datos vemos toda la información detall
 Editar un objeto (UPDATE)
 -------------------------
 
+Editar un registro es igual de fácil que crearlo, simplemente en vez de hacer un 
+new, partimos de un registro ya existente obtenido de la base de datos.
+
+```php
+public function showAction($id, EntityManagerInterface $em)
+{
+    $grado = $this->getDoctrine()->getRepository(Grado::class)->find($id);
+
+    $grado->setNombre('otro nombre');
+
+    $em->persist($grado);
+    $em->flush();
+    ...
+}
+```
 
 Eliminar un objeto (DELETE)
 ---------------------------
 
+Para eliminar un registro utilizamos el método remove() del EntityManager.
 
+```php
+public function showAction($id, EntityManagerInterface $em)
+{
+    $grado = $this->getDoctrine()->getRepository(Grado::class)->find($id);
+
+    $em->remove($grado);
+    $em->flush();
+    ...
+}
+```
 
 Relaciones entre entidades
 ==========================

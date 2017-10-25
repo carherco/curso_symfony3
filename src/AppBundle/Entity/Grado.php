@@ -33,10 +33,16 @@ class Grado
      * @ORM\OneToMany(targetEntity="Asignatura", mappedBy="grado")
      */
     private $asignaturas;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Alumno", mappedBy="grado")
+     */
+    private $alumnos;
 
     public function __construct()
     {
         $this->asignaturas = new ArrayCollection();
+        $this->alumnos = new ArrayCollection();
     }
     
     /**
@@ -79,6 +85,15 @@ class Grado
 
     function setAsignaturas($asignaturas) {
       $this->asignaturas = $asignaturas;
+      return $this;
+    }
+    
+    function getAlumnos() {
+      return $this->alumnos;
+    }
+
+    function setAlumnos($alumnos) {
+      $this->alumnos = $alumnos;
       return $this;
     }
 

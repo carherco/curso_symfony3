@@ -61,6 +61,11 @@ class Asignatura
      * @ORM\JoinTable(name="alumnos_asignaturas")
      */
     private $alumnos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Nota", mappedBy="asignatura")
+     */
+    private $notas;
             
     public function __construct()
     {
@@ -181,6 +186,25 @@ class Asignatura
       $this->grado = $grado;
       return $this;
     }
+    
+    function getAlumnos() {
+      return $this->alumnos;
+    }
+
+    function getNotas() {
+      return $this->notas;
+    }
+
+    function setAlumnos($alumnos) {
+      $this->alumnos = $alumnos;
+      return $this;
+    }
+
+    function setNotas($notas) {
+      $this->notas = $notas;
+      return $this;
+    }
+
 
 }
 

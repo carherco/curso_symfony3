@@ -52,7 +52,7 @@ class Alumno
     /**
      * @var binary
      *
-     * @ORM\Column(name="sexo", type="binary")
+     * @ORM\Column(name="sexo", type="boolean")
      */
     private $sexo;
 
@@ -81,11 +81,15 @@ class Alumno
      */
     private $asignaturas;
     
-    
+    /**
+     * @ORM\OneToMany(targetEntity="Nota", mappedBy="alumno")
+     */
+    private $notas;
 
     public function __construct()
     {
         $this->asignaturas = new ArrayCollection();
+        $this->notas = new ArrayCollection();
     }
 
     /**
@@ -265,5 +269,34 @@ class Alumno
     {
         return $this->telefono;
     }
+    
+    function getGrado() {
+      return $this->grado;
+    }
+
+    function getAsignaturas() {
+      return $this->asignaturas;
+    }
+
+    function getNotas() {
+      return $this->notas;
+    }
+
+    function setGrado($grado) {
+      $this->grado = $grado;
+      return $this;
+    }
+
+    function setAsignaturas($asignaturas) {
+      $this->asignaturas = $asignaturas;
+      return $this;
+    }
+
+    function setNotas($notas) {
+      $this->notas = $notas;
+      return $this;
+    }
+
+
 }
 

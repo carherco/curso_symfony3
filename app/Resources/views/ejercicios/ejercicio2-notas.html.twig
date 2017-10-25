@@ -1,0 +1,38 @@
+{% extends 'public.html.twig' %}
+
+{% block title %}Notas{% endblock %}
+
+{% block body %}
+  
+<h1>{{alumno.nombre}} {{alumno.apellidos}} - {{alumno.grado.nombre}}</h1>
+  
+<h2>{{'Listado de notas'|trans}}</h2>
+
+
+{% if alumno.notas %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{'Asignatura'|trans}}</th>
+      <th>{{'Convocatoria'|trans}}</th>
+      <th>{{'Fecha'|trans}}</th>
+      <th>{{'Nota'|trans}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for nota in alumno.notas %}
+    <tr {% if loop.index0 is odd %}class="fila_impar"{% else %}class="fila_par"{% endif %}>
+      <td>{{nota.asignatura.nombre}}</td>
+      <td>{{nota.nConvocatoria}}</td>
+      <td>{{nota.fecha|date}}</td>
+      <td><strong>{{nota.nota}}</strong></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div>{{'No se han encontrado notas.'|trans}}</div>
+{% endif %}
+
+  
+{% endblock %}
