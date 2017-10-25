@@ -30,16 +30,19 @@ uno de estos entornos. Por ejemplo:
 Si echamos un vistazo a los archivos web/app.php y web.app_dev.php podemos observar
 que se cargan los entornos 'prod' y 'dev' respectivamente:
 
-$kernel = new AppKernel('prod', false);
-$kernel = new AppKernel('dev', true);
+  $kernel = new AppKernel('prod', false);
+  $kernel = new AppKernel('dev', true);
 
-El primer parámetro establece el entorno y el segundo establece el modo de debug.
+  El primer parámetro establece el entorno y el segundo establece el modo de debug.
 
-Y si echamos un vistazo al código ejecutado en los tests a raíz de esta instrucción 
+Si echamos un vistazo al código ejecutado en los tests a raíz de esta instrucción 
 
-$client = static::createClient(); 
+  $client = static::createClient(); 
 
-veremos que se instacia la clase AppKernel con entorno 'test' y debug 'true'.
+  veremos que se instacia la clase AppKernel con entorno 'test' y debug 'true'.
+
+Si echamos un vistazo al archivo bin/console veremos también que por defecto se
+instancia la clase AppKernel con entorno 'dev' y debug 'true'; 
 
 Según el entorno que se indique, symfony carga el archivo correspondiente config_prod.yml, 
 config_dev.yml y config_test.yml. 
@@ -81,7 +84,7 @@ El modo debug generalmente está activado en los entornos de test y de desarroll
 ## Formatos de archivos de configuración
 
 Los ficheros de configuración se pueden escribir en formato .yml, en formato 
-.xml y en formato .php. 
+.xml o en formato .php. 
 
 ## El comando de consola config:dump-reference
 
@@ -94,8 +97,7 @@ bin/console config:dump-reference twig
 
 ## La clave imports
 
-Ya hemos visto que la clave *imports* se utiliza para cargar otros ficheros de 
-configuración.
+La clave *imports* se utiliza para cargar otros ficheros de configuración.
 
 ```yml
 # app/config/config.yml
@@ -132,6 +134,8 @@ aquellas variables de configuración cuyos valores son diferentes según la máq
 en la que se aloja el proyecto (configuración del servidor de base de datos, 
 configuración del servidor correo...).
 
+El archivo *parameters.yo NO está bajo control de versiones.
+
 
 ## Los parámetros kernel.environment y kernel.debug
 
@@ -165,6 +169,25 @@ imports:
     - { resource: config_prod.yml }
 
 ```
+
+Ya tenemos el entorno creado y listo para ser utilizado. Si queremos utilizarlo 
+para acceder por la web, basta con crear un archivo *app_benchmark.php* en el 
+directorio *web* instanciando la clase AppKernel con 'benchmark' como primer
+parámetro.
+
+```php
+// ...
+
+$kernel = new AppKernel('benchmark', false);
+
+// ...
+```
+
+Y podremos ejectuar nuestras páginas en el nuevo entorno accediendo a 
+
+http://127.0.0.1:8000/app_benchmark.php
+
+
 
 http://symfony.com/doc/current/configuration.html
 
