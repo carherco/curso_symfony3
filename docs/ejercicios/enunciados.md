@@ -77,3 +77,26 @@ Bonus:
 
 
 
+Ejercicio formularios
+---------------------
+
+1) Utilizar el comando doctrine:generate:form para generar los formularios de
+    - Asignatura
+    - Grado
+    - Alumno
+    - Nota
+
+2) Crear 4 controladores con un prefijo para el routing: 
+    - AsignaturasController ('/asignaturas')
+    - GradosController ('/grados')
+    - AlumnosController ('/alumnos')
+    - NotasController ('/notas')
+
+3) Cada controlador tendrá 5 acciones:
+    - indexAction ('/') => Twig con: Botón de añadir y listado de ítems con botones en cada ítem de ver, editar y eliminar 
+    - newAction ('/new') => Twig con: Formulario vacío para dar de alta alumnos con botón de Guardar y de Volver
+    - editAction ('/edit/{id}') => Twig con: Formulario de edición con botón de Guardar y de Volver
+    - showAction ('/show/{id}') => Twig con: Vista de todos los campos de un ítem concreto con botón de volver y de editar
+    - deleteAction ('/delete/{id}') => Acción sin ningun twig. Al realizar el borrado, redirigirá a indexAction
+
+Conviene seguir el siguiente orden: grados, asingaturas, alumnos, notas.

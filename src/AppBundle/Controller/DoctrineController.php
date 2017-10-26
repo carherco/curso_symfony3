@@ -21,7 +21,7 @@ class DoctrineController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $grado = new Grado();
-        $grado->setNombre('Ingeniería de montes');
+        $grado->setNombre('Ingeniería de montes 2');
 
         // Informamos a Doctrine de que queremos guardar the Product (todavía no se ejecuta ninguna query)
         $em->persist($grado);

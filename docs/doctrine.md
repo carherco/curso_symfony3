@@ -558,7 +558,7 @@ http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/assoc
 El lenguaje DQL (Doctrine Query Language)
 =========================================
 
-Si queremos ahorrar consultas, o realizar consultas completajas, podemos 
+Si queremos ahorrar consultas, o realizar consultas complejas, podemos 
 utilizar el leguaje DQL.
 
 ```php

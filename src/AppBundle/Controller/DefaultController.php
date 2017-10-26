@@ -104,8 +104,8 @@ class DefaultController extends Controller
     public function notasAlumnoAction($id)
     {
       $alumnosRepository = $this->getDoctrine()->getRepository(\AppBundle\Entity\Alumno::class);
-      //$alumno = $alumnosRepository->find($id);
-      $alumno = $alumnosRepository->findWithNotas($id);
+      $alumno = $alumnosRepository->find($id);
+      //$alumno = $alumnosRepository->findWithNotas($id);
       
       return $this->render('ejercicios/ejercicio2-notas.html.twig', array(
           'alumno' => $alumno,

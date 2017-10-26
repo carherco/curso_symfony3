@@ -158,7 +158,7 @@ interpretarlo como un PUT, PATCH o DELETE.
 
 Para controlar mejor el renderizado de los campos, lo usual es sustituir form_widget() por:
 
-````twig
+```twig
   <h1>Nueva asignatura</h1>
   
   <div class="formulario">    
@@ -181,7 +181,7 @@ Renderiza una capa <div> con la etiqueta, los errores y el HTML del widget
 
 Y form_row todavía se puede dividir más:
 
-``
+```
 {{ form_start(form) }}
     {{ form_errors(form) }}
 
@@ -287,4 +287,9 @@ $form = $this->createForm(AsignaturaType::class, $asignatura, array(
 
 
 
+Extras
+------
+
+Múltiples botones de submit:
 https://symfony.com/doc/current/form/multiple_buttons.html
+
