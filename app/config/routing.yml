@@ -11,9 +11,9 @@ login_page:
   defaults: { _controller: AppBundle:Public:login }
     
     
-user_edit:
-  path:  /user/edit/{id}
-  defaults: { _controller: AppBundle:Routing:edit }
+#user_edit:
+#  path:  /user/edit/{id}
+#  defaults: { _controller: AppBundle:Routing:edit }
   
 user_edit:
   path:  /user/edit/{id}

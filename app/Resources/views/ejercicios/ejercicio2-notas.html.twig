@@ -24,7 +24,7 @@
     <tr {% if loop.index0 is odd %}class="fila_impar"{% else %}class="fila_par"{% endif %}>
       <td>{{nota.asignatura.nombre}}</td>
       <td>{{nota.nConvocatoria}}</td>
-      <td>{{nota.fecha|date}}</td>
+      <td>{{nota.fecha|date('d-m-Y')}}</td>
       <td><strong>{{nota.nota}}</strong></td>
     </tr>
     {% endfor %}

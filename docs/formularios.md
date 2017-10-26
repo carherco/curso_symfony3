@@ -156,6 +156,67 @@ POST pero el router de symfony es capaz de detectar ese parámetro _method e
 interpretarlo como un PUT, PATCH o DELETE.
 
 
+Se puede elegir el tipo de widget de cada campo, y añadir botón de submit:
+
+```
+->add('nombre', TextType::class)
+->add('fecha_nacimiento', DateType::class)
+->add('guardar', SubmitType::class)
+```
+
+Symfony tiene un montón de tipos de campos para elegir: 
+
+https://symfony.com/doc/current/forms.html#built-in-field-types
+
+
+Se puede cambiar el texto de la etiqueta:
+
+```
+->add('nombre', TextType::class)
+->add('fecha_nacimiento', DateType::class, array('label' => 'Fecha de Nacimiento'))
+->add('guardar', SubmitType::class, array('label' => 'Crear Alumno'))
+```
+
+Algunos de los tipos de campo adminten configuración (en el siguiente ejemplo, 
+el campo de tipo fecha se renderizará con una sola caja en vez de con 3 desplegables):
+
+```
+->add('dueDate', DateType::class, array(
+    'widget' => 'single_text',
+    'label'  => 'Due Date',
+))
+```
+
+Y se pueden añadir algunas restricciones que tienen efecto en el navegador:
+
+```
+->add('nombre', TextType::class, array('attr' => array('maxlength' => 4)))
+->add('fecha_nacimiento', DateType::class, array('label' => 'Fecha de Nacimiento','required' => false))
+->add('guardar', SubmitType::class, array('label' => 'Crear Alumno'))
+```
+
+Podemos añadir campos que no existan en la clase/entidad:
+
+```
+$builder
+        ->add('task')
+        ->add('dueDate')
+        ->add('agreeTerms', CheckboxType::class, array('mapped' => false))
+        ->add('save', SubmitType::class)
+    ;
+```
+
+Y desde el controlador podemos leer o escribir valores de esos campos "extra":
+
+```php
+$form->get('agreeTerms')->getData();
+
+$form->get('agreeTerms')->setData(true);
+```
+
+
+Seguimos con el renderizado:
+
 Para controlar mejor el renderizado de los campos, lo usual es sustituir form_widget() por:
 
 ```twig
@@ -243,7 +304,7 @@ Procesamiento del formulario
 ----------------------------
 
 ```php
-public function newAction()
+public function newAction(Request $request)
 {
     // create a task and give it some dummy data for this example
     $asignatura = new Asignatura();
@@ -271,8 +332,6 @@ public function newAction()
 }
 ```
 
-
-
 Indicar la acción y el método
 -----------------------------
 
@@ -285,11 +344,138 @@ $form = $this->createForm(AsignaturaType::class, $asignatura, array(
 ));
 ```
 
+Validaciones (En el servidor)
+-----------------------------
+
+Para usar validaciones, debemos habilitar el servicio de validaciones en la 
+configuración.
+
+```yml
+framework:
+    validation: { enabled: true }
+```
+
+Y si vamos a utilizar anotaciones para definir las validaciones, entonces la 
+configuración debe quedar como sigue
+
+```yml
+framework:
+    validation: { enable_annotations: true }
+```
+
+
+Las validaciones se configuran añadiendo reglas (llamadas *constraints) en la 
+clase/entidad mediante anotaciones:
+
+Ejemplo:
+
+```php
+namespace AppBundle\Entity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Task
+{
+    /**
+     * @Assert\NotBlank()
+     */
+    public $task;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
+     */
+    protected $dueDate;
+}
+```
+
+El campo *task* no puede dejarse vacío y el campo *dueDate* tiene que tener un valor 
+que sea un objeto DateTime.
+
+Existe en Symfony un servicio para validar clases decoradas con constraints:
+
+```php
+public function alumnoAction()
+{
+    // ... 
+
+    $validator = $this->get('validator');
+    $errors = $validator->validate($alumno);
+
+    if (count($errors) > 0) {
+        return $this->render('author/validation.html.twig', array(
+            'errors' => $errors,
+        ));
+    }
+
+    // ... 
+
+}
+```
+
+```twig
+<h3>The author has the following errors</h3>
+<ul>
+{% for error in errors %}
+    <li>{{ error.message }}</li>
+{% endfor %}
+</ul>
+```
+
+La lista de Constraints de Symfony es muy extensa:
+
+https://symfony.com/doc/current/validation.html#basic-constraints
+
+
+Las *constraints* se pueden definir en el formulario en lugar de en la clase
+
+```php
+$builder
+        ->add('myField', TextType::class, array(
+            'required' => true,
+            'constraints' => array(new Length(array('min' => 3)))
+        ))
+    ;
+```
+
+Desactivar la validación de los navegadores
+-------------------------------------------
+
+Si queremos desactivar la validación que realizan los navegadores en el cliente, 
+podemos utilizar el atributo *novalidate* de la etiqueta *form* de HTML5.
+
+```twig
+{{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+```
 
 
 Extras
 ------
 
-Múltiples botones de submit:
+**Tipos de campos:**
+https://symfony.com/doc/current/forms.html#built-in-field-types
+
+**Cómo crear un campo personalizado:**
+https://symfony.com/doc/current/form/create_custom_field_type.html
+
+**Cómo crear una constraint personalizada**
+https://symfony.com/doc/current/validation/custom_constraint.html
+
+**Múltiples botones de submit:**
 https://symfony.com/doc/current/form/multiple_buttons.html
 
+**Protección contra CSFR:**
+https://symfony.com/doc/current/form/csrf_protection.html
+
+**Formularios embebidos:**
+https://symfony.com/doc/current/form/embedded.html
+
+**Cómo hacer uploading de ficheros:**
+https://symfony.com/doc/current/controller/upload_file.html
+
+**Cómo testear los formularios:**
+https://symfony.com/doc/current/form/unit_testing.html
+
+
+Documentación general:
+https://symfony.com/doc/current/forms.html
