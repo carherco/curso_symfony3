@@ -1,0 +1,33 @@
+{% extends "public.html.twig" %}
+
+{% block title %}AppBundle:Grado:index{% endblock %}
+
+{% block body %}
+
+  <a href="{{ path('asignatura_new') }}" class="btn btn-primary">Añadir</a>  
+  
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{'Asignatura'|trans}}</th>
+      <th>{{'Grado'|trans}}</th>
+      <th>{{'Acciones'|trans}}</th> 
+    </tr>
+  </thead>
+  <tbody>
+    {% for asig in asignaturas %}
+    <tr>
+      <td>{{asig.nombre}}</td>
+      <td>{{asig.grado.nombre}}</td>
+      <td>
+        <a href="{{ path('asignatura_edit', {'id': asig.id}) }}" class="btn btn-warning">Editar</a>
+        <a href="{{ path('asignatura_delete', {'id': asig.id}) }}" class="btn btn-danger">Eliminar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+  
+  
+  
+{% endblock %}

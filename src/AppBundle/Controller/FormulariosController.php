@@ -15,7 +15,7 @@ use AppBundle\Form\AlumnoType;
 class FormulariosController extends Controller
 {
     /**
-     * @Route("/asignatura/new", name="asignatura_new")
+     * @Route("/asignatura/new", name="formulario_asignatura_new")
      */
     public function newAction()
     {
@@ -32,7 +32,7 @@ class FormulariosController extends Controller
     }
 
     /**
-     * @Route("/asignatura/edit", name="asignatura_edit")
+     * @Route("/asignatura/edit", name="formulario_asignatura_edit")
      */
     public function editAction()
     {
@@ -42,7 +42,7 @@ class FormulariosController extends Controller
     }
     
     /**
-     * @Route("/alumno/new", name="alumno_new")
+     * @Route("/alumno/new", name="formulario_alumno_new")
      */
     public function alumnoNewAction()
     {
@@ -56,7 +56,7 @@ class FormulariosController extends Controller
     }
 
     /**
-     * @Route("/alumno/edit", name="alumno_edit")
+     * @Route("/alumno/edit", name="formulario_alumno_edit")
      */
     public function alumnoEditAction()
     {

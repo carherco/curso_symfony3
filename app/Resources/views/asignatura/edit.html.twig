@@ -1,0 +1,15 @@
+{% extends "public.html.twig" %}
+
+{% block title %}Asignaturas{% endblock %}
+
+{% block body %}
+  
+    {{ form_start(form) }}
+    {{ form_widget(form) }}   
+    
+    <button type="sumbit" class="btn btn-primary">Guardar</button> 
+    <a href="{{ path('asignatura_index') }}" class="btn btn-default">Volver</a> 
+    
+    {{ form_end(form) }}   
+    
+{% endblock %}

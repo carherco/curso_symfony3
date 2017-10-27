@@ -20,7 +20,6 @@ class AsignaturaType extends AbstractType
                 ->add('nombreIngles')
                 ->add('credects')
                 ->add('grado')
-                ->add('guardar', Type\SubmitType::class)
                 ;
     }
     

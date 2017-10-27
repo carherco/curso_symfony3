@@ -9,12 +9,12 @@ use AppBundle\Entity\Grado;
 use AppBundle\Form\GradoType;
 
 /**
- * @Route("/grado", name="grado_")
+ * @Route("/grado")
  */
 class GradoController extends Controller
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="grado_index")
      */
     public function indexAction()
     {
@@ -24,7 +24,7 @@ class GradoController extends Controller
     }
 
     /**
-     * @Route("/show", name="show")
+     * @Route("/show", name="grado_show")
      */
     public function showAction()
     {
@@ -34,7 +34,7 @@ class GradoController extends Controller
     }
     
     /**
-     * @Route("/new", name="new")
+     * @Route("/new", name="grado_new")
      */
     public function newAction()
     {
@@ -49,7 +49,7 @@ class GradoController extends Controller
     }
     
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/edit", name="grado_edit")
      */
     public function editAction()
     {
@@ -59,7 +59,7 @@ class GradoController extends Controller
     }
     
     /**
-     * @Route("/delete", name="delete")
+     * @Route("/delete", name="grado_delete")
      */
     public function deleteAction()
     {
