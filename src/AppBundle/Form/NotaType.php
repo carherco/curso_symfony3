@@ -6,22 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Symfony\Component\Form\Extension\Core\Type;
-
-class AsignaturaType extends AbstractType
+class NotaType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('codigo')
-                ->add('nombre')
-                ->add('nombreIngles')
-                ->add('credects')
-                ->add('grado')
-                ->add('guardar', Type\SubmitType::class)
-                ;
+        $builder->add('nConvocatoria')->add('fecha')->add('nota')->add('alumno')->add('asignatura');
     }
     
     /**
@@ -30,7 +22,7 @@ class AsignaturaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Asignatura'
+            'data_class' => 'AppBundle\Entity\Nota'
         ));
     }
 
@@ -39,7 +31,7 @@ class AsignaturaType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_asignatura';
+        return 'appbundle_nota';
     }
 
 
