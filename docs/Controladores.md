@@ -7,7 +7,7 @@ objeto Request de Symfony y crear y devolver un objeto Response.
 La respuesta puede ser una página HTML, JSON, XML, una descarga de un fichero, 
 una redirección, un error 404...
 
-El controlador exucta cualquier código que necesitemos para renderizar el contenido
+El controlador ejecuta cualquier código que necesitemos para renderizar el contenido
 de la página.
 
 La Clase Controladora
@@ -50,7 +50,7 @@ public function indexAction()
     return $this->redirectToRoute('homepage', array(), 301);
 
     // redirección a ruta con parámetros
-    return $this->redirectToRoute('blog_show', array('slug' => 'my-page'));
+    return $this->redirectToRoute('alumno_show', array('id' => $id));
 
     // redirect a url externa
     return $this->redirect('http://symfony.com/doc');
@@ -145,7 +145,7 @@ Cuando no encontramos un recurso, deberíamos seguir las normas del protocolo
 HTTP y devolver una respuesta 404.
 
 ```php
-public function indexAction($id)
+public function editAction($id)
 {
     $alumno = $em->getRepository('AppBundle:Alumno')->find($id);
     if (!$alumno) {
@@ -199,13 +199,120 @@ use Symfony\Component\HttpFoundation\Request;
 
 public function indexAction(Request $request, $firstName, $lastName)
 {
-    $page = $request->query->get('page', 1);
+    $request->isXmlHttpRequest(); // is it an Ajax request?
 
-    // ...
+    $request->getPreferredLanguage(array('en', 'fr'));
+
+    // obtener variables enviadas por GET y por POST respectivamente
+    $request->query->get('page');
+    $request->request->get('page');
+
+    // obtener variables $_SERVER
+    $request->server->get('HTTP_HOST');
+
+    // obtener una instancia de la clase UploadedFile con el fichero enviado
+    $request->files->get('fichero');
+
+    // obtener el valor de una COOKIE 
+    $request->cookies->get('PHPSESSID');
+
+    // obtener una cabecera HTTP
+    $request->headers->get('host');
+    $request->headers->get('content_type');
 }
 ```
 
-https://symfony.com/doc/current/controller.html#request-object-info
+https://symfony.com/doc/current/components/http_foundation.html#component-http-foundation-request
+
+
+El objeto Resonse
+-----------------
+
+Como ya hemos dicho, la única obligación de un controlador es devolver un objeto 
+Response.
+
+```php
+use Symfony\Component\HttpFoundation\Response;
+
+...
+
+$response = new Response(
+    'Content',
+    Response::HTTP_OK,
+    array('content-type' => 'text/html')
+);
+
+return $response;
+
+```
+
+El objeto response tiene métodos para establecer los valores del content, del 
+código de estado, de los headers...
+
+```php
+$response->setContent('<h1>Hello World</h1>');
+
+$response->headers->set('Content-Type', 'text/plain');
+
+$response->headers->setCookie(new Cookie('foo', 'bar'));
+
+$response->setStatusCode(Response::HTTP_NOT_FOUND);
+
+$response->setCharset('ISO-8859-1');
+```
+
+NOTA: Desde la versión 3.1, no se puede configurar el charset por defecto de las 
+respuestas en el config.yml. Se debe hacer en la clase AppKernel. (Symony utiliza
+por defecto UTF-8).
+
+```php
+class AppKernel extends Kernel
+{
+    public function getCharset()
+    {
+        return 'ISO-8859-1';
+    }
+}
+```
+
+Ejemplo de respuesta json:
+
+```php
+$response = new Response();
+$response->setContent(json_encode(array(
+    'data' => 123,
+)));
+$response->headers->set('Content-Type', 'application/json');
+return $response
+```
+
+Symfony dispone de objetos que extienden de Response para facilitar tipos de 
+respuesta muy comunes:
+ 
+- RedirectResponse
+- JsonResponse
+- BinaryFileResponse
+- StreamedResponse
+
+Además al extender de Controller o de AbstractController, tenemos disponibles 
+funciones *helper* que facilitan la generación de los objetos Response correspondientes:
+
+```php
+$this->redirect('http://symfony.com/doc');
+
+$this->json(array('data' => 123));
+
+$this->file('/path/to/some_file.pdf');
+```
+
+
+https://symfony.com/doc/current/components/http_foundation.html#redirecting-the-user
+
+https://symfony.com/doc/current/components/http_foundation.html#creating-a-json-response
+
+https://symfony.com/doc/current/components/http_foundation.html#component-http-foundation-serving-files
+
+https://symfony.com/doc/current/components/http_foundation.html#streaming-response
 
 
 Acceso a la sesión
@@ -229,6 +336,21 @@ public function indexAction(SessionInterface $session)
     $filters = $session->get('filters', array());
 }
 ```
+
+
+Acceso a la request, la sesión, etc, desde twig
+-----------------------------------------------
+
+Recordemos que desde twig tenemos acceso a la variable app, que no permite acceder
+a la request, la sesión, etc
+
+- app.user
+- app.request
+- app.session
+- app.environment
+- app.debug
+
+
 
 Mensajes Flash
 --------------
@@ -287,11 +409,18 @@ mensajes flash utilizando app.flashes().
 ```
 
 
-NOTA: The app.flashes() Twig function was introduced in Symfony 3.3. Prior, you had to use app.session.flashBag().
+NOTA: La función app.flashes() de Twig ha sido introducida en Symfony 3.3. Antes
+había que utilizar app.session.flashBag().
 
-NOTA: It's common to use notice, warning and error as the keys of the different types of flash messages, but you can use any key that fits your needs.
+NOTA: Es muy común utilizar tres claves de mensajes flash: *notice*, *warning* y *error*, 
+pero realmente podemos utilizar los que queramos sin ningún problema.
 
-NOTA: You can use the peek() method instead to retrieve the message while keeping it in the bag.
+NOTA: Existe el método peek() para obtener los mensajes SIN ELIMINARLOS de la sesión.
+
+  ```twig
+  {% for message in app.peek('notice') %}
+  ```
+
 
 Voy por aquí
 https://symfony.com/doc/current/controller.html#the-request-and-response-object
