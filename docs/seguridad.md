@@ -180,6 +180,8 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN, host: symfony\.com$ }
         - { path: ^/admin, roles: ROLE_ADMIN, methods: [POST, PUT] }
         - { path: ^/admin, roles: ROLE_ADMIN }
+```
+
 
 Primero Symfony búsca el match correspondiente según las coincidencias de:
   - path
