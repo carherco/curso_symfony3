@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Alumno</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ alumno.id }}</td>
+            </tr>
+            <tr>
+                <th>Nexpediente</th>
+                <td>{{ alumno.nExpediente }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ alumno.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ alumno.apellidos }}</td>
+            </tr>
+            <tr>
+                <th>Fechanacimiento</th>
+                <td>{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Sexo</th>
+                <td>{% if alumno.sexo %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ alumno.email }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ alumno.telefono }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('alumnocrud_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('alumnocrud_edit', { 'id': alumno.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

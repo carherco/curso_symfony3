@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Alumnos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nexpediente</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Fechanacimiento</th>
+                <th>Sexo</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for alumno in alumnos %}
+            <tr>
+                <td><a href="{{ path('alumnocrud_show', { 'id': alumno.id }) }}">{{ alumno.id }}</a></td>
+                <td>{{ alumno.nExpediente }}</td>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.apellidos }}</td>
+                <td>{% if alumno.fechaNacimiento %}{{ alumno.fechaNacimiento|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if alumno.sexo %}Yes{% else %}No{% endif %}</td>
+                <td>{{ alumno.email }}</td>
+                <td>{{ alumno.telefono }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('alumnocrud_show', { 'id': alumno.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('alumnocrud_edit', { 'id': alumno.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('alumnocrud_new') }}">Create a new alumno</a>
+        </li>
+    </ul>
+{% endblock %}
