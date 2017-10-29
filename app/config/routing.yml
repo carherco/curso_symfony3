@@ -1,5 +1,9 @@
-fos_user:
-  resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+#fos_user:
+#  resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+logout:
+    path: /logout
+
 
 app:
   resource: '@AppBundle/Controller/'
