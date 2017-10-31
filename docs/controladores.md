@@ -422,5 +422,5 @@ NOTA: Existe el método peek() para obtener los mensajes SIN ELIMINARLOS de la s
   ```
 
 
-Voy por aquí
-https://symfony.com/doc/current/controller.html#the-request-and-response-object
+
+https://symfony.com/doc/current/controller.html

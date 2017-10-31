@@ -92,7 +92,7 @@ http://docs.doctrine-project.org/en/latest/
 
 Extiende las caractarísiticas de FrameworkBundle para añadirle anotaciones y convenciones adicionales.
 
-- @Route and @Method
+- @Route y @Method
 - @ParamConverter
 - @Template
 - @Cache
@@ -125,7 +125,7 @@ http://symfony.com/doc/current/components/var_dumper.html
 
 ### WebProfilerBundle
 
-The WebProfilerBundle provides detailed technical information about each request execution and displays it in both the web debug toolbar and the profiler.
+Introduce una barra de debug y de profile en la parte inferior de las páginas cuando se ejecutan con el entorno de *dev*.
 
 https://symfony.com/doc/current/reference/configuration/web_profiler.html
 
@@ -142,7 +142,8 @@ https://github.com/sensiolabs/SensioDistributionBundle
 
 ### SensioGeneratorBundle
 
-This bundle provides commands for scaffolding bundles, forms, controllers and even CRUD-based backends. The boilerplate code provided by these code generators will save you a large amount of time and work.
+Este bundle proporciona los comandos de consola de generación automática de varios 
+elementos para ahorrarnos tiempo en la programación.
 
 - Generar un Bundle
 - Generar un Command
@@ -155,10 +156,11 @@ https://symfony.com/doc/master/bundles/SensioGeneratorBundle/index.html
 
 ### WebServerBundle
 
-PHP 5.4 version introduced a built-in web server that can be used to run your PHP applications locally during development without the need to configure a full-featured web server such as Apache or Nginx.
+PHP 5.4 introdujo un servidor web integrado que se puede utilizar para ejecutar 
+aplicaciones PHP localmente durante el desarrollo sin necesidad de tener un servidor
+web instalado.
 
-Symfony adopted this technique a while ago by providing some console commands to control that web server. In Symfony 3.3 we decided to move those commands to a new bundle called WebServerBundle.
-
+Este bundle añade comandos para controlar dicho servidor web.
 
 Desde symfony 3.3, si no se pasa el puerto como parámetro, el comando server:start 
 utiliza el primer puerto libre disponible entre el 8000 y el 8100.

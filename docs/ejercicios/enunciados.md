@@ -100,3 +100,34 @@ Ejercicio formularios
     - deleteAction ('/delete/{id}') => Acción sin ningun twig. Al realizar el borrado, redirigirá a indexAction
 
 Conviene seguir el siguiente orden: grados, asingaturas, alumnos, notas.
+
+
+
+Ejercicio mensajes flash
+------------------------
+
+En un deleteAction y en un newAction de un crud, poner un mensaje de "elemento 
+eliminado correctamente" y de "elemento creado correctamente" que aparezca al 
+redirigir al indexAction
+
+
+
+Ejercicio debug
+---------------
+
+- Poner *echo* o *print_r* en una acción
+- Cambiar el *echo*/*print_r* por dump
+- Poner un *exit;* en la acción después del dump
+- Poner un {% dump %} en una plantilla de twig
+- Poner un {{ dump }} en una plantilla de twig
+
+
+Ejercicio Bundles
+-----------------
+
+Seguir las isntrucciones de 
+https://symfony.com/doc/master/bundles/SonataAdminBundle/getting_started/installation.html
+para instalar el bundle SonataAdminBundle.
+
+
+
