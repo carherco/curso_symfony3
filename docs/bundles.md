@@ -181,5 +181,29 @@ Symofny alerta de ello al generar el bundle:
 
 ![Aviso en la generación de un bundle](img/generate_bundle_message.png "Imagen de aviso del bug")
 
+Para solucionarlo, editamos a mano la sección autolad del fichero composer.json
 
+```json
+    "autoload": {
+        "psr-4": {
+            "AppBundle\\": "src/AppBundle",
+            "PruebaBundle\\": "src/PruebaBundle"
+        },
+```
+
+Y ejecutamos el comando *install* de composer
+
+> composer install
+
+Composer volverá a crear el algoritmo para la autocarga incluyendo el nuevo 
+directorio *src/PruebaBundle*
+
+
+Las otras tareas que ha realizado el comando generate:bundle por nosotros son:
+
+- Crear el direcotorio src/PruebaBundle con un controlador, un twig y un fichero services.yml
+- Crear el directorio test/PruebaBundle para testear el bundle
+- Habilitar el bundle en el app/AppKernel
+- Incluir en el routing.yml el fichero routing.yml del nuevo bundle
+- Incluir en el config.yml el fichero services.yml del nuevo bundle
 
