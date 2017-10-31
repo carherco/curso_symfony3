@@ -39,7 +39,7 @@ class AppKernel extends Kernel
 }
 ```
 
-## Bundles por defecto en una instalación Symfony
+## Bundles por defecto en una instalación Symfony
 
 Como podemos ver, una aplicación symfony recién instalada viene con:
 
@@ -51,7 +51,7 @@ Como podemos ver, una aplicación symfony recién instalada viene con:
 Además de otros 5 bundles utilizados únicamente para desarrollo (dev) y/o para testeo (test).
 
 
-### FrameworkBundle
+### FrameworkBundle
 
 Implementa un framework MVC básico aunque robusto y flexible.
 
@@ -63,7 +63,7 @@ Para la seguridad
 https://symfony.com/doc/current/reference/configuration/security.html
 
 
-### TwigBundle
+### TwigBundle
 
 Para el sistema de plantillas twig. 
 
@@ -71,17 +71,17 @@ https://symfony.com/doc/current/reference/configuration/twig.html
 https://twig.symfony.com/doc/2.x/
 
 
-### MonologBundle
+### MonologBundle
 
 Para el sistema de logs
 
 
-### SwiftmailerBundle
+### SwiftmailerBundle
 
 Para el envío de correos
 
 
-### DoctrineBundle
+### DoctrineBundle
 
 ORM para el acceso a la base de datos.
 
@@ -101,7 +101,7 @@ Extiende las caractarísiticas de FrameworkBundle para añadirle anotaciones y c
 http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
 
 
-### AppBundle
+### AppBundle
 
 El Bundle propio de nuestra aplicación
 
@@ -123,14 +123,14 @@ http://symfony.com/doc/current/reference/configuration/debug.html
 http://symfony.com/doc/current/components/var_dumper.html
 
 
-### WebProfilerBundle
+### WebProfilerBundle
 
 The WebProfilerBundle provides detailed technical information about each request execution and displays it in both the web debug toolbar and the profiler.
 
 https://symfony.com/doc/current/reference/configuration/web_profiler.html
 
 
-### SensioDistributionBundle
+### SensioDistributionBundle
 
 - Añade el security checker (./bin/console security:check)
 - Composer Hooks. Al realizar composer install o composer update, se realizan las siguientes tareas:
@@ -140,7 +140,7 @@ https://symfony.com/doc/current/reference/configuration/web_profiler.html
 
 https://github.com/sensiolabs/SensioDistributionBundle
 
-### SensioGeneratorBundle
+### SensioGeneratorBundle
 
 This bundle provides commands for scaffolding bundles, forms, controllers and even CRUD-based backends. The boilerplate code provided by these code generators will save you a large amount of time and work.
 
@@ -167,4 +167,19 @@ $ bin/console server:start
   [OK] Web server listening on http://127.0.0.1:8024
 
 http://symfony.com/blog/new-in-symfony-3-3-webserverbundle
+
+
+## Creación de un bundle
+
+Podemos crear un bundle a mano, o generarlo con el comando *generate:bundle* de 
+la consola.
+
+> bin/console generate:bundle
+
+NOTA: Desde la versión 3.2, hay un *bug* relacionado con la autocarga de clases.
+Symofny alerta de ello al generar el bundle:
+
+![Aviso en la generación de un bundle](img/generate_bundle_message.png "Imagen de aviso del bug")
+
+
 
