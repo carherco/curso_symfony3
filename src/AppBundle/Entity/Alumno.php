@@ -298,9 +298,13 @@ class Alumno
       return $this;
     }
     
+    public function nombreCompleto() {
+      return (string)($this->nombre. " ". $this->apellidos);
+    }
+    
     
     public function __toString() {
-      return $this->nombre. " ". $this->apellidos;
+      return (string)$this->nombreCompleto();
     }
 
 

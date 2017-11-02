@@ -102,13 +102,26 @@ Ejercicio formularios
 Conviene seguir el siguiente orden: grados, asingaturas, alumnos, notas.
 
 
+Ejercicio rediseño de plantillas de bundles
+-------------------------------------------
+
+Rediseñar la página de error 404 de symfony.
+
+
+Ejercico Response
+-----------------
+
+Crear una acción que responda con un json en vez de con un HTML.
+
+
 
 Ejercicio mensajes flash
 ------------------------
 
-En un deleteAction y en un newAction de un crud, poner un mensaje de "elemento 
-eliminado correctamente" y de "elemento creado correctamente" que aparezca al 
-redirigir al indexAction
+1º) En un deleteAction y en un newAction de un crud, crear un mensaje de "elemento 
+eliminado correctamente" y de "elemento creado correctamente". 
+2º) Mostrar dichos mensajesque al usuario tras realizar las operaciones de borrado
+o de creación de un elemento. Los mensajes deben introducirse en el layout public.html.twig
 
 
 
@@ -120,6 +133,8 @@ Ejercicio debug
 - Poner un *exit;* en la acción después del dump
 - Poner un {% dump %} en una plantilla de twig
 - Poner un {{ dump }} en una plantilla de twig
+
+
 
 
 Ejercicio Bundles

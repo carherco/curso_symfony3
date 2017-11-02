@@ -133,7 +133,9 @@ Autenticación con LDAP
 
 
 https://symfony.com/doc/current/security/ldap.html
-
+https://github.com/ldaptools/ldaptools-bundle
+https://github.com/ldaptools/ldaptools-bundle/blob/master/Resources/doc/LDAP-Authentication-Provider.md#mapping-ldap-groups-to-roles
+https://github.com/ldaptools/ldaptools-bundle/blob/master/Resources/doc/LDAP-Authentication-Provider.md#load-user-events
 
 
 Seguridad - Autorización

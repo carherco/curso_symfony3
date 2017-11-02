@@ -108,16 +108,7 @@ El Bundle propio de nuestra aplicación
 
 ### DebugBundle
 
-The DebugBundle allows greater integration of the component into the Symfony full-stack framework. It is enabled by default in the dev and test environment of the Symfony Standard Edition.
-
-Since generating (even debug) output in the controller or in the model of your application may just break it by e.g. sending HTTP headers or corrupting your view, the bundle configures the dump() function so that variables are dumped in the web debug toolbar.
-
-But if the toolbar cannot be displayed because you e.g. called die/exit or a fatal error occurred, then dumps are written on the regular output.
-
-In a Twig template, two constructs are available for dumping a variable. Choosing between both is mostly a matter of personal taste, still:
-
-{% dump foo.bar %} is the way to go when the original template output shall not be modified: variables are not dumped inline, but in the web debug toolbar;
-on the contrary, {{ dump(foo.bar) }} dumps inline and thus may or not be suited to your use case (e.g. you shouldn't use it in an HTML attribute or a <script> tag).
+Para funciones de depuración.
 
 http://symfony.com/doc/current/reference/configuration/debug.html
 http://symfony.com/doc/current/components/var_dumper.html

@@ -1,0 +1,30 @@
+services:
+    app.admin.alumno:
+        class: AppBundle\Admin\AlumnoAdmin
+        arguments: [~, AppBundle\Entity\Alumno, AppBundle:AlumnoAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Alumno }
+        public: true
+
+    app.admin.grado:
+        class: AppBundle\Admin\GradoAdmin
+        arguments: [~, AppBundle\Entity\Grado, AppBundle:GradoAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Grado }
+        public: true
+        calls:
+        - [addChild, ['@app.admin.asignatura']]
+
+    app.admin.asignatura:
+        class: AppBundle\Admin\AsignaturaAdmin
+        arguments: [~, AppBundle\Entity\Asignatura, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Asignatura }
+        public: true
+
+    app.admin.nota:
+        class: AppBundle\Admin\NotaAdmin
+        arguments: [~, AppBundle\Entity\Nota, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Nota }
+        public: true
