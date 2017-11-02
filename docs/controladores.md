@@ -225,7 +225,7 @@ public function indexAction(Request $request, $firstName, $lastName)
 https://symfony.com/doc/current/components/http_foundation.html#component-http-foundation-request
 
 
-El objeto Resonse
+El objeto Response
 -----------------
 
 Como ya hemos dicho, la única obligación de un controlador es devolver un objeto 
@@ -334,6 +334,10 @@ public function indexAction(SessionInterface $session)
 
     // use a default value if the attribute doesn't exist
     $filters = $session->get('filters', array());
+
+    $foobar = $session->invalidate('foobar');
+
+    $foobar = $session->clear();
 }
 ```
 
