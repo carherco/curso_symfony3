@@ -3,7 +3,7 @@ Debug
 
 El DebugBundle está activado por defecto en los entornos dev y test.
 
-Este bundle configura el método dump() para que las variables aparezcan en la 
+Este bundle configura el método **dump()** para que las variables aparezcan en la 
 barra de debug y no alteren la estructura ni el contenido de las páginas.
 
 Pero si por algún motivo el barra de debug no se ejecuta (por ejemplo, porque 
