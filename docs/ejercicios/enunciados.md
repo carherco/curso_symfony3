@@ -146,13 +146,14 @@ para instalar el bundle SonataAdminBundle.
 
 
 Ejercicio seguridad
-------------------------
+-------------------
 
-- Proteger las urls de los crud con el security.yml
-- Configurar un provider de base de datos y un formulario de login
-- Crear un layout para la parte privada (para los CRUD)
+- Proteger las urls de los crud con el security.yml.
+- Configurar un proveedor de identidad basado en una entidad.
+- Crear un layout para la parte privada (para los CRUD).
 - En este layout privado, mostrar el username del usuario y un link para salir
-de la parte privada (logout)
+de la parte privada (logout).
 
-Extra: Cambiar el provider por uno de LDAP
-Extra: Instalar y probar FOSUserBundle
+Extra: Cambiar el provider por uno de LDAP.
+
+Extra: Instalar y probar FOSUserBundle.

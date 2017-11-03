@@ -97,7 +97,7 @@ en el profiler, información detallada de los aspectos de seguridad de esta peti
 Si probamos a entrar en */asignaturas* con el usuario *admin* veremos que sí que nos deja acceder
 
 
-Cambiar el algotimo de codificación de contraseñas
+Cambiar el algoritmo de codificación de contraseñas
 --------------------------------------------------
 
 Vamos a cambiar el algotimo de codificación de contraseñas de texto plano a *bcrypt*.
@@ -247,6 +247,7 @@ a los métodos serialize y unserialize.
 Ya solamente queda configurar el security.yml para que utilice un provider basado
 en nuestra entidad
 
+```yml
 # app/config/security.yml
 security:
     encoders:
@@ -268,6 +269,7 @@ security:
             provider: mi_poveedor
 
     # ...
+```
 
 
 AdvancedUserInterface
@@ -392,8 +394,32 @@ https://symfony.com/doc/current/security/entity_provider.html
 Configurar múltiples providers
 ------------------------------
 
+Es posible configurar múltiples providers. En caso de que un firewall no especifique
+qué provider va a utilizar, utilizará el primero de ellos.
 
+```yml
+# app/config/security.yml
+security:
+    providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
+        in_memory:
+            memory:
+                users:
+                    foo: { password: test }
+        user_db:
+            entity: { class: AppBundle\Entity\User, property: username }
 
+    firewalls:
+        secured_area:
+            # ...
+            pattern: ^/
+            provider: user_db
+            form_login: ~
+```
+
+https://symfony.com/doc/current/security/multiple_user_providers.html
 
 Autenticación con formulario de login
 -------------------------------------
