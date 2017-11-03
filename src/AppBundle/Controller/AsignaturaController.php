@@ -21,8 +21,7 @@ class AsignaturaController extends Controller
     {
         $asignaturasRepository = $this->getDoctrine()->getRepository(Asignatura::class);
         $asignaturas = $asignaturasRepository->findAll();
-
-      
+    
         return $this->render('asignatura/index.html.twig', array(
             'asignaturas' => $asignaturas
         ));
@@ -54,6 +53,11 @@ class AsignaturaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($asignatura);
             $em->flush();
+            
+            $this->addFlash(
+                'notice',
+                'Asignatura dada de alta correctamente'
+            );
 
             return $this->redirectToRoute('asignatura_index');
         }
@@ -68,8 +72,12 @@ class AsignaturaController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        
+        
         $asignaturasRepository = $this->getDoctrine()->getRepository(Asignatura::class);
         $asignatura = $asignaturasRepository->find($id);
+        
+        $this->denyAccessUnlessGranted('CAN_EDIT', $asignatura);
         
         $form = $this->createForm(AsignaturaType::class, $asignatura);
         

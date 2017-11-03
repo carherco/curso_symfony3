@@ -33,3 +33,21 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    app.post_voter:
+        class: AppBundle\Security\EditarEventoVoter
+        tags:
+            - { name: security.voter }
+        # pequeña mejora de rendimiento (no permite $this->get('app.post_voter')
+        public: false
+        
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+        
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: my-server
+                port: 389
+                encryption: tls
+                options:
+                    protocol_version: 3
+                    referrals: false

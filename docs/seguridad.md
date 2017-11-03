@@ -108,13 +108,283 @@ Vamos a cambiar el algotimo de codificación de contraseñas de texto plano a *b
             cost: 12
 ```
 
+Existe un comando en symfony que codifica una contraseña utilizando el algoritmo 
+configurado:
 
-
+> bin/console security:encode-password
 
 
 
 Entity Provider
 ---------------
+
+Vamos ahora a cabmiar el provider in_memory por uno de base de datos:
+
+Lo primero que necesitamos es nuestra entidad de usuarios
+
+```php
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * @ORM\Table(name="app_users")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ */
+class User implements UserInterface, \Serializable
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=60, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    public function __construct()
+    {
+        $this->isActive = true;
+        // si necesitáramos un "salt" podríamos hacer algo así
+        // $this->salt = md5(uniqid('', true));
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getSalt()
+    {
+        // El método es necesario aunque no utilicemos un "salt"
+        return null;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
+}
+```
+
+Y ahora actulizamos la base de datos:
+
+> php bin/console doctrine:schema:update --force
+
+
+Una clase *User* debe implementar las interfaces UserInterface y Serializable.
+
+Como consecuencia de implementar la interfaz UserInterface tenemos que crear los
+siguientes métodos:
+
+- getRoles()
+- getPassword()
+- getSalt()
+- getUsername()
+- eraseCredentials()
+
+Y como consecuencia de implementar Serializable, tenemos que crear los siguientes
+métodos:
+
+- serialize()
+- unserialize()
+
+Al final de cada petición el objeto User es serializado y metido en la sesión. En
+la siguiente petición, se deserializa. Symfony hace dichas operaciones llamando 
+a los métodos serialize y unserialize.
+
+
+Ya solamente queda configurar el security.yml para que utilice un provider basado
+en nuestra entidad
+
+# app/config/security.yml
+security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+
+    # ...
+
+    providers:
+        mi_poveedor:
+            entity:
+                class: AppBundle:User
+                property: username
+
+    firewalls:
+        main:
+            pattern:    ^/
+            http_basic: ~
+            provider: mi_poveedor
+
+    # ...
+
+
+AdvancedUserInterface
+---------------------
+
+En vez de extender de UserInterface, podemos extender de AdvancedUserInterface.
+Para ello tenemos que definir los siguientes métodos:
+
+
+
+
+```php
+// src/AppBundle/Entity/User.php
+
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+// ...
+
+class User implements AdvancedUserInterface, \Serializable
+{
+    // ...
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    // serialize and unserialize must be updated - see below
+    public function serialize()
+    {
+        return serialize(array(
+            // ...
+            $this->isActive
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list (
+            // ...
+            $this->isActive
+        ) = unserialize($serialized);
+    }
+}
+```
+
+
+- isAccountNonExpired(): comprueba si la cuenta de usuario ha caducado
+- isAccountNonLocked(): comprueba si el usuario está bloquedado
+- isCredentialsNonExpired() comprueba si la contraseña ha caducado;
+- isEnabled() comprueba si el usuario está habilitado.
+
+Si cualquiera de estos métodos devuelve false, el usuario no podrá hacer login.
+Según cuál de estos métodos devuelva falso, Symfony generará un mensaje diferente.
+
+```php
+// src/AppBundle/Entity/User.php
+
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+// ...
+
+class User implements AdvancedUserInterface, \Serializable
+{
+    // ...
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    // serialize and unserialize must be updated - see below
+    public function serialize()
+    {
+        return serialize(array(
+            // ...
+            $this->isActive
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list (
+            // ...
+            $this->isActive
+        ) = unserialize($serialized);
+    }
+}
+```
+
+
 
 https://symfony.com/doc/current/security/entity_provider.html
 
@@ -123,13 +393,148 @@ Configurar múltiples providers
 ------------------------------
 
 
+
+
 Autenticación con formulario de login
 -------------------------------------
+
+Vamos a cambiar ahora el método de login http_basic por un formulario de login.
+
+```yml
+# app/config/security.yml
+security:
+    # ...
+
+    firewalls:
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                default_target_path: after_login_route_name
+                always_use_default_target_path: true
+```
+
+Con esto decimos a symfony que vamos a utilizar un formulario de login, y que 
+rediriga a la ruta de nombre "login" cuando sea necesario identificar a un usuario.
+
+Los siguiente es crear una acción y una plantilla para esa ruta:
+
+```php
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+public function loginAction(Request $request, AuthenticationUtils $authUtils)
+{
+    // get the login error if there is one
+    $error = $authUtils->getLastAuthenticationError();
+
+    // last username entered by the user
+    $lastUsername = $authUtils->getLastUsername();
+
+    return $this->render('security/login.html.twig', array(
+        'last_username' => $lastUsername,
+        'error'         => $error,
+    ));
+}
+```
+
+```yml
+{% if error %}
+    <div>{{ error.messageData }}</div>
+{% endif %}
+
+<form action="{{ path('login') }}" method="post">
+    <label for="username">Usuario:</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="_password" />
+
+    {#
+        Si queremos controlar la url a la que se redirigirá el usuario después de hacer login
+        <input type="hidden" name="_target_path" value="/account" />
+    #}
+
+    <button type="submit">Login</button>
+</form>
+```
+
 
 https://symfony.com/doc/current/security/form_login_setup.html
 
 Autenticación con LDAP
 ----------------------
+
+Symfony viene con un servicio de LDAP que se puede configurar para gestionar 
+conexiones con un LDAP:
+
+```yml
+# app/config/services.yml
+services:
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: my-server
+                port: 389
+                encryption: tls
+                options:
+                    protocol_version: 3
+                    referrals: false
+```
+
+Después de configurar el servicio, podemos configurar un provider que utilice
+dicho servicio:
+
+```yml
+# app/config/security.yml
+security:
+    # ...
+
+    providers:
+        my_ldap:
+            ldap:
+                service: Symfony\Component\Ldap\Ldap
+                base_dn: dc=example,dc=com
+                search_dn: "cn=read-only-admin,dc=example,dc=com"
+                search_password: password
+                default_roles: ROLE_USER
+                uid_key: uid
+```
+
+Y un método http_basic_ldap para hacer login
+
+```yml
+# app/config/security.yml
+security:
+    # ...
+
+    firewalls:
+        main:
+            # ...
+            http_basic_ldap:
+                # ...
+                service: Symfony\Component\Ldap\Ldap
+                dn_string: 'uid={username},dc=example,dc=com'
+```
+
+o un método form_basic_ldap
+
+```yml
+# app/config/security.yml
+security:
+    # ...
+
+    firewalls:
+        main:
+            # ...
+            form_login_ldap:
+                # ...
+                service: Symfony\Component\Ldap\Ldap
+                dn_string: 'uid={username},dc=example,dc=com'
+```
+
+Y con esto ya deberíamos ser capaces de hacer login.
 
 
 https://symfony.com/doc/current/security/ldap.html
@@ -251,13 +656,29 @@ Gracias al bundle SensioFrameworkExtraBundle, se puede hacer lo mismo con anotac
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 public function helloAction($name)
 {
     // ...
 }
 ```
+
+Incluso se puede poner a nivel de la clase controladora
+
+```php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ * @Route("/asignaturas")
+ */
+class AsignaturasController extends Controller
+{
+  
+}
+```
+
 
 https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
 
@@ -303,6 +724,8 @@ class NewsletterManager
 Si el usuario no tiene el rol ROLE_NEWSLETTER_ADMIN, se le pedirá que haga login.
 
 
+https://symfony.com/doc/master/bundles/SensioFrameworkExtraBundle/annotations/security.html
+
 
 Los pseudo-roles
 ----------------
@@ -328,6 +751,7 @@ Voters
 Como alternativa a los sistemas de ACL, symonfy dispone de los voters. Los voters
 permiten programar cualquier tipo de lógica para permitir o denegar accesos.
 
+[Documentación sobre Voters](voters.md)
 
 
 El objeto User
@@ -431,4 +855,5 @@ Pero NO hay que crear ningún controlador que haga nada.
 Cuando un usuario acceda a la url */logout* symfony le deslogueará y le redirigirá
 a la url definida en *target*, en este caso le redirigirá a */*
 
+https://symfony.com/doc/current/security.html
 https://symfony.com/doc/current/reference/configuration/security.html

@@ -2,4 +2,23 @@
 
 {% block body %}
   <h1>Login</h1>
+  
+  {% if error %}
+      <div>{{ error.message }}</div>
+  {% endif %}
+
+  <form action="{{ path('login') }}" method="post">
+      <label for="username">Usuario:</label>
+      <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="_password" />
+
+      {#
+          Si queremos controlar la url a la que se redirigirá el usuario después de hacer login
+          <input type="hidden" name="_target_path" value="/account" />
+      #}
+
+      <button type="submit">Login</button>
+  </form>
 {% endblock %}

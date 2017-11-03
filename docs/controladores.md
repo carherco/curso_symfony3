@@ -332,11 +332,15 @@ public function indexAction(SessionInterface $session)
     // get the attribute set by another controller in another request
     $foobar = $session->get('foobar');
 
+    $foobar = $session->has('foobar');
+
     // use a default value if the attribute doesn't exist
     $filters = $session->get('filters', array());
 
-    $foobar = $session->invalidate('foobar');
+    //Destruye la sesión y crea otra nueva
+    $foobar = $session->invalidate();
 
+    //Borra todos los atributos de la sesión actual
     $foobar = $session->clear();
 }
 ```
