@@ -45,9 +45,9 @@ services:
         
     Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
         arguments:
-            -   host: my-server
-                port: 389
-                encryption: tls
+            -   host: 138.100.191.229
+                port: 636
+#                encryption: tls
                 options:
                     protocol_version: 3
                     referrals: false
