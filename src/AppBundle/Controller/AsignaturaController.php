@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Asignatura;
 use AppBundle\Form\AsignaturaType;
@@ -25,6 +27,78 @@ class AsignaturaController extends Controller
         return $this->render('asignatura/index.html.twig', array(
             'asignaturas' => $asignaturas
         ));
+    }
+    
+    /**
+     * @Route("/asignaturas_json1", name="asignaturas_json1")
+     */
+    public function indexJSON1Action()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        
+        $asignaturasRepository = $this->getDoctrine()->getRepository(Asignatura::class);
+        $asignaturas = $asignaturasRepository->findAll();
+    
+        $salida = array();
+        foreach($asignaturas as $asignatura){
+          $item['nombre'] = $asignatura->getNombre();
+          $item['grado'] = $asignatura->getGrado()->getNombre();
+          $item['ects'] = $asignatura->getCredects();
+          $salida[] = $item;
+        }
+        
+        $output = json_encode($salida);
+        
+        $response->setContent($output);
+        
+        return $response;
+
+    }
+    
+    /**
+     * @Route("/asignaturas_json2", name="asignaturas_json2")
+     */
+    public function indexJSON2Action()
+    {
+        $response = new JsonResponse();
+        
+        $asignaturasRepository = $this->getDoctrine()->getRepository(Asignatura::class);
+        $asignaturas = $asignaturasRepository->findAll();
+    
+        $salida = array();
+        foreach($asignaturas as $asignatura){
+          $item['nombre'] = $asignatura->getNombre();
+          $item['grado'] = $asignatura->getGrado()->getNombre();
+          $item['ects'] = $asignatura->getCredects();
+          $salida[] = $item;
+        }
+        
+        $output = json_encode($salida);
+        
+        $response->setContent($output);
+        
+        return $response;
+
+    }
+    
+    /**
+     * @Route("/asignaturas_json3", name="asignaturas_json3")
+     */
+    public function indexJSON3Action()
+    {
+        $asignaturasRepository = $this->getDoctrine()->getRepository(Asignatura::class);
+        $asignaturas = $asignaturasRepository->findAll();
+    
+        $salida = array();
+        foreach($asignaturas as $asignatura){
+          $item['nombre'] = $asignatura->getNombre();
+          $item['grado'] = $asignatura->getGrado()->getNombre();
+          $item['ects'] = $asignatura->getCredects();
+          $salida[] = $item;
+        }
+        
+        return $this->json($salida);
     }
 
     /**
