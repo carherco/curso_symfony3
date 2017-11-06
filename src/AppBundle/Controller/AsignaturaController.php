@@ -46,10 +46,8 @@ class AsignaturaController extends Controller
           $item['grado'] = $asignatura->getGrado()->getNombre();
           $item['ects'] = $asignatura->getCredects();
           $salida[] = $item;
-        }
-        
-        $output = json_encode($salida);
-        
+        } 
+        $output = json_encode($salida);    
         $response->setContent($output);
         
         return $response;
@@ -72,10 +70,8 @@ class AsignaturaController extends Controller
           $item['grado'] = $asignatura->getGrado()->getNombre();
           $item['ects'] = $asignatura->getCredects();
           $salida[] = $item;
-        }
-        
-        $output = json_encode($salida);
-        
+        } 
+        $output = json_encode($salida);       
         $response->setContent($output);
         
         return $response;

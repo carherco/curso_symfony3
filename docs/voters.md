@@ -39,7 +39,7 @@ Es decir, cualquier usuario puede editar eventos, pero solamente los suyos.
         $evento = ...;
 
         // check for "edit" access: calls all voters
-        $this->denyAccessUnlessGranted('edit', $evento);
+        $this->denyAccessUnlessGranted('ROLE_EVENT_EDIT', $evento);
 
         // ...
     }
@@ -90,7 +90,7 @@ class EditarEventoVoter extends Voter
 El método supports()
 --------------------
 
-La llamada a *$this->denyAccessUnlessGranted('edit', $evento)* admite dos parámetros.
+La llamada a *$this->denyAccessUnlessGranted('ROLE_EVENT_EDIT', $evento)* admite dos parámetros.
 Estos dos parámetros se le pasan a la función supports del voter.
 
 Este método debe devolver true o false. Si devuelve false, el voter se *abstiene* 
@@ -109,7 +109,7 @@ al usuario realizar la acción. Si devuelve false, Symfony denegará al usuario
 realizar la acción.
 
 A este método le llegan dos parámetros con los dos valores con los que se llamó a 
-$this->denyAccessUnlessGranted('edit', $evento) y un tercer parámetro con acceso
+$this->denyAccessUnlessGranted('ROLE_EVENT_EDIT', $evento) y un tercer parámetro con acceso
 al objeto user. 
 
 Si es necesario, se puede utilizar la inyección de dependencias para acceder a 

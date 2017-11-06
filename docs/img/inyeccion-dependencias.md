@@ -140,5 +140,3 @@ public function indexAction(Psr\Log\LoggerInterface $logger, Doctrine\ORM\Entity
 ```
 
 Con este patrón, desparecen todos los problemas mencionados anteriormente.
-
-

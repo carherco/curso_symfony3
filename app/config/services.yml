@@ -6,12 +6,11 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        # automatically injects dependencies in your services
+        # Habilita el tipado de argumentos en los métodos __construct() de los servicios
         autowire: true
-        # automatically registers your services as commands, event subscribers, etc.
+        # Con autoconfigure true no es necesario poner tags a los servicos. Symfony las averigua por las interfaces que implementan.
         autoconfigure: true
-        # this means you cannot fetch services directly from the container via $container->get()
-        # if you need to do this, you can override this setting on individual services
+        # Solamente se pueden obtener servicios con $container->get() si son públicos
         public: false
 
     # makes classes in src/AppBundle available to be used as services
@@ -47,7 +46,7 @@ services:
         arguments:
             -   host: 138.100.191.229
                 port: 636
-#                encryption: tls
+                encryption: ssl
                 options:
                     protocol_version: 3
                     referrals: false

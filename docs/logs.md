@@ -1,0 +1,345 @@
+Logs
+====
+
+Symfony viene por defecto con una librería externa (Monolog) que permite crear
+logs que pueden ser almacenados en varios lugares diferentes.
+
+https://github.com/Seldaek/monolog
+
+Para escribir un mensaje en el log, primero hay obtener el servicio *logger* del 
+contenedor de servicios:
+
+```php
+use Psr\Log\LoggerInterface;
+
+public function indexAction(LoggerInterface $logger)
+{
+    // alternative way of getting the logger
+    // $logger = $this->get('logger');
+
+    $logger->info('I just got the logger');
+    $logger->error('An error occurred');
+
+    $logger->critical('I left the oven on!', array(
+        // include extra "context" info in your logs
+        'cause' => 'in_hurry',
+    ));
+
+    // ...
+}
+```
+
+Monolog cumple el estándar PSR-3, que obliga a implementar el interfaz *LoggerInterface*.
+
+
+```php
+<?php
+
+namespace Psr\Log;
+
+/**
+ * Describes a logger instance
+ *
+ * The message MUST be a string or object implementing __toString().
+ *
+ * The message MAY contain placeholders in the form: {foo} where foo
+ * will be replaced by the context data in key "foo".
+ *
+ * The context array can contain arbitrary data, the only assumption that
+ * can be made by implementors is that if an Exception instance is given
+ * to produce a stack trace, it MUST be in a key named "exception".
+ *
+ * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+ * for the full interface specification.
+ */
+interface LoggerInterface
+{
+    /**
+     * System is unusable.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function emergency($message, array $context = array());
+
+    /**
+     * Action must be taken immediately.
+     *
+     * Example: Entire website down, database unavailable, etc. This should
+     * trigger the SMS alerts and wake you up.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function alert($message, array $context = array());
+
+    /**
+     * Critical conditions.
+     *
+     * Example: Application component unavailable, unexpected exception.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function critical($message, array $context = array());
+
+    /**
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function error($message, array $context = array());
+
+    /**
+     * Exceptional occurrences that are not errors.
+     *
+     * Example: Use of deprecated APIs, poor use of an API, undesirable things
+     * that are not necessarily wrong.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function warning($message, array $context = array());
+
+    /**
+     * Normal but significant events.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function notice($message, array $context = array());
+
+    /**
+     * Interesting events.
+     *
+     * Example: User logs in, SQL logs.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function info($message, array $context = array());
+
+    /**
+     * Detailed debug information.
+     *
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function debug($message, array $context = array());
+
+    /**
+     * Logs with an arbitrary level.
+     *
+     * @param mixed $level
+     * @param string $message
+     * @param array $context
+     * @return null
+     */
+    public function log($level, $message, array $context = array());
+}
+```
+
+Por lo tanto, tenemos los siguientes métodos, que se corresponden con nivel de 
+criticidad:
+- debug($message, $context)
+- info($message, $context)
+- notice($message, $context)
+- warning($message, $context)
+- error($message, $context)
+- critical($message, $context)
+- alert($message, $context)
+- emergency($message, $context)
+
+Y un método genérico, con un parámetro que indica en nivel:
+- log($level, $message, $context);
+
+```php
+<?php
+
+namespace Psr\Log;
+
+/**
+ * Describes log levels
+ */
+class LogLevel
+{
+    const EMERGENCY = 'emergency';
+    const ALERT     = 'alert';
+    const CRITICAL  = 'critical';
+    const ERROR     = 'error';
+    const WARNING   = 'warning';
+    const NOTICE    = 'notice';
+    const INFO      = 'info';
+    const DEBUG     = 'debug';
+}
+```
+
+
+Configuración
+-------------
+
+El comportamiento de los logs es uno de los que es significativamente distinto en 
+producción que en desarrollo. Así que encontraremos diferentes configuraciones 
+en los ficheros config_prod.yml y config_dev.yml.
+
+
+```yml
+imports:
+    - { resource: config.yml }
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+        console:
+            type: console
+            level: debug
+```
+
+
+Opciones de configuración más usuales:
+
+- type: Indica el tipo de Handler que se quiere utilizar
+- level: Ínica el nivel mínimo que debe tener el mensaje para ser loggeado.
+
+
+El manejador especial fingers_crossed
+-------------------------------------
+
+Este manejador es especial. Guarda en memoria todos los mensajes de log, sean 
+del nivel que sean, y si en algún momento de la petición alguno de los mensajes
+alcanza al menos en nivel indicado en *action_level*, entonces envia TODOS los logs
+al manejador indicado en *handler*.
+
+De esta forma, en caso de error grave, la traza loggeada será completa, con los 
+mensajes de todos los niveles.
+
+```yml
+monolog:
+    handlers:
+        main:
+            type: fingers_crossed
+            action_level: error
+            handler: nested
+        nested:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+        console:
+            type: console
+            level: debug
+```
+
+
+
+Configuración de log con ficheros rotativos
+-------------------------------------------
+
+```yml
+monolog:
+    handlers:
+        main:
+            type:  rotating_file
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+            # número máximo de ficheros que guardar
+            # por defecto, 0, que significa infinitos ficheros
+            max_files: 10
+```
+
+Cómo configurar Monolog para enviar correos
+-------------------------------------------
+
+https://symfony.com/doc/current/logging/monolog_email.html
+
+
+
+
+
+
+Cómo separar logs en distintos ficheros según el canal
+------------------------------------------------------
+
+The Symfony Framework organizes log messages into channels. By default, there are several channels, including doctrine, event, security, request and more. The channel is printed in the log message and can also be used to direct different channels to different places/files.
+
+By default, Symfony logs every message into a single file (regardless of the channel).
+
+```yml
+monolog:
+    handlers:
+        security:
+            level:    debug
+            type:     stream
+            path:     '%kernel.logs_dir%/security.log'
+            channels: [security]
+
+        main:
+            # ...
+            channels: ['!security']
+```
+
+```yml
+channels: ~    # Incluye todos los canales
+
+channels: security  # Incluye solamente el canal 'security'
+channels: '!security' # Incluye todos los canales menos security
+
+channels: [security, events]   # Incluye solamente los canales 'security' y 'events'
+channels: ['!security', '!events'] # Incluye todos los canales menos 'security' y 'events'
+```
+
+
+
+
+
+
+
+https://symfony.com/doc/current/logging/channels_handlers.html
+
+Cómo utilizar el servicio logger dentro de otro servicio
+--------------------------------------------------------
+
+Para utilizar el servicio logger dentro de otro servicio, basta con inyectarlo 
+en el constructor del servicio:
+
+```php
+use Psr\Log\LoggerInterface;
+class MiServicio {
+
+  public function __construct(LoggerInterface $logger) {
+    $this->logger = $logger;
+  }
+}
+```
+
+Cómo añadir datos extra a los mensajes de log mediante los procesadores
+-----------------------------------------------------------------------
+
+https://symfony.com/doc/current/logging/processors.html
+
+
+Cómo deshabilitar la precisión de microsegundos para ganar rapidez
+------------------------------------------------------------------
+
+https://symfony.com/doc/current/logging/disable_microsecond_precision.html
+
+
+
+
+
+
+https://symfony.com/doc/current/logging.html
+
+https://github.com/symfony/monolog-bundle/blob/master/DependencyInjection/Configuration.php#L25
