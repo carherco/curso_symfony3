@@ -1,6 +1,8 @@
 # Inyección de dependencias
 
-La inyección de dependencias es un patrón de diseño orientado a objetos, en el que se suministran objetos a una clase en lugar de ser la propia clase la que cree el objeto. También se conoce como IoC (Inversion of Control).
+La inyección de dependencias es un patrón de diseño orientado a objetos, en el 
+que se suministran objetos a una clase en lugar de ser la propia clase la que 
+cree el objeto. También se conoce como IoC (Inversion of Control).
 
 Veamoslo en un ejemplo. Pongamos que queremos utilizar la clase Symfony\Component\Ldap\Ldap
 en nuestro controlador para realizar una conexión manualmente a LDAP y realizar 

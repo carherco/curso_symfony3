@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use \AppBundle\Service\Mock\AsignaturasManager;
+use Psr\Log\LoggerInterface;
 
 class DefaultController extends Controller
 {
@@ -117,5 +118,55 @@ class DefaultController extends Controller
 //          'notas' => $notas
       )); 
     }
+    
+    /**
+     * @Route("/logs", name="logs")
+     */
+    public function logsAction(LoggerInterface $logger)
+    {
+      $nombre = "Carlos";  
+      
+      $logger->info('Este es un mensaje con nivel info');
+      $logger->error('¡¡¡Esto es un mensaje de error!!!', array('infoextra'=>'Estamos en la acción logsAction'));
+      
+      $logger->debug('Hemos entrado en la accion logsAction para saludar a {nombre}', array('nombre'=>$nombre));
+
+      $logger->critical('¡Oh no! ¡Esto es un desastre!');
+      
+      return $this->render(
+          'default/mundo-upm.html.twig', array(
+          'name' => $nombre,
+      ));
+    }
+    
+    /**
+     * @Route("/email", name="email")
+     */
+    public function emailAction(\Swift_Mailer $mailer)
+    {
+        $name = "Carlos";
+        
+        $message = (new \Swift_Message('Correo de prueba'))
+          ->setFrom('curso@carherco.es')
+          ->setTo('carherco@gmail.com')
+          ->setBody(
+              $this->renderView(
+                  'emails/prueba.html.twig',
+                  array('name' => $name)
+              ),
+              'text/html'
+        );
+
+        $mailer->send($message);
+
+        // Podríamos haber obtenido el servicio también con $this->get('mailer')
+        // $this->get('mailer')->send($message);
+
+        return new Response(
+            '<html><body>Correo enviado</body></html>'
+        );
+    }
+    
+    
     
 }

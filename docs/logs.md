@@ -247,6 +247,8 @@ monolog:
 Configuración de log con ficheros rotativos
 -------------------------------------------
 
+Configurar Monolog para generar ficheros de log rotativos es muy sencillo:
+
 ```yml
 monolog:
     handlers:
@@ -262,6 +264,8 @@ monolog:
 Cómo configurar Monolog para enviar correos
 -------------------------------------------
 
+
+
 https://symfony.com/doc/current/logging/monolog_email.html
 
 
@@ -272,9 +276,9 @@ https://symfony.com/doc/current/logging/monolog_email.html
 Cómo separar logs en distintos ficheros según el canal
 ------------------------------------------------------
 
-The Symfony Framework organizes log messages into channels. By default, there are several channels, including doctrine, event, security, request and more. The channel is printed in the log message and can also be used to direct different channels to different places/files.
-
-By default, Symfony logs every message into a single file (regardless of the channel).
+Symfony organiza los mensajes de log en canales: doctrine, event, security, 
+request... El canal aparece en el mensaje de log y puede ser utilizado para 
+configurar distintos *handlers* según el canal.
 
 ```yml
 monolog:
@@ -286,7 +290,9 @@ monolog:
             channels: [security]
 
         main:
-            # ...
+            level: debug
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
             channels: ['!security']
 ```
 
@@ -300,13 +306,8 @@ channels: [security, events]   # Incluye solamente los canales 'security' y 'eve
 channels: ['!security', '!events'] # Incluye todos los canales menos 'security' y 'events'
 ```
 
-
-
-
-
-
-
 https://symfony.com/doc/current/logging/channels_handlers.html
+
 
 Cómo utilizar el servicio logger dentro de otro servicio
 --------------------------------------------------------
@@ -327,13 +328,34 @@ class MiServicio {
 Cómo añadir datos extra a los mensajes de log mediante los procesadores
 -----------------------------------------------------------------------
 
+A veces puede llegar a ser difícil saber qué entradas del fichero de log pertenecen
+a qué sesión o petición. 
+
+En este enlace os dejo un ejemplo de la documentación de symfony para utilizar 
+un *procesador* para añadir un identificador único de sesión para cada petición.
+
 https://symfony.com/doc/current/logging/processors.html
 
 
 Cómo deshabilitar la precisión de microsegundos para ganar rapidez
 ------------------------------------------------------------------
 
-https://symfony.com/doc/current/logging/disable_microsecond_precision.html
+Poniendo el parámetro *use_microseconds* a *false*, evitamos que se llame a la 
+función *microtime(true)* y a su posterior parseado. Si tenemos una aplicación que 
+genera una gran cantidad de mensajes de log, se puede llegar a notar la mejora de
+eficiencia.
+
+```yml
+monolog:
+    use_microseconds: false
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+```
+
+
 
 
 

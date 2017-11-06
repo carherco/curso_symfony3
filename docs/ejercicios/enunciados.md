@@ -157,3 +157,25 @@ de la parte privada (logout).
 Extra: Cambiar el provider por uno de LDAP.
 
 Extra: Instalar y probar FOSUserBundle.
+
+
+
+Ejercicio envío correos
+-----------------------
+
+- Crear una acción con un formulario de "registro" (nombre+email+contraseña). Al enviar 
+los datos, enviar un email al usuario recién registrado, dándole la bienvenida.
+- Probarlo con delivery_addresses y sin delivery_addresses.
+
+
+Ejercicios logs
+---------------
+
+- Crear una acción que ponga 1 mensaje de log de cada tipo.
+- Crear algún mensaje de log con información extra en el contexto.
+- Crear algún mensaje de log con una variable.
+- Comprobar diferencias en fichero de log de producción y de desarrollo.
+- Cambiar el nivel de log en la configuración.
+- Enviar log con mensaje de correo.
+- Separar los logs del canal "request" en otro fichero.
+- Buscar los mensajes de log en el profiler
