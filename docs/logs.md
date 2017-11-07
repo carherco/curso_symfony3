@@ -212,7 +212,9 @@ monolog:
 Opciones de configuración más usuales:
 
 - type: Indica el tipo de Handler que se quiere utilizar
-- level: Ínica el nivel mínimo que debe tener el mensaje para ser loggeado.
+- level: Indica el nivel mínimo que debe tener el mensaje para ser loggeado.
+
+https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md
 
 
 El manejador especial fingers_crossed
@@ -264,11 +266,83 @@ monolog:
 Cómo configurar Monolog para enviar correos
 -------------------------------------------
 
+Monolog puede ser configurado para enviar un correo cuando ocurre un error en la
+aplicación. La configuración para esto requiere un para de handlers anidados para
+evitar recibir demasiados correos. Esta configuración parece complicada al principio
+pero cada handler es bastante intuitivo cuando se miran por separado.
 
+```
+monolog:
+    handlers:
+        mail:
+            type:         fingers_crossed
+            action_level: critical
+            handler:      deduplicated
+        deduplicated:
+            type:    deduplication
+            time:    60
+            handler: swift
+        swift:
+            type:       swift_mailer
+            from_email: 'error@example.com'
+            to_email:   'error@example.com'
+            # or list of recipients
+            # to_email:   ['dev1@example.com', 'dev2@example.com', ...]
+            subject:    'An Error Occurred! %%message%%'
+            level:      debug
+            formatter:  monolog.formatter.html
+            content_type: text/html
+```
+
+El handler *mail* es un handler fingers_crossed, lo que significa que solamente
+se "disparará" cuando el nivel sea en este caso, *critical*.
+
+Por defecto el nivel *critical* solamente se alcanza en errores HTTP 5xx. Si se 
+alcanza este nivel el handle fingers_crossed pasará todos los logs de dicha petición
+al handler *deduplicated*.
+
+El handler deduplicated simplemente elimina los mensajes repetidos durante el periodo
+de tiempo especificado y se los pasa al handler swift. De esta forma se reducen 
+los correos que pueden llegar en momentos de fallo crítico.
+
+El handler swift es el que se encarga finalmente de mandar el correo con el mensaje.
 
 https://symfony.com/doc/current/logging/monolog_email.html
 
 
+El manejador especial group
+---------------------------
+
+El handler *group* hace que un mensaje sea manejado por más de un handler. Aquí 
+podemos ver un ejemplo en el que los mensajes que pasan el filtro del handler
+fingers_crossed al mismo tiempo escritos en un fichero y enviados por correo.
+
+```yml
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: critical
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, deduplicated]
+        streamed:
+            type:  stream
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+        deduplicated:
+            type:    deduplication
+            handler: swift
+        swift:
+            type:       swift_mailer
+            from_email: 'error@example.com'
+            to_email:   'error@example.com'
+            subject:    'An Error Occurred! %%message%%'
+            level:      debug
+            formatter:  monolog.formatter.html
+            content_type: text/html
+```
 
 
 
