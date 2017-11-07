@@ -133,6 +133,12 @@ class DefaultController extends Controller
 
       $logger->critical('¡Oh no! ¡Esto es un desastre!');
       
+      $loggerMiCanal = $this->get('monolog.logger.micanal');
+      $loggerMiCanal->info('Este es un mensaje con nivel info');
+      
+      $loggerOtroCanal = $this->get('monolog.logger.otrocanal');
+      $loggerOtroCanal->info('Este es un mensaje con nivel info');
+      
       return $this->render(
           'default/mundo-upm.html.twig', array(
           'name' => $nombre,

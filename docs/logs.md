@@ -382,6 +382,28 @@ channels: ['!security', '!events'] # Incluye todos los canales menos 'security' 
 
 https://symfony.com/doc/current/logging/channels_handlers.html
 
+Cómo crear canales
+------------------
+
+```yml
+monolog:
+    channels: ['micanal','otrocanal']
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+```
+
+
+```php
+      $loggerMiCanal = $this->get('monolog.logger.micanal');
+      $loggerMiCanal->info('Este es un mensaje con nivel info');
+      
+      $loggerOtroCanal = $this->get('monolog.logger.otrocanal');
+      $loggerOtroCanal->info('Este es un mensaje con nivel info');
+```
+
 
 Cómo utilizar el servicio logger dentro de otro servicio
 --------------------------------------------------------
