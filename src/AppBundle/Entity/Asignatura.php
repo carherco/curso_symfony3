@@ -3,211 +3,84 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Asignatura
  *
- * @ORM\Table(name="asignatura")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AsignaturaRepository")
+ * @ORM\Table(name="asignatura", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_9243D6CE20332D99", columns={"codigo"})}, indexes={@ORM\Index(name="IDX_9243D6CE91A441CC", columns={"grado_id"})})
+ * @ORM\Entity
  */
 class Asignatura
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="codigo", type="integer", unique=true)
+     * @ORM\Column(name="codigo", type="integer", nullable=false)
      */
     private $codigo;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Grado", inversedBy="asignaturas")
-     * @ORM\JoinColumn(name="grado_id", referencedColumnName="id")
-     */
-    private $grado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_ingles", type="string", length=255)
+     * @ORM\Column(name="nombre_ingles", type="string", length=255, nullable=false)
      */
     private $nombreIngles;
 
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="credects", type="integer", nullable=true)
      */
     private $credects;
-    
+
     /**
-     * 
-     * @ORM\ManyToMany(targetEntity="Alumno", inversedBy="asignaturas")
-     * @ORM\JoinTable(name="alumnos_asignaturas")
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $alumnos;
-    
+    private $id;
+
     /**
-     * @ORM\OneToMany(targetEntity="Nota", mappedBy="asignatura")
+     * @var \AppBundle\Entity\Grado
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="grado_id", referencedColumnName="id")
+     * })
      */
-    private $notas;
-            
+    private $grado;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Alumno", inversedBy="asignatura")
+     * @ORM\JoinTable(name="alumnos_asignaturas",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="asignatura_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="alumno_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $alumno;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->alumnos = new ArrayCollection();
-    }        
-    
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->alumno = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Set codigo
-     *
-     * @param integer $codigo
-     *
-     * @return Asignatura
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-
-        return $this;
-    }
-
-    /**
-     * Get codigo
-     *
-     * @return int
-     */
-    public function getCodigo()
-    {
-        return $this->codigo;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     *
-     * @return Asignatura
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set nombreIngles
-     *
-     * @param string $nombreIngles
-     *
-     * @return Asignatura
-     */
-    public function setNombreIngles($nombreIngles)
-    {
-        $this->nombreIngles = $nombreIngles;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreIngles
-     *
-     * @return string
-     */
-    public function getNombreIngles()
-    {
-        return $this->nombreIngles;
-    }
-
-    /**
-     * Set credects
-     *
-     * @param integer $credects
-     *
-     * @return Asignatura
-     */
-    public function setCredects($credects)
-    {
-        $this->credects = $credects;
-
-        return $this;
-    }
-
-    /**
-     * Get credects
-     *
-     * @return int
-     */
-    public function getCredects()
-    {
-        return $this->credects;
-    }
-    
-    function getGrado() {
-      return $this->grado;
-    }
-
-    function setGrado($grado) {
-      $this->grado = $grado;
-      return $this;
-    }
-    
-    function getAlumnos() {
-      return $this->alumnos;
-    }
-
-    function getNotas() {
-      return $this->notas;
-    }
-
-    function setAlumnos($alumnos) {
-      $this->alumnos = $alumnos;
-      return $this;
-    }
-
-    function setNotas($notas) {
-      $this->notas = $notas;
-      return $this;
-    }
-
-    public function __toString() {
-      return (string)$this->nombre;
-    }
 }
 

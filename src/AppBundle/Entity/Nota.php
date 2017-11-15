@@ -3,187 +3,65 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Nota
  *
- * @ORM\Table(name="nota")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\NotaRepository")
+ * @ORM\Table(name="nota", indexes={@ORM\Index(name="IDX_C8D03E0DFC28E5EE", columns={"alumno_id"}), @ORM\Index(name="IDX_C8D03E0DC5C70C5B", columns={"asignatura_id"})})
+ * @ORM\Entity
  */
 class Nota
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Alumno", inversedBy="notas")
-     * @ORM\JoinColumn(name="alumno_id", referencedColumnName="id")
-     */
-    private $alumno;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Asignatura", inversedBy="notas")
-     * @ORM\JoinColumn(name="asignatura_id", referencedColumnName="id")
-     */
-    private $asignatura;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="n_convocatoria", type="integer")
+     * @ORM\Column(name="n_convocatoria", type="integer", nullable=false)
      */
     private $nConvocatoria;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="date", nullable=false)
      */
     private $fecha;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="nota", type="float")
+     * @ORM\Column(name="nota", type="float", precision=10, scale=0, nullable=false)
      */
     private $nota;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Alumno
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Alumno")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="alumno_id", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $alumno;
 
     /**
-     * Set alumno
+     * @var \AppBundle\Entity\Asignatura
      *
-     * @param Alumno $alumno
-     *
-     * @return Nota
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Asignatura")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="asignatura_id", referencedColumnName="id")
+     * })
      */
-    public function setAlumno($alumno)
-    {
-        $this->alumno = $alumno;
+    private $asignatura;
 
-        return $this;
-    }
 
-    /**
-     * Get alumno
-     *
-     * @return Alumno
-     */
-    public function getAlumno()
-    {
-        return $this->alumno;
-    }
-
-    /**
-     * Set asignatura
-     *
-     * @param Asignatura $asignatura
-     *
-     * @return Nota
-     */
-    public function setAsignatura($asignatura)
-    {
-        $this->asignatura = $asignatura;
-
-        return $this;
-    }
-
-    /**
-     * Get asignatura
-     *
-     * @return Asignatura
-     */
-    public function getAsignatura()
-    {
-        return $this->asignatura;
-    }
-
-    /**
-     * Set nConvocatoria
-     *
-     * @param integer $nConvocatoria
-     *
-     * @return Nota
-     */
-    public function setNConvocatoria($nConvocatoria)
-    {
-        $this->nConvocatoria = $nConvocatoria;
-
-        return $this;
-    }
-
-    /**
-     * Get nConvocatoria
-     *
-     * @return int
-     */
-    public function getNConvocatoria()
-    {
-        return $this->nConvocatoria;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Nota
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set nota
-     *
-     * @param float $nota
-     *
-     * @return Nota
-     */
-    public function setNota($nota)
-    {
-        $this->nota = $nota;
-
-        return $this;
-    }
-
-    /**
-     * Get nota
-     *
-     * @return float
-     */
-    public function getNota()
-    {
-        return $this->nota;
-    }
 }
 
