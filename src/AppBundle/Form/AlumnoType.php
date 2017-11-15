@@ -6,8 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use \Symfony\Component\Form\Extension\Core\Type;
-
 class AlumnoType extends AbstractType
 {
     /**
@@ -15,18 +13,7 @@ class AlumnoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nExpediente')
-                ->add('nombre')
-                ->add('apellidos')
-                ->add('fechaNacimiento', Type\DateType::class, array(
-                          'widget' => 'single_text',
-                          'label'  => 'Fecha de nacimiento: ',
-                      ))
-                ->add('sexo')
-                ->add('email')
-                ->add('telefono')
-                ->add('grado')
-                ->add('asignaturas');
+        $builder->add('nExpediente')->add('nombre')->add('apellidos')->add('fechaNacimiento')->add('sexo')->add('email')->add('telefono')->add('grado')->add('asignaturas');
     }
     
     /**

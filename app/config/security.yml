@@ -2,20 +2,20 @@
 # https://symfony.com/doc/current/security.html
 security:
     providers:
-#        in_memory:
-#            memory:
-#                users:
-#                    carlos:
-#                        password: $2y$12$EhCZdh6fxY85zP8W55uONOeckJFv5i26Tvv.BFZ3flPKmwCJ8hwFq
-#                        roles: 'ROLE_USER'
-#                    admin:
-#                        password: word
-#                        roles: ['ROLE_ADMIN']
+        in_memory:
+            memory:
+                users:
+                    carlos:
+                        password: pass
+                        roles: 'ROLE_USER'
+                    admin:
+                        password: word
+                        roles: ['ROLE_ADMIN']
                         
-        mi_poveedor:
-            entity:
-                class: AppBundle:User
-                property: username
+#        mi_poveedor:
+#            entity:
+#                class: AppBundle:User
+#                property: username
                 
 #        my_ldap:
 #            ldap:
@@ -27,13 +27,13 @@ security:
 #                uid_key: uid
     
     encoders:
-#        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: plaintext
 #        Symfony\Component\Security\Core\User\User:
 #            algorithm: bcrypt
 #            cost: 12
-        AppBundle\Entity\User:
-            algorithm: bcrypt
-            cost: 12
+#        AppBundle\Entity\User:
+#            algorithm: bcrypt
+#            cost: 12
 #        AppBundle\Entity\User: plaintext
 
     
