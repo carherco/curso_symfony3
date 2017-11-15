@@ -7,7 +7,7 @@ Además de estos comandos ya existentes, podemos programar e incluir tantos
 comandos nuevos como deseemos.
 
 
-## Creación de un comando de consola
+## Creación de un comando de consola
 
 Los comandos se deben crear en clases bajo el namespace *Command* de nuestro
 bundle (por ejemplo AppBundle\Command) y los nombres de los comandos deben terminar
@@ -65,7 +65,7 @@ class AppMyCommandCommand extends ContainerAwareCommand
 }
 ```
 
-### Configuración del comando
+### Configuración del comando
 
 Lo primero de todo es configurar el comando en el método *configure()*:
 
@@ -84,7 +84,7 @@ Como es de esperar, el comando no hará nada todavía.
 
 La lógica del comando está en el método *execute()*.
 
-### Console Output
+### Console Output
 
 ```php
 // ...
@@ -108,11 +108,11 @@ protected function execute(InputInterface $input, OutputInterface $output)
 
 
 
-### Console Input
+### Console Input
 
 El objeto Input nos permite acceder a los argumentos y a las opciones.
 
-#### Argumentos
+#### Argumentos
 
 Hay 3 variantes de argumentos:
 
@@ -165,7 +165,7 @@ $this
     );
 ```
 
-### Acceso al contenedor de servicios
+### Acceso al contenedor de servicios
 
 
 ```php
@@ -190,7 +190,7 @@ class CreateUserCommand extends ContainerAwareCommand
 ```
 
 
-## Ejecutar un comando de consola desde otro comando
+## Ejecutar un comando de consola desde otro comando
 
 Ejectuar un comando dentro de otro comando es sencillo:
 
@@ -220,7 +220,7 @@ haya hecho el método *execute()* del comando.
 
 
 
-## Ejecutar un comando desde un controlador
+## Ejecutar un comando desde un controlador
 
 Ejectuar un comando desde un controlador (o desde un servicio) también es muy 
 sencillo:
