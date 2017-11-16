@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Respuesta
  *
- * @ORM\Table(name="respuesta", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(name="respuesta", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="idpregunta", columns={"idpregunta"})})
  * @ORM\Entity
  */
 class Respuesta
@@ -15,16 +15,9 @@ class Respuesta
     /**
      * @var integer
      *
-     * @ORM\Column(name="idpregunta", type="integer", nullable=false)
-     */
-    private $idpregunta;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="orden", type="smallint", nullable=false)
      */
-    private $orden = '0';
+    private $orden;
 
     /**
      * @var string
@@ -43,11 +36,21 @@ class Respuesta
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @var \AppBundle\Entity\Pregunta
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pregunta")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idpregunta", referencedColumnName="id")
+     * })
+     */
+    private $pregunta;
 
 
 }

@@ -15,6 +15,13 @@ class Encuesta
     /**
      * @var string
      *
+     * @ORM\Column(name="idasignatura", type="string", length=10, nullable=false)
+     */
+    private $idasignatura;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="descripcion", type="string", length=128, nullable=true)
      */
     private $descripcion;
@@ -85,7 +92,7 @@ class Encuesta
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
