@@ -1,10 +1,10 @@
-Creación de una API REST con FosRestBundle
-==========================================
+Creación de una API REST con VoryxRestGeneratorBundle 
+=====================================================
 
 Instalación del bundle
 ----------------------
 
-Para instalar el bundle FOSRestBundle basta con seguir las instrucciones de instalación:
+Para instalar el bundle VoryxRestGeneratorBundle basta con seguir las instrucciones de instalación:
 https://github.com/voryx/restgeneratorbundle
 
 
