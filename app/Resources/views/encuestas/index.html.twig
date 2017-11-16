@@ -10,21 +10,16 @@
     <p>Pregunta: {{pregunta.descripcion}}</p>
     
     {% if pregunta.tipo.id == 1 %}
-        Pregunta de tipo 1
+        {{ include('tipospreguntas/tipo1.html.twig', { 'pregunta': pregunta }) }}
     {% elseif pregunta.tipo.id == 2 %}
-        Pregunta de tipo 2
+        {{ include('tipospreguntas/tipo2.html.twig', { 'pregunta': pregunta }) }}
     {% elseif pregunta.tipo.id == 3 %}
-        Pregunta de tipo 3
+        {{ include('tipospreguntas/tipo3.html.twig', { 'pregunta': pregunta }) }}
     {% else %}
         Pregunta sin tipo conocido
     {% endif %}
     
   {% endfor %}
-  
-  
-  
-  
-  
   
   
 {% endblock %}

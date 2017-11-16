@@ -53,7 +53,7 @@ class Bloque
     
     public function __construct()
     {
-        $this->$preguntas = new ArrayCollection();
+        $this->preguntas = new ArrayCollection();
     }
     
     function getDescripcion() {

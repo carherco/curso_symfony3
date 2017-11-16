@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Pregunta
@@ -78,6 +79,16 @@ class Pregunta
      * })
      */
     private $encuesta;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Respuesta", mappedBy="pregunta")
+     */
+    private $respuestas;
+    
+    public function __construct()
+    {
+        $this->respuestas = new ArrayCollection();
+    }
 
     function getOrden() {
       return $this->orden;
@@ -151,7 +162,14 @@ class Pregunta
       return $this;
     }
 
+    function getRespuestas() {
+      return $this->respuestas;
+    }
 
+    function setRespuestas($respuestas) {
+      $this->respuestas = $respuestas;
+      return $this;
+    }
 
 }
 

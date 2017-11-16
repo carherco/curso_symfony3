@@ -45,7 +45,7 @@ class Respuesta
     /**
      * @var \AppBundle\Entity\Pregunta
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pregunta")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pregunta", inversedBy="respuestas")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idpregunta", referencedColumnName="id")
      * })
