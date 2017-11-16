@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use \AppBundle\Service\Mock\AsignaturasManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class DefaultController extends Controller
 {
@@ -173,6 +174,17 @@ class DefaultController extends Controller
         );
     }
     
+    /**
+     * @Route("/evento", name="evento")
+     */
+    public function eventoAction() {
+      $dispatcher = new EventDispatcher();
+      $dispatcher->dispatch('alumno.created');
+      
+      return new Response(
+            '<html><body>Evento emitido</body></html>'
+        );
+    }
     
     
 }
