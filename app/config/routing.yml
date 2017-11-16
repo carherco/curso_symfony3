@@ -1,3 +1,8 @@
+app_grado_apivoryx:
+    resource: "@AppBundle/Controller/GradoRESTController.php"
+    type:   rest
+    prefix:   /apivoryx
+
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
