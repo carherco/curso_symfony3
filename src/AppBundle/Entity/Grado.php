@@ -34,6 +34,7 @@ class Grado
      * @ORM\OneToMany(targetEntity="Alumno", mappedBy="grado")
      */
     private $alumnos;
+    
     public function __construct()
     {
         $this->asignaturas = new ArrayCollection();

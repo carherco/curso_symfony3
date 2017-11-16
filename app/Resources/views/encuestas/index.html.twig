@@ -1,0 +1,30 @@
+{% extends 'public.html.twig' %}
+
+{% block body %}
+  <h1>Encuesta {{bloque.encuesta.descripcion}}</h1>
+  
+  <p>Bloque {{bloque.descripcion}}</p>
+  
+  {% for pregunta in bloque.preguntas %}
+    
+    <p>Pregunta: {{pregunta.descripcion}}</p>
+    
+    {% if pregunta.tipo.id == 1 %}
+        Pregunta de tipo 1
+    {% elseif pregunta.tipo.id == 2 %}
+        Pregunta de tipo 2
+    {% elseif pregunta.tipo.id == 3 %}
+        Pregunta de tipo 3
+    {% else %}
+        Pregunta sin tipo conocido
+    {% endif %}
+    
+  {% endfor %}
+  
+  
+  
+  
+  
+  
+  
+{% endblock %}

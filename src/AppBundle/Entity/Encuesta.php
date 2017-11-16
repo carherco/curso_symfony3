@@ -98,6 +98,114 @@ class Encuesta
      */
     private $id;
 
+    function getIdasignatura() {
+      return $this->idasignatura;
+    }
+
+    function getDescripcion() {
+      return $this->descripcion;
+    }
+
+    function getCursoAcademico() {
+      return $this->cursoAcademico;
+    }
+
+    function getFechaIni() {
+      return $this->fechaIni;
+    }
+
+    function getFechaFin() {
+      return $this->fechaFin;
+    }
+
+    function getFechaCierre() {
+      return $this->fechaCierre;
+    }
+
+    function getGestor() {
+      return $this->gestor;
+    }
+
+    function getEstado() {
+      return $this->estado;
+    }
+
+    function getModificable() {
+      return $this->modificable;
+    }
+
+    function getAnonima() {
+      return $this->anonima;
+    }
+
+    function getMulticoncepto() {
+      return $this->multiconcepto;
+    }
+
+    function getId() {
+      return $this->id;
+    }
+
+    function setIdasignatura($idasignatura) {
+      $this->idasignatura = $idasignatura;
+      return $this;
+    }
+
+    function setDescripcion($descripcion) {
+      $this->descripcion = $descripcion;
+      return $this;
+    }
+
+    function setCursoAcademico($cursoAcademico) {
+      $this->cursoAcademico = $cursoAcademico;
+      return $this;
+    }
+
+    function setFechaIni($fechaIni) {
+      $this->fechaIni = $fechaIni;
+      return $this;
+    }
+
+    function setFechaFin($fechaFin) {
+      $this->fechaFin = $fechaFin;
+      return $this;
+    }
+
+    function setFechaCierre($fechaCierre) {
+      $this->fechaCierre = $fechaCierre;
+      return $this;
+    }
+
+    function setGestor($gestor) {
+      $this->gestor = $gestor;
+      return $this;
+    }
+
+    function setEstado($estado) {
+      $this->estado = $estado;
+      return $this;
+    }
+
+    function setModificable($modificable) {
+      $this->modificable = $modificable;
+      return $this;
+    }
+
+    function setAnonima($anonima) {
+      $this->anonima = $anonima;
+      return $this;
+    }
+
+    function setMulticoncepto($multiconcepto) {
+      $this->multiconcepto = $multiconcepto;
+      return $this;
+    }
+
+    function setId($id) {
+      $this->id = $id;
+      return $this;
+    }
+
 
 }
 

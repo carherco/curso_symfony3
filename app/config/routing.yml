@@ -1,16 +1,16 @@
-app_grado_apivoryx:
-    resource: "@AppBundle/Controller/GradoRESTController.php"
-    type:   rest
-    prefix:   /apivoryx
-
-NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
-
-app_alumno_apivoryx:
-    resource: "@AppBundle/Controller/AlumnoRESTController.php"
-    type:   rest
-    prefix:   /apivoryx
+#app_grado_apivoryx:
+#    resource: "@AppBundle/Controller/GradoRESTController.php"
+#    type:   rest
+#    prefix:   /apivoryx
+#
+#NelmioApiDocBundle:
+#    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+#    prefix:   /api/doc
+#
+#app_alumno_apivoryx:
+#    resource: "@AppBundle/Controller/AlumnoRESTController.php"
+#    type:   rest
+#    prefix:   /apivoryx
 
 admin_area:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
@@ -67,6 +67,6 @@ homepage_format:
   path:      /ejemplo/format/{_format}
   defaults:  { _controller: AppBundle:Routing:locale, _format: html }
   
-asignaturas_rest:
-  type:     rest
-  resource: AppBundle\Controller\AsignaturasRESTController
+#asignaturas_rest:
+#  type:     rest
+#  resource: AppBundle\Controller\AsignaturasRESTController

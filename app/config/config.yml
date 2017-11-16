@@ -20,7 +20,7 @@ framework:
     form: ~
     csrf_protection: false
     validation: { enable_annotations: true }
-    serializer: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale: '%locale%'
@@ -94,35 +94,35 @@ sonata_block:
 #        default_format: json
 #        
         
-fos_rest:
-    routing_loader:
-        default_format: json
-    param_fetcher_listener: true
-    body_listener: true
-    #disable_csrf_role: ROLE_USER
-    body_converter:
-        enabled: true
-    view:
-        view_response_listener: force
-
-nelmio_cors:
-    defaults:
-        allow_credentials: false
-        allow_origin: []
-        allow_headers: []
-        allow_methods: []
-        expose_headers: []
-        max_age: 0
-    paths:
-        '^/api/':
-            allow_origin: ['*']
-            allow_headers: ['*']
-            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
-            max_age: 3600
-
-sensio_framework_extra:
-    request: { converters: true }
-    view:    { annotations: false }
-    router:  { annotations: true }
-    
-nelmio_api_doc: ~
+#fos_rest:
+#    routing_loader:
+#        default_format: json
+#    param_fetcher_listener: true
+#    body_listener: true
+#    #disable_csrf_role: ROLE_USER
+#    body_converter:
+#        enabled: true
+#    view:
+#        view_response_listener: force
+#
+#nelmio_cors:
+#    defaults:
+#        allow_credentials: false
+#        allow_origin: []
+#        allow_headers: []
+#        allow_methods: []
+#        expose_headers: []
+#        max_age: 0
+#    paths:
+#        '^/api/':
+#            allow_origin: ['*']
+#            allow_headers: ['*']
+#            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+#            max_age: 3600
+#
+#sensio_framework_extra:
+#    request: { converters: true }
+#    view:    { annotations: false }
+#    router:  { annotations: true }
+#    
+#nelmio_api_doc: ~

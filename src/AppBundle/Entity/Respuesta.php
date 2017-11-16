@@ -52,6 +52,52 @@ class Respuesta
      */
     private $pregunta;
 
+    function getOrden() {
+      return $this->orden;
+    }
+
+    function getDescripcion() {
+      return $this->descripcion;
+    }
+
+    function getValor() {
+      return $this->valor;
+    }
+
+    function getId() {
+      return $this->id;
+    }
+
+    function getPregunta() {
+      return $this->pregunta;
+    }
+
+    function setOrden($orden) {
+      $this->orden = $orden;
+      return $this;
+    }
+
+    function setDescripcion($descripcion) {
+      $this->descripcion = $descripcion;
+      return $this;
+    }
+
+    function setValor($valor) {
+      $this->valor = $valor;
+      return $this;
+    }
+
+    function setId($id) {
+      $this->id = $id;
+      return $this;
+    }
+
+    function setPregunta(\AppBundle\Entity\Pregunta $pregunta) {
+      $this->pregunta = $pregunta;
+      return $this;
+    }
+
+
 
 }
 

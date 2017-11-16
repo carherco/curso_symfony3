@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Bloque
@@ -45,6 +46,16 @@ class Bloque
      */
     private $encuesta;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Pregunta", mappedBy="bloque")
+     */
+    private $preguntas;
+    
+    public function __construct()
+    {
+        $this->$preguntas = new ArrayCollection();
+    }
+    
     function getDescripcion() {
       return $this->descripcion;
     }
@@ -81,7 +92,14 @@ class Bloque
       return $this;
     }
 
+    function getPreguntas() {
+      return $this->preguntas;
+    }
 
+    function setPreguntas($preguntas) {
+      $this->preguntas = $preguntas;
+      return $this;
+    }
     
 }
 

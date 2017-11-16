@@ -28,6 +28,24 @@ class Estado
      */
     private $id;
 
+    function getDescripcion() {
+      return $this->descripcion;
+    }
+
+    function getId() {
+      return $this->id;
+    }
+
+    function setDescripcion($descripcion) {
+      $this->descripcion = $descripcion;
+      return $this;
+    }
+
+    function setId($id) {
+      $this->id = $id;
+      return $this;
+    }
+
 
 }
 
