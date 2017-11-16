@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 /**
  * Grado controller.
@@ -40,6 +41,11 @@ class GradoRESTController extends VoryxController
     /**
      * Get all Grado entities.
      *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Obtiene todos los grados"
+     * )
+     * 
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @param ParamFetcherInterface $paramFetcher
